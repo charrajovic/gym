@@ -460,10 +460,10 @@
                     <div class="work-list text-center">
                         <ul>
                             <li class="filter" class="active" data-filter="all">ALL</li>
-                            <li class="filter" data-filter=".web">Web Development</li>
-                            <li class="filter" data-filter=".graphic">Graphic Design</li>
-                            <li class="filter" data-filter=".logo">Data Science</li>
-                            <li class="filter" data-filter=".wp">Data Analysis</li>
+                            <li class="filter" data-filter=".WebDevelopment">Web Development</li>
+                            <li class="filter" data-filter=".GraphicDesign">Graphic Design</li>
+                            <li class="filter" data-filter=".DataScience">Data Science</li>
+                            <li class="filter" data-filter=".DataAnalysis">Data Analysis</li>
                             <li class="filter" data-filter=".other">Other</li>
                         </ul>
                     </div>
@@ -472,19 +472,26 @@
             </div>
             <div class="row portfolio">
                 <!-- Single Portfolio -->
-                <div class="col-lg-4 col-md-6 mix wp graphic">
-                    <div class="single-portfolio" style="background-image: url(assets/images/portfolio/img-1.jpg)">
+                <?php 
+                include 'connect.php';
+                $sql2 = "SELECT * FROM `gigs`";
+                $result2 = mysqli_query($conn, $sql2);
+                while($row = mysqli_fetch_assoc($result2)) {
+                ?>
+                <div class="col-lg-4 col-md-6 mix <?php echo str_replace(' ', '', $row['domaine']); ?>">
+                    <div class="single-portfolio" style="background-image: url(<?php echo $row['path']; ?>)">
                         <div class="portfolio-icon text-center">
-                            <a data-lightbox='lightbox' href="assets/images/portfolio/img-1.jpg"><i class="fas fa-expand-arrows-alt"></i></a>
+                            <a data-lightbox='lightbox' href="<?php echo $row['path']; ?>"><i class="fas fa-expand-arrows-alt"></i></a>
                         </div>
                         <div class="portfolio-hover">
-                            <h4>Project <span>Photographer</span></h4>
+                            <h4><?php echo $row['name']; ?></h4>
                         </div>
                     </div>
                 </div>
+                <?php } ?>
                 <!-- // Single Portfolio -->
                 <!-- Single Portfolio -->
-                <div class="col-lg-4 col-md-6 mix logo web graphic other wp">
+                <!-- <div class="col-lg-4 col-md-6 mix logo web graphic other wp">
                     <div class="single-portfolio" style="background-image: url(assets/images/portfolio/img-2.jpg)">
                         <div class="portfolio-icon text-center">
                             <a data-lightbox='lightbox' href="assets/images/portfolio/img-2.jpg"><i class="fas fa-expand-arrows-alt"></i></a>
@@ -493,10 +500,10 @@
                             <h4>Project <span>Building Gym</span></h4>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <!-- // Single Portfolio -->
                 <!-- Single Portfolio -->
-                <div class="col-lg-4 col-md-6 mix wp other">
+                <!-- <div class="col-lg-4 col-md-6 mix wp other">
                     <div class="single-portfolio" style="background-image: url(assets/images/portfolio/img-3.jpg)">
                         <div class="portfolio-icon text-center">
                             <a data-lightbox='lightbox' href="assets/images/portfolio/img-3.jpg"><i class="fas fa-expand-arrows-alt"></i></a>
@@ -505,10 +512,10 @@
                             <h4>Project <span>marriage</span></h4>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <!-- // Single Portfolio -->
                 <!-- Single Portfolio -->
-                <div class="col-lg-4 col-md-6 mix logo other graphic wp web">
+                <!-- <div class="col-lg-4 col-md-6 mix logo other graphic wp web">
                     <div class="single-portfolio" style="background-image: url(assets/images/portfolio/img-4.jpg)">
                         <div class="portfolio-icon text-center">
                             <a data-lightbox='lightbox' href="assets/images/portfolio/img-4.jpg"><i class="fas fa-expand-arrows-alt"></i></a>
@@ -517,10 +524,10 @@
                             <h4>Project <span>shopping</span></h4>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <!-- // Single Portfolio -->
                 <!-- Single Portfolio -->
-                <div class="col-lg-4 col-md-6 mix logo other wp graphic web">
+                <!-- <div class="col-lg-4 col-md-6 mix logo other wp graphic web">
                     <div class="single-portfolio" style="background-image: url(assets/images/portfolio/img-5.jpg)">
                         <div class="portfolio-icon text-center">
                             <a data-lightbox='lightbox' href="assets/images/portfolio/img-5.jpg"><i class="fas fa-expand-arrows-alt"></i></a>
@@ -529,10 +536,10 @@
                             <h4>Portfolio <span>project</span></h4>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <!-- // Single Portfolio -->
                 <!-- Single Portfolio -->
-                <div class="col-lg-4 col-md-6 mix wp logo graphic web">
+                <!-- <div class="col-lg-4 col-md-6 mix wp logo graphic web">
                     <div class="single-portfolio" style="background-image: url(assets/images/portfolio/img-6.jpg)">
                         <div class="portfolio-icon text-center">
                             <a data-lightbox='lightbox' href="assets/images/portfolio/img-6.jpg"><i class="fas fa-expand-arrows-alt"></i></a>
@@ -541,10 +548,10 @@
                             <h4>Project <span>Name</span></h4>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <!-- // Single Portfolio -->
                 <!-- Single Portfolio -->
-                <div class="col-lg-4 col-md-6 mix web wp">
+                <!-- <div class="col-lg-4 col-md-6 mix web wp">
                     <div class="single-portfolio" style="background-image: url(assets/images/portfolio/img-7.jpg)">
                         <div class="portfolio-icon text-center">
                             <a data-lightbox='lightbox' href="assets/images/portfolio/img-7.jpg"><i class="fas fa-expand-arrows-alt"></i></a>
@@ -553,10 +560,10 @@
                             <h4>Project <span>restaurant</span></h4>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <!-- // Single Portfolio -->
                 <!-- Single Portfolio -->
-                <div class="col-lg-4 col-md-6 mix logo graphic wp web">
+                <!-- <div class="col-lg-4 col-md-6 mix logo graphic wp web">
                     <div class="single-portfolio" style="background-image: url(assets/images/portfolio/img-8.jpg)">
                         <div class="portfolio-icon text-center">
                             <a data-lightbox='lightbox' href="assets/images/portfolio/img-8.jpg"><i class="fas fa-expand-arrows-alt"></i></a>
@@ -565,10 +572,10 @@
                             <h4>authenticate<span> page</span></h4>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <!-- // Single Portfolio -->
                 <!-- Single Portfolio -->
-                <div class="col-lg-4 col-md-6 mix other logo web">
+                <!-- <div class="col-lg-4 col-md-6 mix other logo web">
                     <div class="single-portfolio" style="background-image: url(assets/images/portfolio/img-9.jpg)">
                         <div class="portfolio-icon text-center">
                             <a data-lightbox='lightbox' href="assets/images/portfolio/img-9.jpg"><i class="fas fa-expand-arrows-alt"></i></a>
@@ -577,7 +584,7 @@
                             <h4>Project <span>travelling</span></h4>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <!-- // Single Portfolio -->
             </div>
         </div>

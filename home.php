@@ -215,7 +215,7 @@
                             <i class="fa fa-chart-line fa-3x text-primary"></i>
                             <div class="ms-3">
                                 <p class="mb-2">Today Users</p>
-                                <h6 class="mb-0">$1234</h6>
+                                <h6 class="mb-0" id="users">$1234</h6>
                             </div>
                         </div>
                     </div>
@@ -224,7 +224,7 @@
                             <i class="fa fa-chart-bar fa-3x text-primary"></i>
                             <div class="ms-3">
                                 <p class="mb-2">Total Gigs</p>
-                                <h6 class="mb-0">$1234</h6>
+                                <h6 class="mb-0" id="gigs">$1234</h6>
                             </div>
                         </div>
                     </div>
@@ -268,10 +268,10 @@
                     <div class="col-sm-12 col-xl-6">
                         <div class="bg-secondary text-center rounded p-4">
                             <div class="d-flex align-items-center justify-content-between mb-4">
-                                <h6 class="mb-0">Salse & Revenue</h6>
+                                <h6 class="mb-0">Mails received</h6>
                                 <a href="">Show All</a>
                             </div>
-                            <canvas id="salse-revenue"></canvas>
+                            <canvas id="users_created"></canvas>
                         </div>
                     </div>
                 </div>
@@ -516,14 +516,34 @@
                     include 'connect.php';
                     $sql = "SELECT count(*) as numbers,role.role_name FROM `users_role` INNER JOIN role ON role.id = users_role.role_id group by role_id";
                     $result = mysqli_query($conn, $sql);
+                    $sql2 = "SELECT count(*) as numbers,DATE_FORMAT(`created`,'%d %M %Y') as created FROM `mails` GROUP BY day(`created`)";
+                    $result2 = mysqli_query($conn, $sql2);
                     echo mysqli_num_rows($result); ?>
     <?php 
     $arr = array();
     $arr2 = array();
+    $arr1 = array();
+    $arr12 = array();
+    $role;
     while($row = mysqli_fetch_assoc($result)) {
-        
+        $role = $row["role_name"];
+        if($role=="ROLE_ADMIN"){
+            $role='Admin';
+        }
+        else
+        {
+            $role='User';
+        }
         array_push($arr,$row["numbers"]);
-        array_push($arr2,$row["role_name"]);
+        array_push($arr2,$role);
+    }
+    $arr[array_search(max($arr),$arr)] = max($arr)-min($arr);
+
+
+    while($row = mysqli_fetch_assoc($result2)) {
+        
+        array_push($arr1,$row["numbers"]);
+        array_push($arr12,$row["created"]);
     }
     print_r($arr); ?>
 
@@ -536,7 +556,7 @@
         data: {
         labels: [<?php echo '"'.implode('","', $arr2).'"'; ?>],
         datasets: [{
-            label: "Population (millions)",
+            label: "Accounts type",
             backgroundColor: ["#2D87BB", "#E6F69D"],
             data: [<?php echo '"'.implode('","', $arr).'"'; ?>]
         }]
@@ -544,13 +564,53 @@
         options: {
         title: {
             display: true,
-            text: 'Predicted world population (millions) in 2050'
+            text: 'chart of numbers of each type of account'
         }
         },
         options: {
             responsive: true
         }
         });
+        var ctx2 = $("#users_created").get(0).getContext("2d");
+        var myChart2 = new Chart(ctx2, { 
+            type: 'bar',
+        data: {
+        labels: [<?php echo '"'.implode('","', $arr12).'"'; ?>],
+        datasets: [{
+            label: "mails received",
+            backgroundColor: ["#EB1616"],
+            data: [<?php echo '"'.implode('","', $arr1).'"'; ?>]
+        }]
+        },
+        options: {
+        title: {
+            display: true,
+            text: 'mails received in each date'
+        }
+        },
+        options: {
+            responsive: true
+        }
+        });
+
+        <?php 
+                $sql3 = "SELECT  (
+                    SELECT COUNT(*)
+                    FROM   users
+                    ) AS users,
+                    (
+                    SELECT COUNT(*)
+                    FROM   gigs
+                    ) AS gigs
+            FROM    role";
+                $result3 = mysqli_query($conn, $sql3);
+                while($row = mysqli_fetch_assoc($result3)) {?>
+        
+                    document.getElementById('users').textContent = '<?php echo $row['users']; ?>'
+                    document.getElementById('gigs').textContent = '<?php echo $row['gigs']; ?>'
+
+                <?php } ?>
+
     </script>
 </body>
 

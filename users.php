@@ -46,7 +46,7 @@
     <link href="css/style.css" rel="stylesheet">
 </head>
 
-<body>
+<body style="overflow-x:hidden">
     <div class="container-fluid position-relative d-flex p-0">
         <!-- Spinner Start -->
         <div id="spinner" class="show bg-dark position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
@@ -212,7 +212,7 @@
 
             <!-- Sale & Revenue Start -->
             <div class="row">
-                <div class="offset-md-2 col-md-8" style="margin-top:50px;    box-shadow: 0 0 10px #eee;padding:5px;overflow:auto">
+                <div class="offset-md-2 col-md-8" style="margin-top:50px;margin-bottom:50px;box-shadow: 0 0 10px #eee;padding:5px;overflow:auto">
                 <h2 style='text-align:center' onclick="user()">user management:</h2>
                 <table class="table" style='border: 2px solid white;margin-bottom:0'>
   <thead class="thead-dark" style='border: 2px solid white;'>

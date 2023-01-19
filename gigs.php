@@ -44,9 +44,15 @@
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+    <style>
+        input{
+            background:white !important;
+            margin-bottom:15px
+        }
+    </style>
 </head>
 
-<body style="overflow:hidden">
+<body style="overflow-x:hidden">
     <div class="container-fluid position-relative d-flex p-0">
         <!-- Spinner Start -->
         <div id="spinner" class="show bg-dark position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
@@ -217,8 +223,18 @@
 
             <!-- Sale & Revenue Start -->
             <div class="row" style='padding-left: 18px;padding-right: 5px;'>
-                <div class="offset-md-2 col-md-8" style="margin-top:50px;    box-shadow: 0 0 10px #eee;padding:5px;overflow:auto">
-                <h2 style='text-align:center;margin-bottom:30px' onclick="user()">gigs management:</h2>
+                <div class="offset-md-2 col-md-8" style="margin-top:50px;margin-bottom:50px;    box-shadow: 0 0 10px #eee;padding:5px;">
+                <div class="row" style="margin-bottom:30px">
+                    <div class="offset-md-1 col-md-10">
+                        <h2 style='text-align:center;' onclick="user()">gigs management:</h2>
+                        
+                    </div> 
+                    <div class="col-md-1" style="margin:auto">
+                    <i class="fa fa-plus" aria-hidden="true" onclick='add_gigs()' style="color:green;cursor:pointer"></i>
+                    </div>
+                </div>
+                
+                
                 <table id="users" style="width:100% !important;text-align:center">
                 <tr>
                     <th>Thumbnail</th>
@@ -232,11 +248,57 @@
             </div>
         </div>
         <!-- Content End -->
+        
 
 
         <!-- Back to Top -->
         <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
     </div>
+    <div id="full" style="position:absolute;top:0;left:0;width:100%;height:100%;background:red;    background: rgba(120,120,120,0.5);z-index: 9999;display:none">
+            <div class="row" style="margin-top:20px">
+                <div class="offset-md-2 col-md-8">
+                    <div class="row" style="margin-bottom:25px">
+                        <div class="offset-1 col-10">
+                        <h2 style="text-align:center;border:2px solid">Add gigs:</h2>
+                        </div>
+                        <div class="col-1" style="margin:auto">
+                        <p onclick="exit()" style="color:white;font-weight:bold;cursor:pointer">X</p>
+                        </div>
+                    </div>
+                
+                
+                    <div class="row">
+                        <div class="col-md-6">
+                            <input type="text" name="name" id="name" placeholder="Name" class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <select name="domain" id="domain" class="form-control">
+                                <option value="Web Development">Web Development</option>
+                                <option value="Graphic Design">Graphic Design</option>
+                                <option value="Data Science">Data Science</option>
+                                <option value="Data Analysis">Data Analysis</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                    <div class="col-md-12">
+                            <input type="file" id="file" name="imge" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                    <div class="col-md-12">
+                            <p id="uploaded_image" style="display:none"></p>
+                        </div>
+                    </div>
+                    
+                    <div class="form-btn text-center">
+                            <button class="btn btn-success" onclick='upload()' type="button">Add gigs</button>
+                            <p id="form-message"></p>
+                        </div>
+                </div>
+            </div>
+        </div>
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -263,6 +325,43 @@
                 document.getElementById('users').innerHTML+='<tr style="height:70px"><th scope="row" style="background-image:url(\''+obj[i].path+'\');background-size: 100% 100%;"></th> <td>'+obj[i].name+'</td><td>'+obj[i].domain+'</td><td>'+obj[i].created+'</td></tr>'
             }
 });
+        }
+        function add_gigs()
+        {
+            console.log('hole')
+            document.getElementById('full').style.display = "block";
+        }
+        function exit()
+        {
+            document.getElementById('full').style.display = "none";
+        }
+        function upload()
+        {
+            var form_data = new FormData();
+            form_data.append("file", document.getElementById('file').files[0]);
+            form_data.append("name", document.getElementById('name').value);
+            form_data.append("domain", document.getElementById('domain').value);
+            $.ajax({
+                url:"upload",
+                method:"POST",
+                data: form_data,
+                contentType: false,
+                cache: false,
+                processData: false,
+                beforeSend:function(){
+                    document.getElementById('uploaded_image').style.display = 'block';
+                $('#uploaded_image').html("<label class='text-success'>Image Uploading...</label>");
+                },   
+                success:function(response)
+                {
+                    document.getElementById('name').value='';
+                    document.getElementById('file').value='';
+                    document.getElementById('domain').value='Web Development';
+                console.log(response);
+                exit();
+                user();
+                }
+            });
         }
         window.onload = function()
         {
