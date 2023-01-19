@@ -1,0 +1,180 @@
+.bar
+{
+    background:#FFE4B5;
+    height: 100%;
+    position: fixed;
+    left: 0;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+  }
+
+.bar1
+  {
+    height: 90%;
+  }
+
+.kolach {
+    height: 100%;
+    margin:0;
+    padding: 0;
+  }
+
+.first
+{
+    height: fit-content;
+    background-color: #F0E68C;
+    margin:0;
+    padding-bottom: 16px;
+}
+.search
+{
+    margin-top: 2%;
+}
+
+.searchbtn
+{
+    margin-top:6px;
+}
+.nm
+{
+  font-size: 15px;
+  margin-top: 16px;
+  text-align: center;
+}
+.nmb
+{
+  border: none;
+  background-color: #F0E68C;
+  margin-top: 14px;
+  text-align: center;
+}
+.bar2
+{
+  background:#FFE4B5;
+    height: 100%;
+    position: fixed;
+    right: 0;
+}
+body
+{
+  overflow-x: hidden;
+}
+.middle
+{
+  overflow: scroll;
+  height: 100%;
+}
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  background: rgba(255,0,0,0.8);
+}
+.on
+{
+  margin-top: 5px;
+  font-size: large;
+}
+.amis
+{
+  font-weight: bold;
+  cursor: pointer;
+}
+.top
+{
+  margin-top: 15px;
+}
+.pub
+{
+  height: fit-content;
+    background: Salmon;
+}
+.puba
+{
+  padding: 0;
+    margin-left: -5px;
+}
+.tof
+  {
+    height: 42px;
+    background-image: url(../img/tof-login.jpg);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    border-radius: 50%;
+    margin-top: 7px;
+  }
+  .area
+  {
+    margin-top: 5px;
+  }
+  .area::-webkit-scrollbar {
+    width: 12px;
+}
+
+.area::-webkit-scrollbar-track {
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+}
+
+.area::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  background: black;
+}
+.photo
+{
+  font-size: 20px;
+  padding-left: 8px;
+  cursor: pointer;
+}
+.lig2
+{
+  margin-top:5px;
+}
+#files
+{
+  display: none;
+}
+.tp
+{
+  text-align: center;
+  color: gray;
+  font-size: unset;
+}
+.pb
+{
+  background: tan;
+  padding: 0;
+  margin-left: -2px;
+  height: fit-content;
+  padding-bottom: 9px;
+  padding-top: 4px;
+  border-radius: 100px;
+  margin-bottom: 10px;
+}
+.lik,#like
+{
+  font-size: 25px;
+  cursor: pointer;
+}
+#like
+{
+  margin-left: 5px;
+}
+.likd
+{
+  margin-top:5px;
+}
