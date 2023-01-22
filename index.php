@@ -464,7 +464,7 @@
                             <li class="filter" data-filter=".GraphicDesign">Graphic Design</li>
                             <li class="filter" data-filter=".DataScience">Data Science</li>
                             <li class="filter" data-filter=".DataAnalysis">Data Analysis</li>
-                            <li class="filter" data-filter=".other">Other</li>
+                            <li class="filter" data-filter=".Other">Other</li>
                         </ul>
                     </div>
                 </div>

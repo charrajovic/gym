@@ -123,7 +123,7 @@ else if(isset($_REQUEST['service']) && isset($_REQUEST['type']))
             {
                 $resp="[";
             $email = $_SESSION['user']->get_email();
-            $sql = "SELECT `id`,`name`,`path`,`domaine`,`updated`,DATE_FORMAT(`created`,'%d %M %Y at %T') as created FROM `gigs` WHERE 1";
+            $sql = "SELECT `id`,`name`,`path`,`domaine`,`updated`,DATE_FORMAT(`created`,'%d %M %Y at %T') as created FROM `gigs` order by created";
             $result = mysqli_query($conn, $sql);
             while($row = mysqli_fetch_assoc($result)) {
                 $id = $row["id"];
