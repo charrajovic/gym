@@ -24,7 +24,7 @@ if(isset($_REQUEST['first']) && isset($_REQUEST['last']) && isset($_REQUEST['ema
 
         if ($res = $conn->query($sql) === TRUE) {
             $usr = $conn->insert_id;
-            $sql2 = "INSERT INTO `users_role`(`user_id`, `role_id`) VALUES ($usr,1)";
+            $sql2 = "INSERT INTO `users_role`(`user_id`, `id_role`) VALUES ($usr,1)";
             // echo $sql2;
             if ($conn->query($sql2) === TRUE) {
 
@@ -47,13 +47,14 @@ else if(!isset($_REQUEST['first']) && !isset($_REQUEST['last']) && isset($_REQUE
     $sql = "SELECT *
     FROM users
     INNER JOIN users_role ON users.id = users_role.user_id
-    INNER JOIN role ON role.id = users_role.role_id where users.email='$email' and users.password='$password'";
+    INNER JOIN role ON role.role_id = users_role.id_role where users.email='$email' and users.password='$password'";
     $result = mysqli_query($conn, $sql);
-    echo mysqli_num_rows($result);
+    // echo mysqli_num_rows($result);
     $roles = array();
     $name = null;
     $last = null;
     $mail = null;
+    $id = null;
 
     if (mysqli_num_rows($result) > 0) {
     // output data of each row
@@ -65,6 +66,12 @@ else if(!isset($_REQUEST['first']) && !isset($_REQUEST['last']) && isset($_REQUE
         // $_SESSION["user"] = $user;
         // echo $user->to_string();
         array_push($roles,$row["role_name"]);
+        print_r($row);
+        echo $row["id"];
+        if(is_null($id))
+        {
+            $id = $row["id"];
+        }
         if(is_null($name))
         {
             $name = $row["name"];
@@ -78,10 +85,11 @@ else if(!isset($_REQUEST['first']) && !isset($_REQUEST['last']) && isset($_REQUE
             $mail = $row["email"];
         }
     }
-    print_r($roles);
+    // print_r($roles);
     $user = new User($name,$last,$mail,null);
+    $user->set_id($id);
     $user->set_roles($roles);
-    echo count($user->get_roles());
+    // echo count($user->get_roles());
     $_SESSION["user"] = $user;
     header("Location: home");
     }
@@ -104,7 +112,7 @@ else if(isset($_REQUEST['service']) && isset($_REQUEST['type']))
             $sql = "SELECT users.id,users.name,users.lastname,users.email,GROUP_CONCAT(role.role_name SEPARATOR ' ') as roles
             FROM users
             INNER JOIN users_role ON users.id = users_role.user_id
-            INNER JOIN role ON role.id = users_role.role_id
+            INNER JOIN role ON role.role_id = users_role.id_role
             group by users.id";
             $result = mysqli_query($conn, $sql);
             while($row = mysqli_fetch_assoc($result)) {
@@ -137,6 +145,40 @@ else if(isset($_REQUEST['service']) && isset($_REQUEST['type']))
             $resp.=']';
             echo $resp;
             }
+            else if($_REQUEST['service'] == "mailsm")
+            {
+                $resp="[";
+            $email = $_SESSION['user']->get_email();
+            $sql = "SELECT users.name,users.lastname,users.id,mails.name as mail_name,mails.email as mail_email,mails.subject,mails.message,DATE_FORMAT(mails.created,'%d %M %Y at %T') as created FROM `mails`,users WHERE user=users.id";
+            $result = mysqli_query($conn, $sql);
+            while($row = mysqli_fetch_assoc($result)) {
+                $id = $row["id"];
+                $name = $row["name"].' '.$row["lastname"];
+                $mailn = $row["mail_name"];
+                $email = $row["mail_email"];
+                $subject = $row["subject"];
+                $message = $row["message"];
+                $created = $row["created"];
+                $resp.="{\"id\":\"$id\",\"name\":\"$name\",\"mailn\":\"$mailn\",\"email\":\"$email\",\"subject\":\"$subject\",\"message\":\"$message\",\"created\":\"$created\"},";
+            }
+            $sql = "SELECT name,user,email,subject,message,DATE_FORMAT(created,'%d %M %Y at %T') as created FROM `mails`";
+            $result = mysqli_query($conn, $sql);
+            while($row = mysqli_fetch_assoc($result)) {
+                if(is_null($row["user"]))
+                {
+                    $mailn = $row["name"];
+                    $email = $row["email"];
+                    $subject = $row["subject"];
+                    $message = $row["message"];
+                    $created = $row["created"];
+                    $resp.="{\"mailn\":\"$mailn\",\"email\":\"$email\",\"subject\":\"$subject\",\"message\":\"$message\",\"created\":\"$created\"},";
+            
+                }
+                }
+            $resp = rtrim($resp,',');
+            $resp.=']';
+            echo $resp;
+            }
             
         }
         
@@ -150,10 +192,23 @@ else if(isset($_REQUEST['name']) && isset($_REQUEST['subject']) && isset($_REQUE
     require 'phpmailer/src/PHPMailer.php';
     require 'phpmailer/src/SMTP.php';
 
+    session_start();
+
     $email = $_REQUEST['email'];
     $subject = $_REQUEST['subject'];
     $name = $_REQUEST['name'];
     $message = $_REQUEST['message'];
+    $idu = NULL;
+
+    if(isset($_SESSION["user"]))
+    {
+        $idu = $_SESSION["user"]->get_id();
+        echo $_SESSION["user"]->get_id();
+        $sql2 = "INSERT INTO `mails`(`name`,`user`, `email`, `subject`, `message`) VALUES ('$name',$idu,'$email','$subject','$message')";
+    }
+    else{
+        $sql2 = "INSERT INTO `mails`(`name`, `email`, `subject`, `message`) VALUES ('$name','$email','$subject','$message')";
+    }
 
     $mail = new PHPMailer(true);
     
@@ -176,7 +231,7 @@ else if(isset($_REQUEST['name']) && isset($_REQUEST['subject']) && isset($_REQUE
 
     $mail->send();
 
-    $sql2 = "INSERT INTO `mails`(`name`, `email`, `subject`, `message`) VALUES ('$name','$email','$subject','$message')";
+    
     
     if ($conn->query($sql2) === TRUE) {
         if($_REQUEST['adouna'] == "index")
@@ -188,7 +243,7 @@ else if(isset($_REQUEST['name']) && isset($_REQUEST['subject']) && isset($_REQUE
         }
         
     } else {
-    echo "Error: " . $sql . "<br>" . $conn->error;
+    echo "Error: " . $sql2 . "<br>" . $conn->error;
     }
     
 

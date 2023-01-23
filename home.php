@@ -97,6 +97,9 @@
                     <a href="reviews" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Reviews</a>
                     <?php } ?>
                     <?php if($role=='Admin'){ ?>
+                    <a href="mails" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Mails manage</a>
+                    <?php } ?>
+                    <?php if($role=='Admin'){ ?>
                     <a href="chart.html" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Reviews Manage</a>
                     <?php } ?>
                     <!-- <div class="nav-item dropdown">
@@ -514,7 +517,7 @@
                     <?php 
 
                     include 'connect.php';
-                    $sql = "SELECT count(*) as numbers,role.role_name FROM `users_role` INNER JOIN role ON role.id = users_role.role_id group by role_id";
+                    $sql = "SELECT count(*) as numbers,role.role_name FROM `users_role` INNER JOIN role ON role.role_id = users_role.`id_role` group by role_id";
                     $result = mysqli_query($conn, $sql);
                     $sql2 = "SELECT count(*) as numbers,DATE_FORMAT(`created`,'%d %M %Y') as created FROM `mails` GROUP BY day(`created`)";
                     $result2 = mysqli_query($conn, $sql2);

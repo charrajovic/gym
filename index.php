@@ -795,7 +795,7 @@
                         </div>
                         <div class="team-content">
                             <h4>Othmane </h4>
-                            <span>Founder | Data Analyst</span>
+                            <span>Data Analyst</span>
                         </div>
                     </div>
                 </div>
@@ -813,7 +813,7 @@
                         </div>
                         <div class="team-content">
                             <h4>SAMIR</h4>
-                            <span>CO Founder | Web Dev</span>
+                            <span>Web Dev</span>
                         </div>
                     </div>
                 </div>
@@ -831,7 +831,7 @@
                         </div>
                         <div class="team-content">
                             <h4>Haytem </h4>
-                            <span>Head of IT | Project Manager </span>
+                            <span>Project Manager </span>
                         </div>
                     </div>
                 </div>

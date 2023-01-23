@@ -2,6 +2,7 @@
 
 class User {
     // Properties
+    public $id;
     public $name;
     public $last;
     public $email;
@@ -19,6 +20,12 @@ class User {
       
   
     // Getters and Setters whitout password bien sur
+    function set_id($id) {
+      $this->id = $id;
+    }
+    function get_id() {
+      return $this->id;
+    }
     function set_name($name) {
       $this->name = $name;
     }
