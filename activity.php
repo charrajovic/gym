@@ -53,6 +53,9 @@
         button{
             margin-top:20px;
         }
+        div#shange {
+    border: 1px solid;
+        }
     </style>
 </head>
 
@@ -92,7 +95,7 @@
                     <a href="home" class="nav-item nav-link"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
                     <?php if($role=='Admin'){ ?>
                     <div class="nav-item ">
-                        <a href="users" class="nav-item nav-link active"><i class="fa fa-laptop me-2"></i>Users</a>
+                        <a href="users" class="nav-item nav-link"><i class="fa fa-laptop me-2"></i>Users</a>
                         <!-- <div class="dropdown-menu bg-transparent border-0">
                             <a href="button.html" class="dropdown-item">Buttons</a>
                             <a href="typography.html" class="dropdown-item">Typography</a>
@@ -113,7 +116,7 @@
                     <a href="mails" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Mails manage</a>
                     <?php } ?>
                     <?php if($role=='Admin'){ ?>
-                    <a href="activity" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Last activities</a>
+                    <a href="activity" class="nav-item nav-link active"><i class="fa fa-table me-2"></i>Last activities</a>
                     <?php } ?>
                     <?php if($role=='Admin'){ ?>
                     <a href="chart.html" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Reviews Manage</a>
@@ -228,32 +231,23 @@
 
             <!-- Sale & Revenue Start -->
             <div class="row" style="    width: 100%;padding-left: 10px;">
-                <div class="offset-md-2 col-md-8" style="margin-top:50px;margin-bottom:50px;box-shadow: 0 0 10px #eee;padding:5px;overflow:auto">
+                <div class="offset-md-2 col-md-8" style="margin-top:40px;margin-bottom:0px;padding:5px">
                 <div class="row" style="margin-bottom:30px">
                     <div class="offset-1 col-10">
-                        <h2 style='text-align:center;' onclick="user()">users management:</h2>
+                        <h2 style='text-align:center;' onclick="user()">Last activities:</h2>
                         
                     </div> 
                     <div class="col-1" style="margin:auto">
                     <i class="fa fa-plus" aria-hidden="true" onclick='add_user()' style="color:green;cursor:pointer"></i>
                     </div>
                 </div>
-                <table class="table" style='border: 2px solid white;margin-bottom:0'>
-  <thead class="thead-dark" style='border: 2px solid white;'>
-    <tr>
-      <th scope="col">id</th>
-      <th scope="col">FirstName</th>
-      <th scope="col">LastName</th>
-      <th scope="col">Email</th>
-      <th scope="col"></th>
-    </tr>
-  </thead>
-  <tbody id="users" style="    border-style: none !important;">
-    
-  </tbody>
-</table>
+                
 
                 </div>
+            </div>
+            <div class="row" style="text-align:center">
+                        <div class="offset-md-2 col-md-8" id="shange">
+                        </div>
             </div>
         </div>
         <!-- Content End -->
@@ -262,57 +256,7 @@
         <!-- Back to Top -->
         <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
     </div>
-    <div id="full" style="position:absolute;top:0;left:0;width:100%;height:100%;background:red;    background: rgba(120,120,120,0.5);z-index: 9999;display:none">
-            <div class="row" style="margin-top:20px">
-                <div class="offset-md-2 col-md-8">
-                    <div class="row" style="margin-bottom:25px">
-                        <div class="offset-1 col-10">
-                        <h2 style="text-align:center;border:2px solid">Add gigs:</h2>
-                        </div>
-                        <div class="col-1" style="margin:auto">
-                        <p onclick="exit()" style="color:white;font-weight:bold;cursor:pointer">X</p>
-                        </div>
-                    </div>
-                
-                
-                    <div class="row">
-                        <div class="col-md-6">
-                            <input type="text" name="email" id="email" placeholder="Email" class="form-control">
-                        </div>
-                        <div class="col-md-6">
-                            <select name="type" id="type" class="form-control">
-                                <option value="User">User</option>
-                                <option value="Admin">Admin</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row">
-                    <div class="col-md-12">
-                            <input type="text" id="name" name="name" placeholder="Name" class="form-control">
-                        </div>
-                    </div>
-                    <div class="row">
-                    <div class="col-md-12">
-                            <input type="text" id="lastname" name="lastname" placeholder="Lastname" class="form-control">
-                        </div>
-                    </div>
-                    <div class="row">
-                    <div class="col-md-12">
-                            <input type="password" id="password" name="password" placeholder="Password" class="form-control">
-                        </div>
-                    </div>
-                    <div class="row">
-                    <div class="col-md-12">
-                            <p id="uploaded_image" style="display:none"></p>
-                        </div>
-                    </div>
-                    <div class="form-btn text-center">
-                            <button class="btn btn-success" onclick='upload()' type="button">Add user</button>
-                            <p id="form-message"></p>
-                        </div>
-                </div>
-            </div>
-        </div>
+    
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -329,16 +273,32 @@
     <script>
         function user()
         {
-            document.getElementById('users').innerHTML="";
-            $.post('controller', {service:'users', type:'<?php echo $role; ?>'}).done(function(response){
+            //document.getElementById('shange').innerHTML='<div class="offset-md-2 col-md-8" style="margin-top:50px;margin-bottom:50px;box-shadow: 0 0 10px #eee;padding:5px;overflow:auto"><div class="row" style="margin-bottom:30px"><div class="offset-1 col-10"><h2 style="text-align:center;" onclick="user()">Last activities:</h2></div><div class="col-1" style="margin:auto"><i class="fa fa-plus" aria-hidden="true" onclick="add_user()" style="color:green;cursor:pointer"></i></div></div>';
+            //document.getElementById('shange').innerHTML = "";
+            $.post('controller', {service:'activity', type:'<?php echo $role; ?>'}).done(function(response){
             obj = JSON.parse(response);
             for (let i = 0; i < obj.length; i++) {
-                var rol="User";
-                if(obj[i].roles.includes('ROLE_ADMIN'))
+                //console.log(!isNaN(parseInt(obj[i].lastname)))
+                if(obj[i].lastname=='' || !isNaN(parseInt(obj[i].lastname)))
                 {
-                    rol = 'Admin';
+                    if(obj[i].lastname=='')
+                    {
+                        document.getElementById('shange').innerHTML += "<div class='row' id='shange'><div class='col-md-12'><b style='color:red'>Unknown</b> sent a mail at "+obj[i].created+".</div></div>"
+                    }
+                    else
+                    {
+                        document.getElementById('shange').innerHTML += "<div class='row' id='shange'><div class='col-md-12'>The user with id <b style='color:red'>"+obj[i].lastname+"</b> sent a mail at "+obj[i].created+".</div></div>"
+                    }
                 }
-                document.getElementById('users').innerHTML+='<tr><th scope="row">'+obj[i].id+'</th> <td>'+obj[i].name+'</td><td>'+obj[i].last+'</td><td>'+obj[i].email+'</td><td>'+rol+'</td></tr>'
+                else if(obj[i].status == 1 || obj[i].status == 0)
+                {
+                    document.getElementById('shange').innerHTML += "<div class='row' id='shange'><div class='col-md-12'><b style='color:red'>"+obj[i].lastname+" "+obj[i].name+"</b> created an account at "+obj[i].created+".</div></div>"
+                }
+                else
+                {
+                    document.getElementById('shange').innerHTML += "<div class='row' id='shange'><div class='col-md-12'>The gig <b style='color:red'>"+obj[i].name+"</b> in class <b style='color:red'>"+obj[i].status+"</b> created at "+obj[i].created+".</div></div>"
+                }
+                //document.getElementById('shange').innerHTML+='<tr><th scope="row">'+obj[i].id+'</th> <td>'+obj[i].name+'</td><td>'+obj[i].lastname+'</td><td>'+obj[i].status+'</td><td>'+obj[i].created+'</td></tr>'
             }
 });
         }

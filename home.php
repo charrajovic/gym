@@ -100,6 +100,9 @@
                     <a href="mails" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Mails manage</a>
                     <?php } ?>
                     <?php if($role=='Admin'){ ?>
+                    <a href="activity" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Last activities</a>
+                    <?php } ?>
+                    <?php if($role=='Admin'){ ?>
                     <a href="chart.html" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Reviews Manage</a>
                     <?php } ?>
                     <!-- <div class="nav-item dropdown">
@@ -202,7 +205,7 @@
                         <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
                             <a href="#" class="dropdown-item">My Profile</a>
                             <a href="#" class="dropdown-item">Settings</a>
-                            <a href="#" class="dropdown-item">Log Out</a>
+                            <a href="logout" class="dropdown-item">Log Out</a>
                         </div>
                     </div>
                 </div>
@@ -272,7 +275,7 @@
                         <div class="bg-secondary text-center rounded p-4">
                             <div class="d-flex align-items-center justify-content-between mb-4">
                                 <h6 class="mb-0">Mails received</h6>
-                                <a href="">Show All</a>
+                                <a href="mails">Show All</a>
                             </div>
                             <canvas id="users_created"></canvas>
                         </div>

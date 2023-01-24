@@ -82,7 +82,7 @@
                     <a href="home" class="nav-item nav-link"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
                     <?php if($role=='Admin'){ ?>
                     <div class="nav-item ">
-                        <a href="users" class="nav-item nav-link active"><i class="fa fa-laptop me-2"></i>Users</a>
+                        <a href="users" class="nav-item nav-link"><i class="fa fa-laptop me-2"></i>Users</a>
                         <!-- <div class="dropdown-menu bg-transparent border-0">
                             <a href="button.html" class="dropdown-item">Buttons</a>
                             <a href="typography.html" class="dropdown-item">Typography</a>
@@ -98,6 +98,12 @@
                     <?php } ?>
                     <?php if($role=='User'){ ?>
                     <a href="reviews" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Reviews</a>
+                    <?php } ?>
+                    <?php if($role=='Admin'){ ?>
+                    <a href="mails" class="nav-item nav-link active"><i class="fa fa-table me-2"></i>Mails manage</a>
+                    <?php } ?>
+                    <?php if($role=='Admin'){ ?>
+                    <a href="activity" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Last activities</a>
                     <?php } ?>
                     <?php if($role=='Admin'){ ?>
                     <a href="chart.html" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Reviews Manage</a>
@@ -261,12 +267,13 @@
             obj = JSON.parse(response);
             var usser;
             for (let i = 0; i < obj.length; i++) {
-                if (obj[i].id == null){
+                if (obj[i].name == null){
                     usser = "Unknown";
                 }
                 else
                 {
-                    usser = '<a href="'+obj[i].id+'">'+obj[i].name+'</a>';
+                    var user = obj[i].name.split(":")
+                    usser = '<a href="'+user[0]+'">'+user[1]+'</a>';
                 }
                 document.getElementById('mails').innerHTML+='<tr><th scope="row">'+usser+'</th> <td>'+obj[i].mailn+'</td><td>'+obj[i].email+'</td><td>'+obj[i].subject+'</td><td>'+obj[i].message+'</td><td>'+obj[i].created+'</td></tr>'
             }

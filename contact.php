@@ -89,7 +89,7 @@
                     <a href="home" class="nav-item nav-link"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
                     <?php if($role=='Admin'){ ?>
                     <div class="nav-item ">
-                        <a href="users" class="nav-item nav-link active"><i class="fa fa-laptop me-2"></i>Users</a>
+                        <a href="users" class="nav-item nav-link"><i class="fa fa-laptop me-2"></i>Users</a>
                         <!-- <div class="dropdown-menu bg-transparent border-0">
                             <a href="button.html" class="dropdown-item">Buttons</a>
                             <a href="typography.html" class="dropdown-item">Typography</a>
@@ -101,10 +101,13 @@
                     <a href="gigs" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Gigs</a>
                     <?php } ?>
                     <?php if($role=='User'){ ?>
-                    <a href="contact" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Contact</a>
+                    <a href="contact" class="nav-item nav-link active"><i class="fa fa-keyboard me-2"></i>Contact</a>
                     <?php } ?>
                     <?php if($role=='User'){ ?>
                     <a href="reviews" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Reviews</a>
+                    <?php } ?>
+                    <?php if($role=='Admin'){ ?>
+                    <a href="activity" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Last activities</a>
                     <?php } ?>
                     <?php if($role=='Admin'){ ?>
                     <a href="chart.html" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Reviews Manage</a>
@@ -219,37 +222,39 @@
 
             <!-- Sale & Revenue Start -->
             <div class="row" style="margin-top:21px">
-            <form action="controller" method="post">
                 <div class="offset-md-2 col-md-8">
                     <h2 style="text-align:center;border:2px solid">Contact:</h2>
                     <div class="row">
                         <div class="col-md-6">
-                            <input type="text" name="name" placeholder="Name" class="form-control">
+                            <input type="text" name="name" id="name" placeholder="Name" class="form-control">
                         </div>
                         <div class="col-md-6">
-                            <input type="text" name="email" placeholder="Email" class="form-control">
+                            <input type="text" name="email" id="email" placeholder="Email" class="form-control">
                         </div>
                     </div>
                     <div class="row">
                     <div class="col-md-12">
-                            <input type="text" name="subject" placeholder="Subject" class="form-control">
+                            <input type="text" name="subject" id="subject" placeholder="Subject" class="form-control">
                         </div>
                     </div>
                     <div class="row" style="display:none">
                     <div class="col-md-12">
-                    <input type="text" class="form-control" name="adouna" value="contact">
+                    <input type="text" class="form-control" id="name" name="adouna" value="contact">
                         </div>
                     </div>
                     <div class="col-md-12">
-                    <textarea name="message" id="" class="form-control" required="" placeholder="Message" rows="10"></textarea>
+                    <textarea name="message" id="message" class="form-control" required="" placeholder="Message" rows="10"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                            <p id="uploaded" style="display:none;text-align: center;color: greenyellow;"></p>
                         </div>
                     </div>
                     <div class="form-btn text-center">
-                            <button class="btn btn-success" type="submit">Send Message</button>
+                            <button class="btn btn-success" id='bton' type="button" onclick='sendmail()'>Send Message</button>
                             <p class="form-message"></p>
                         </div>
                 </div>
-                </form>
             </div>
         </div>
         <!-- Content End -->
@@ -271,27 +276,47 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
-    <!-- <script>
-        function user()
+    <script>
+        function sendmail()
         {
-            document.getElementById('users').innerHTML="";
-            $.post('controller', {service:'users', type:'<?php echo $role; ?>'}).done(function(response){
-            obj = JSON.parse(response);
-            for (let i = 0; i < obj.length; i++) {
-                var rol="User";
-                if(obj[i].roles.includes('ROLE_ADMIN'))
-                {
-                    rol = 'Admin';
-                }
-                document.getElementById('users').innerHTML+='<tr><th scope="row">'+obj[i].id+'</th> <td>'+obj[i].name+'</td><td>'+obj[i].last+'</td><td>'+obj[i].email+'</td><td>'+rol+'</td></tr>'
+            var A = document.getElementById("bton");
+            document.getElementById("bton").disabled = true;
+            $.post('controller', {adouna:'walo',name:document.getElementById('name').value,email:document.getElementById('email').value,subject:document.getElementById('subject').value,message:document.getElementById('message').value}).done(function(response){
+            console.log(response);
+            if(response=="the mail was sended successfly")
+            {
+                A.disabled = false;
+                document.getElementById('name').value='';
+                document.getElementById('email').value='';
+                document.getElementById('subject').value='';
+                document.getElementById('message').value='';
+                document.getElementById('uploaded').textContent=response;
+                document.getElementById('uploaded').style.display='block';
+                setTimeout(function(){ document.getElementById('uploaded').style.display='none'; }, 10000);
             }
+            
 });
         }
-        window.onload = function()
-        {
-            user();
-        }
-    </script> -->
+//         function user()
+//         {
+//             document.getElementById('users').innerHTML="";
+//             $.post('controller', {service:'users', type:'<?php echo $role; ?>'}).done(function(response){
+//             obj = JSON.parse(response);
+//             for (let i = 0; i < obj.length; i++) {
+//                 var rol="User";
+//                 if(obj[i].roles.includes('ROLE_ADMIN'))
+//                 {
+//                     rol = 'Admin';
+//                 }
+//                 document.getElementById('users').innerHTML+='<tr><th scope="row">'+obj[i].id+'</th> <td>'+obj[i].name+'</td><td>'+obj[i].last+'</td><td>'+obj[i].email+'</td><td>'+rol+'</td></tr>'
+//             }
+// });
+//         }
+//         window.onload = function()
+//         {
+//             user();
+//         }
+    </script>
 </body>
 
 </html>

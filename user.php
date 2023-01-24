@@ -61,19 +61,19 @@ class User {
       function check()
       {
         
-        if(strlen($this->name)<5)
+        if(strlen($this->name)<3)
         {
-            echo 'la';
+            // echo 'la';
             return false;
         }
-        if(strlen($this->last)<5)
+        if(strlen($this->last)<3)
         {
-            echo 'lo';
+            // echo 'lo';
             return false;
         }
-        if(strlen($this->password)<5)
+        if(strlen($this->password)<3)
         {
-            echo 'li';
+            // echo 'li';
             return false;
         }
         $mail = explode("@",$this->email);
@@ -84,7 +84,7 @@ class User {
         echo $count;
         if($count<2)
         {
-            echo 'ah';
+            // echo 'ah';
             return false;
         }
         // else

@@ -284,14 +284,14 @@
     <!-- ====== //Fact Counter Section ====== -->
 
     <!-- ====== Service Section ====== -->
-    <section id="service" class="section-padding pb-70 service-area bg-light">
+    <section id="service" style='    background-color: #00ff62 !important;' class="section-padding pb-70 service-area bg-light">
         <div class="container">
             <!-- Section Title -->
             <div class="row justify-content-center">
                 <div class="col-lg-6 ">
                     <div class="section-title text-center">
-                        <h2>Services</h2>
-                        <p>Here are our main SERVICES.</p>
+                        <h2 class="hrvatski">Services</h2>
+                        <p class="hrvatski">Here are our main SERVICES.</p>
                     </div>
                 </div>
             </div>
@@ -304,7 +304,7 @@
                         <div class="service-icon">
                             <i class="fa fa-code"></i>
                         </div>
-                        <h2>Website Development</h2>
+                        <h2 class="hrvatski">Website Development</h2>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6">
@@ -312,7 +312,7 @@
                         <div class="service-icon">
                             <i class="fa fa-code"></i>
                         </div>
-                        <h2>Mobile App Development</h2>
+                        <h2 class="hrvatski">Mobile App Development</h2>
                     </div>
                 </div>
                 <!-- //Single Service -->
@@ -322,7 +322,7 @@
                         <div class="service-icon">
                             <i class="fa fa-chart-area"></i>
                         </div>
-                        <h2>Product Testing & Support</h2>
+                        <h2 class="hrvatski">Product Testing & Support</h2>
                         </div>
                 </div>
                 <div class="col-lg-4 col-md-6">
@@ -330,7 +330,7 @@
                         <div class="service-icon">
                             <i class="fa fa-code"></i>
                         </div>
-                        <h2>UI/UX Creator & Consultancy</h2>
+                        <h2 class="hrvatski">UI/UX Creator & Consultancy</h2>
                     </div>
                     
                 </div>
@@ -339,7 +339,7 @@
                         <div class="service-icon">
                             <i class="fa fa-code"></i>
                         </div>
-                        <h2>Data Science ( Machine learning , Deep Learning and NLP)</h2>
+                        <h2 class="hrvatski">Data Science ( Machine learning , Deep Learning and NLP)</h2>
                     </div>
                 </div>
                 <!-- //Single Service -->
@@ -349,7 +349,7 @@
                         <div class="service-icon">
                             <i class="fa fa-chart-line"></i>
                         </div>
-                        <h2>Business Intelligence and Analytics</h2>
+                        <h2 class="hrvatski">Business Intelligence and Analytics</h2>
                                            </div>
                 </div>
                 <!-- //Single Service -->
@@ -366,8 +366,8 @@
             <div class="row justify-content-center">
                 <div class="col-lg-6 ">
                     <div class="section-title text-center">
-                        <h2>Why choose Us</h2>
-                        <p>There are several reasons why clients should choose our freelancing startup for their project needs.</p>
+                        <h2 class="hrvatski">Why choose Us</h2>
+                        <p class="hrvatski">There are several reasons why clients should choose our freelancing startup for their project needs.</p>
                     </div>
                 </div>
             </div>
@@ -383,8 +383,8 @@
                                 </div>
                             </div>
                         </div>
-                        <h4>Easy to use</h4>
-                        <p>Our platform is easy to use and provides a secure way to manage payments and communication with freelancers, making the process as seamless as possible.</p>
+                        <h4 class="hrvatski">Easy to use</h4>
+                        <p class="hrvatski liman">Our platform is easy to use and provides a secure way to manage payments and communication with freelancers, making the process as seamless as possible.</p>
                     </div>
                 </div>
                 <!-- // Single Why choose me -->
@@ -399,8 +399,8 @@
                                 </div>
                             </div>
                         </div>
-                        <h4>Quality Work</h4>
-                        <p>We have a diverse pool of highly skilled and experienced freelancers who are dedicated to delivering high-quality work to meet clients expectations.</p>
+                        <h4 class="hrvatski">Quality Work</h4>
+                        <p class="hrvatski liman">We have a diverse pool of highly skilled and experienced freelancers who are dedicated to delivering high-quality work to meet clients expectations.</p>
                     </div>
                 </div>
                 <!-- // Single Why choose me -->
@@ -415,8 +415,8 @@
                                 </div>
                             </div>
                         </div>
-                        <h4>Afforddable Prices for our Clients</h4>
-                        <p>Our prices are competitive and we offer flexible payment options, we can work on different budget range.Choose us and you will have peace of mind that your project is in good hands.</p>
+                        <h4 class="hrvatski">Afforddable Prices for our Clients</h4>
+                        <p class="hrvatski liman">Our prices are competitive and we offer flexible payment options, we can work on different budget range.Choose us and you will have peace of mind that your project is in good hands.</p>
                     </div>
                 </div>
                 <!-- // Single Why choose me -->
@@ -431,8 +431,8 @@
                                 </div>
                             </div>
                         </div>
-                        <h4>Completed on right time</h4>
-                        <p>We pride ourselves on our responsive customer service and are always available to answer any questions and address any concerns in any time 24/7.</p>
+                        <h4 class="hrvatski">Completed on right time</h4>
+                        <p class="hrvatski liman">We pride ourselves on our responsive customer service and are always available to answer any questions and address any concerns in any time 24/7.</p>
                     </div>
                 </div>
                 <!-- // Single Why choose me -->
@@ -448,8 +448,8 @@
             <div class="row justify-content-center">
                 <div class="col-lg-6 ">
                     <div class="section-title text-center">
-                        <h2>GIGS</h2>
-                        <p>Here are some of our GIGS.</p>
+                        <h2 class="hrvatski">GIGS</h2>
+                        <p class="hrvatski">Here are some of our GIGS.</p>
                     </div>
                 </div>
             </div>
@@ -459,12 +459,12 @@
                 <div class="col-lg-8">
                     <div class="work-list text-center">
                         <ul>
-                            <li class="filter" class="active" data-filter="all">ALL</li>
-                            <li class="filter" data-filter=".WebDevelopment">Web Development</li>
-                            <li class="filter" data-filter=".GraphicDesign">Graphic Design</li>
-                            <li class="filter" data-filter=".DataScience">Data Science</li>
-                            <li class="filter" data-filter=".DataAnalysis">Data Analysis</li>
-                            <li class="filter" data-filter=".Other">Other</li>
+                            <li class="filter hrvatski" class="active" data-filter="all">ALL</li>
+                            <li class="filter hrvatski" data-filter=".WebDevelopment">Web Development</li>
+                            <li class="filter hrvatski" data-filter=".GraphicDesign">Graphic Design</li>
+                            <li class="filter hrvatski" data-filter=".DataScience">Data Science</li>
+                            <li class="filter hrvatski" data-filter=".DataAnalysis">Data Analysis</li>
+                            <li class="filter hrvatski" data-filter=".Other">Other</li>
                         </ul>
                     </div>
                 </div>
@@ -598,7 +598,7 @@
             <div class="row justify-content-center">
                 <div class="col-lg-6 ">
                     <div class="section-title text-center faq-title">
-                        <h2>Frequently asked questions</h2>
+                        <h2 class="hrvatski">Frequently asked questions</h2>
                         <p><h3>&#128578;&#128578;</p></h3>
                         
                     </div>
@@ -617,15 +617,12 @@
                         <div class="single-faq">
 
                             <!-- FAQ Header -->
-                            <h4 class="collapsed" data-toggle="collapse" data-target="#faq-1"><em> Why should someone choose our freelancing company?</em></h4>
+                            <h4 class="collapsed" data-toggle="collapse" data-target="#faq-1"><em class="hrvatski"> Why should someone choose our freelancing company?</em></h4>
                             <!-- // FAQ Header -->
 
                             <!-- FAQ Content -->
                             <div id="faq-1" class="collapse show" data-parent="#accordion">
-                                <div class="faq-body">Our freelancing company offers a wide range of services and has a team of highly skilled and experienced freelancers who are experts in their respective fields. We also have a strict vetting process to ensure that only the best freelancers are selected to work with us. Additionally, our company is dedicated to providing excellent customer service and ensuring that all of our clients are satisfied with the work we provide.
-                                    What sets our freelancing company apart from others?
-                                    Our freelancing company sets itself apart from others by offering a wide range of services and having a team of highly skilled and experienced freelancers. Additionally, we have a strict vetting process in place to ensure that only the best freelancers are selected to work with us. Our company is also dedicated to providing excellent customer service and ensuring that all of our clients are satisfied with the work we provide
-                                 </div>
+                                <div class="faq-body hrvatski liman">Our freelancing company offers a wide range of services and has a team of highly skilled and experienced freelancers who are experts in their respective fields. We also have a strict vetting process to ensure that only the best freelancers are selected to work with us. Additionally, our company is dedicated to providing excellent customer service and ensuring that all of our clients are satisfied with the work we provide.What sets our freelancing company apart from others? Our freelancing company sets itself apart from others by offering a wide range of services and having a team of highly skilled and experienced freelancers. Additionally, we have a strict vetting process in place to ensure that only the best freelancers are selected to work with us. Our company is also dedicated to providing excellent customer service and ensuring that all of our clients are satisfied with the work we provide</div>
                             </div>
                             <!-- FAQ Content -->
                         </div>
@@ -635,14 +632,12 @@
                         <div class="single-faq">
 
                             <!-- FAQ Header -->
-                            <h4 class="collapsed" data-toggle="collapse" data-target="#faq-2"><em>How does our freelancing company ensure quality work for clients?</em></h4>
+                            <h4 class="collapsed" data-toggle="collapse" data-target="#faq-2"><em class="hrvatski">How does our freelancing company ensure quality work for clients?</em></h4>
                             <!-- // FAQ Header -->
 
                             <!-- FAQ Content -->
                             <div id="faq-2" class="collapse" data-parent="#accordion">
-                                <div class="faq-body">
-                                    Our freelancing company ensures quality work for clients by only hiring highly skilled and experienced freelancers. Additionally, we have a strict vetting process in place to ensure that only the best freelancers are selected to work with us. We also have a dedicated quality assurance team that reviews all work before it is submitted to the client to ensure that it meets the client's specifications and is of the highest quality.
-                                </div>
+                                <div class="faq-body hrvatski liman">Our freelancing company ensures quality work for clients by only hiring highly skilled and experienced freelancers. Additionally, we have a strict vetting process in place to ensure that only the best freelancers are selected to work with us. We also have a dedicated quality assurance team that reviews all work before it is submitted to the client to ensure that it meets the clients specifications and is of the highest quality.</div>
                             </div>
                             <!-- FAQ Content -->
                         </div>
@@ -652,13 +647,12 @@
                         <div class="single-faq">
 
                             <!-- FAQ Header -->
-                            <h4 class="collapsed" data-toggle="collapse" data-target="#faq-3"><em>How do we handle client communication and project management?</em></h4>
+                            <h4 class="collapsed" data-toggle="collapse" data-target="#faq-3"><em class="hrvatski">How do we handle client communication and project management?</em></h4>
                             <!-- // FAQ Header -->
 
                             <!-- FAQ Content -->
                             <div id="faq-3" class="collapse" data-parent="#accordion">
-                                <div class="faq-body">
-                                    Our freelancing company has a dedicated project management team that handles all client communication and project management. They work closely with clients to ensure that all of their needs are met and that projects are completed on time and to the client's satisfaction. They are also available 24/7 to address any questions or concerns that clients may have throughout the project.                                </div>
+                                <div class="faq-body hrvatski liman">Our freelancing company has a dedicated project management team that handles all client communication and project management. They work closely with clients to ensure that all of their needs are met and that projects are completed on time and to the clients satisfaction. They are also available 24/7 to address any questions or concerns that clients may have throughout the project.</div>
                             </div>
                             <!-- FAQ Content -->
                         </div>
@@ -725,32 +719,27 @@
 
 
     <!-- ====== Testimonial Section ====== -->
-    <section id="testimonial" class="section-padding bg-secondary testimonial-area">
+    <!-- <section id="testimonial" class="section-padding bg-secondary testimonial-area">
         <div class="container bg-white">
-            <!-- Section Title -->
             <div class="row justify-content-center">
                 <div class="col-lg-6 ">
                     <div class="section-title text-center">
-                        <h2>Testimonial</h2>
+                        <h2 class="hrvatski">Testimonial</h2>
                         <p></p>
                     </div>
                 </div>
             </div>
-            <!-- //Section Title -->
             <div class="row justify-content-center">
                 <div class="col-lg-8">
                     <div class="testimonials owl-carousel" data-ride="carousel">
-                        <!-- Single Testimonial -->
                         <div class="single-testimonial text-center">
                             <div class="testimonial-quote">
                                 <i class="fa fa-quote-right"></i>
                             </div>
-                            <p>"I have been working with this freelancing startup for several months now and I have been extremely impressed with the level of service and the quality of work provided. The platform is easy to use and the process of finding the right freelancer for my project was seamless. The freelancer they matched me with was highly skilled and delivered the project on time and within budget. Their customer service is also top-notch, they were always available to answer any questions and address any concerns. I highly recommend this freelancing startup to anyone in need of a professional and reliable service. </p>
+                            <p  class="hrvatski">"I have been working with this freelancing startup for several months now and I have been extremely impressed with the level of service and the quality of work provided. The platform is easy to use and the process of finding the right freelancer for my project was seamless. The freelancer they matched me with was highly skilled and delivered the project on time and within budget. Their customer service is also top-notch, they were always available to answer any questions and address any concerns. I highly recommend this freelancing startup to anyone in need of a professional and reliable service. </p>
                             <h4>Marco <span>UpWork Client</span></h4>
 
                         </div>
-                        <!-- // Single Testimonial -->
-                        <!-- Single Testimonial -->
                         <div class="single-testimonial text-center">
                             <div class="testimonial-quote">
                                 <i class="fa fa-quote-right"></i>
@@ -760,12 +749,11 @@
 
                         </div>
 
-                        <!-- // Single Testimonial -->
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
     <!-- ====== // Testimonial Section ====== -->
 
     <!-- ====== Team Section ====== -->
@@ -775,8 +763,8 @@
             <div class="row justify-content-center">
                 <div class="col-lg-6 ">
                     <div class="section-title text-center">
-                        <h2>Team</h2>
-                        <p>Meet our Team.</p>
+                        <h2 class="hrvatski">Team</h2>
+                        <p class="hrvatski">Meet our Team.</p>
                     </div>
                 </div>
             </div>
@@ -795,7 +783,7 @@
                         </div>
                         <div class="team-content">
                             <h4>Othmane </h4>
-                            <span>Data Analyst</span>
+                            <span class="hrvatski">Data Analyst</span>
                         </div>
                     </div>
                 </div>
@@ -813,7 +801,7 @@
                         </div>
                         <div class="team-content">
                             <h4>SAMIR</h4>
-                            <span>Web Dev</span>
+                            <span class="hrvatski">Web Dev</span>
                         </div>
                     </div>
                 </div>
@@ -831,7 +819,7 @@
                         </div>
                         <div class="team-content">
                             <h4>Haytem </h4>
-                            <span>Project Manager </span>
+                            <span class="hrvatski">Project Manager</span>
                         </div>
                     </div>
                 </div>
@@ -848,8 +836,8 @@
                             </div>
                         </div>
                         <div class="team-content">
-                            <h4>-</h4>
-                            <span>Marekting Specialist</span>
+                            <h4>Fati</h4>
+                            <span class="hrvatski">Marketing Specialist</span>
                         </div>
                     </div>
                 </div>
@@ -865,15 +853,15 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-9">
-                    <h3>We highly recommend that our clients take advantage of our freelancing services to help them achieve their business goals.</h3>
+                    <h3 class="hrvatski liman">We highly recommend that our clients take advantage of our freelancing services to help them achieve their business goals.</h3>
                     <br>
-                    <p>By purchasing our services, clients can access a pool of highly skilled professionals who are able to work on a variety of projects, from small tasks to large-scale endeavors. With our platform, clients can find the right freelancer for their specific needs, ensuring that the work is completed to the highest standards. Additionally, our platform offers an easy and secure way to manage payments and communication with freelancers, making the process as seamless as possible. Contact us today to learn more about how our freelancing services can help your business grow.</p>
+                    <p class="hrvatski liman">By purchasing our services, clients can access a pool of highly skilled professionals who are able to work on a variety of projects, from small tasks to large-scale endeavors. With our platform, clients can find the right freelancer for their specific needs, ensuring that the work is completed to the highest standards. Additionally, our platform offers an easy and secure way to manage payments and communication with freelancers, making the process as seamless as possible. Contact us today to learn more about how our freelancing services can help your business grow.</p>
                 </div>
                 <div class="col-lg-3">
                     <div class="cta-button">
                         <div class="d-table">
                             <div class="d-table-cell">
-                                <a href="#" class="button">Contact Us</a>
+                                <a href="#" class="button hrvatski">Contact Us</a>
                             </div>
                         </div>
                     </div>
@@ -891,8 +879,8 @@
             <div class="row justify-content-center">
                 <div class="col-lg-6 ">
                     <div class="section-title text-center">
-                        <h2>Pricing Area</h2>
-                        <p>Our Prices.</p>
+                        <h2 class="hrvatski">Pricing Area</h2>
+                        <p class="hrvatski">Our Prices.</p>
                     </div>
                 </div>
             </div>
@@ -976,10 +964,10 @@
             <div class="row justify-content-center">
                 <div class="col-lg-6 ">
                     <div class="section-title text-center">
-                        <h2>Contact Us</h2>
-                        <p>Our freelancing startup aims to connect businesses and individuals with skilled professionals for a variety of project needs. By contacting us, clients can access a diverse pool of talent and find the right freelancer for their specific project requirements. From design and development to writing and research, our platform offers a wide range of services to meet the unique needs of each client. </p>
+                        <h2 class="hrvatski">Contact Us</h2>
+                        <p class="hrvatski">Our freelancing startup aims to connect businesses and individuals with skilled professionals for a variety of project needs. By contacting us, clients can access a diverse pool of talent and find the right freelancer for their specific project requirements. From design and development to writing and research, our platform offers a wide range of services to meet the unique needs of each client.</p>
                         <br>
-                        <p>Contact us today to learn more about how our freelancing startup can help you achieve your goals.</p>
+                        <p class="hrvatski">Contact us today to learn more about how our freelancing startup can help you achieve your goals.</p>
                     </div>
                 </div>
             </div>
@@ -1009,7 +997,7 @@
                             <textarea name="message" id="" class="form-control" required placeholder="Message"></textarea>
                         </div>
                         <div class="form-btn text-center">
-                            <button class="button" type="submit">Send Message</button>
+                            <button class="button hrvatski" type="submit">Send Message</button>
                             <p class="form-message"></p>
                         </div>
                     </form>

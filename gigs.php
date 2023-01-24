@@ -106,6 +106,12 @@
                     <a href="reviews" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Reviews</a>
                     <?php } ?>
                     <?php if($role=='Admin'){ ?>
+                    <a href="mails" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Mails manage</a>
+                    <?php } ?>
+                    <?php if($role=='Admin'){ ?>
+                    <a href="activity" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Last activities</a>
+                    <?php } ?>
+                    <?php if($role=='Admin'){ ?>
                     <a href="chart.html" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Reviews Manage</a>
                     <?php } ?>
                     <!-- <div class="nav-item dropdown">
@@ -241,6 +247,7 @@
                     <th>Name</th>
                     <th>Domain</th>
                     <th>Created at</th>
+                    <th></th>
                 </tr>  
                 </table>
 
@@ -315,16 +322,31 @@
     <script>
         function user()
         {
-            document.getElementById('users').innerHTML="<tr><th>Thumbnail</th><th>Name</th> <th>Domain</th><th>Created at</th></tr> ";
+            document.getElementById('users').innerHTML="<tr><th>Thumbnail</th><th>Name</th> <th>Domain</th><th>Created at</th><th></th></tr> ";
             $.post('controller', {service:'gigs', type:'<?php echo $role; ?>'}).done(function(response){
                 console.log(response)
             obj = JSON.parse(response);
             for (let i = 0; i < obj.length; i++) {
                 var rol="User";
                 
-                document.getElementById('users').innerHTML+='<tr style="height:70px"><th scope="row" style="background-image:url(\''+obj[i].path+'\');background-size: 100% 100%;"></th> <td>'+obj[i].name+'</td><td>'+obj[i].domain+'</td><td>'+obj[i].created+'</td></tr>'
+                document.getElementById('users').innerHTML+='<tr style="height:70px"><th scope="row" style="background-image:url(\''+obj[i].path+'\');background-size: 100% 100%;"></th> <td>'+obj[i].name+'</td><td>'+obj[i].domain+'</td><td>'+obj[i].created+'</td><td><i class="fa fa-trash" style="color:red;cursor:pointer" onclick="delete_us('+obj[i].id+')" aria-hidden="true"></i></td></tr>'
             }
 });
+        }
+
+        function delete_us(id)
+        {
+            console.log(id)
+            var result = confirm("Want to delete?");
+            if (result) {
+                $.post('controller', {service:'deletegigs',idg:id, type:'<?php echo $role; ?>'}).done(function(response){
+                console.log(response)
+                if(response=='done')
+                {
+                    user();
+                }
+                        });
+            }
         }
         function add_gigs()
         {
