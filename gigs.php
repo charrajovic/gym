@@ -261,7 +261,7 @@
         <!-- Back to Top -->
         <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
     </div>
-    <div id="full" style="position:absolute;top:0;left:0;width:100%;height:100%;background:red;    background: rgba(120,120,120,0.5);z-index: 9999;display:none">
+    <div id="full" style="position:fixed;top:0;left:0;width:100%;height:100%;background:red;    background: rgba(120,120,120,0.5);z-index: 9999;display:none">
             <div class="row" style="margin-top:20px">
                 <div class="offset-md-2 col-md-8">
                     <div class="row" style="margin-bottom:25px">
@@ -269,7 +269,7 @@
                         <h2 style="text-align:center;border:2px solid">Add gigs:</h2>
                         </div>
                         <div class="col-1" style="margin:auto">
-                        <p onclick="exit()" style="color:white;font-weight:bold;cursor:pointer">X</p>
+                        <p onclick="exit()" style="color:white;font-weight:bold;cursor:pointer;;text-align:center">X</p>
                         </div>
                     </div>
                 
@@ -306,6 +306,55 @@
                 </div>
             </div>
         </div>
+        <div id="full2" style="position:fixed;top:0;left:0;width:100%;height:100%;background:red;    background: rgba(120,120,120,0.5);z-index: 9999;display:none">
+            <div class="row" style="margin-top:20px">
+                <div class="offset-md-2 col-md-8">
+                    <div class="row" style="margin-bottom:25px">
+                        <div class="offset-1 col-10">
+                        <h2 style="text-align:center;border:2px solid">Add gigs:</h2>
+                        </div>
+                        <div class="col-1" style="margin:auto">
+                        <p onclick="exit()" style="color:white;font-weight:bold;cursor:pointer;text-align:center">X</p>
+                        </div>
+                    </div>
+                
+                
+                    <div class="row">
+                        <div class="col-md-6">
+                            <input type="text" name="name" id="name2" placeholder="Name" class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <select name="domain" id="domain2" class="form-control">
+                                <option value="Web Development">Web Development</option>
+                                <option value="Graphic Design">Graphic Design</option>
+                                <option value="Data Science">Data Science</option>
+                                <option value="Data Analysis">Data Analysis</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                    <div class="col-md-12">
+                            <img src="" id="path2" style="width: inherit;    height: 300px;">
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                            <input type="file" id="file2" name="imge" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                    <div class="col-md-12">
+                            <p id="uploaded_image" style="display:none"></p>
+                        </div>
+                    </div>
+                    
+                    <div class="form-btn text-center">
+                            <button class="btn btn-success" onclick='edit()' type="button" style="margin-top: 10px;">Modify</button>
+                            <p id="form-message"></p>
+                        </div>
+                </div>
+            </div>
+        </div>
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -320,6 +369,7 @@
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
     <script>
+        var ida;
         function user()
         {
             document.getElementById('users').innerHTML="<tr><th>Thumbnail</th><th>Name</th> <th>Domain</th><th>Created at</th><th></th></tr> ";
@@ -329,9 +379,63 @@
             for (let i = 0; i < obj.length; i++) {
                 var rol="User";
                 
-                document.getElementById('users').innerHTML+='<tr style="height:70px"><th scope="row" style="background-image:url(\''+obj[i].path+'\');background-size: 100% 100%;"></th> <td>'+obj[i].name+'</td><td>'+obj[i].domain+'</td><td>'+obj[i].created+'</td><td><i class="fa fa-trash" style="color:red;cursor:pointer" onclick="delete_us('+obj[i].id+')" aria-hidden="true"></i></td></tr>'
+                document.getElementById('users').innerHTML+='<tr style="height:70px"><th scope="row" style="background-image:url(\''+obj[i].path+'\');background-size: 100% 100%;"></th> <td>'+obj[i].name+'</td><td>'+obj[i].domain+'</td><td>'+obj[i].created+'</td><td><i class="fa fa-edit" style="color:brown;cursor:pointer" onclick="edit_us('+obj[i].id+')" aria-hidden="true"></i><i class="fa fa-trash" style="color:red;cursor:pointer" onclick="delete_us('+obj[i].id+')" aria-hidden="true"></i></td></tr>'
             }
 });
+        }
+
+        function edit_us(id)
+        {
+            ida = id;
+            $.post('controller', {service:'getgig',ide:id, type:'<?php echo $role; ?>'}).done(function(response){
+                document.getElementById('full2').style.display = "block";
+                console.log(response)
+                obj = JSON.parse(response);
+                for (let i = 0; i < obj.length; i++) {
+                    document.getElementById('name2').value = obj[i].name;
+                    document.getElementById('path2').src = obj[i].path;
+                    document.getElementById('domain2').value = obj[i].domaine;
+                }
+});
+        }
+
+        function edit()
+        {
+            console.log(document.getElementById('file2').files[0]==null)
+            var form_data = new FormData();
+            form_data.append("ided", ida);
+            if(document.getElementById('file2').files[0]!=null)
+            {
+                form_data.append("file", document.getElementById('file2').files[0]);
+            }
+            form_data.append("name", document.getElementById('name2').value);
+            form_data.append("domain", document.getElementById('domain2').value);
+            $.ajax({
+                url:"upload",
+                method:"POST",
+                data: form_data,
+                contentType: false,
+                cache: false,
+                processData: false,
+                beforeSend:function(){
+                    document.getElementById('uploaded_image').style.display = 'block';
+                $('#uploaded_image').html("<label class='text-success'>Image Uploading...</label>");
+                },   
+                success:function(response)
+                {
+                    console.log(response);
+                    if(response == 'yes')
+                    {
+                        document.getElementById('name2').value='';
+                        document.getElementById('file2').value='';
+                        document.getElementById('domain2').value='Web Development';
+                        console.log(response);
+                        exit();
+                        user();
+                    }
+                    
+                }
+            });
         }
 
         function delete_us(id)
@@ -356,6 +460,7 @@
         function exit()
         {
             document.getElementById('full').style.display = "none";
+            document.getElementById('full2').style.display = "none";
         }
         function upload()
         {

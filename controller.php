@@ -5,7 +5,65 @@ use PHPMailer\PHPMailer\Exception;
 
 include 'connect.php';
 include 'user.php';
+include('Browser.php');
+$browser = new Browser();
 
+function GetClientMac(){
+    if (isset($_SERVER['HTTP_CLIENT_IP']))
+        $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
+    else if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+        $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+    else if(isset($_SERVER['HTTP_X_FORWARDED']))
+        $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
+    else if(isset($_SERVER['HTTP_FORWARDED_FOR']))
+        $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
+    else if(isset($_SERVER['HTTP_FORWARDED']))
+        $ipaddress = $_SERVER['HTTP_FORWARDED'];
+    else if(isset($_SERVER['REMOTE_ADDR']))
+        $ipaddress = $_SERVER['REMOTE_ADDR'];
+    else
+        $ipaddress = 'UNKNOWN';
+
+    $macCommandString   =   "arp " . $ipaddress . " | awk 'BEGIN{ i=1; } { i++; if(i==3) print $3 }'";
+
+    $mac = exec($macCommandString);
+
+    return ['ip' => $ipaddress, 'mac' => $mac];
+}
+$locationArray = unserialize(file_get_contents('http://www.geoplugin.net/php.gp?ip=' . '160.179.52.193'));
+$ip = GetClientMac()['ip'];
+$city = $locationArray['geoplugin_city'];
+$region = $locationArray['geoplugin_region'];
+$country = $locationArray['geoplugin_countryName'];
+$continent = $locationArray['geoplugin_continentName'];
+$timezone = $locationArray['geoplugin_timezone'];
+$currency_code = $locationArray['geoplugin_currencyCode'];
+$currency_symbol = $locationArray['geoplugin_currencySymbol'];
+$country = $locationArray['geoplugin_countryName'];
+$platform = $browser->getPlatform();
+$browserr = $browser->getBrowser();
+$version = $browser->getVersion();
+
+function create_action($messages)
+{
+    $ip = $GLOBALS["ip"];
+    $city = $GLOBALS["city"];
+    $region = $GLOBALS["region"];
+    $country = $GLOBALS["country"];
+    $continent = $GLOBALS["continent"];
+    $timezone = $GLOBALS["timezone"];
+    $currency_code = $GLOBALS["currency_code"];
+    $currency_symbol = $GLOBALS["currency_symbol"];
+    $country = $GLOBALS["country"];
+    $platform = $GLOBALS["platform"];
+    $browserr = $GLOBALS["browserr"];
+    $version = $GLOBALS["version"];
+    $sql2 = "INSERT INTO `actions`(`adresse_ip`, `city`, `region`, `country`, `continent`, `timezone`, `currency_code`, `currency_symbol`, `browser_name`, `browser_version`, `plateform`, `action`) VALUES ('$ip','$city','$region','$country','$continent','$timezone','$currency_code','$currency_symbol','$browserr','$version','$platform','$messages')";
+                // echo $sql2;
+                if ($GLOBALS["conn"]->query($sql2) === TRUE) {
+
+                }
+}
 //SELECT count(*),DATE_FORMAT(`created`,'%d %M %Y') as created FROM `mails` GROUP BY day(`created`)
 
 
@@ -28,6 +86,7 @@ if(isset($_REQUEST['first']) && isset($_REQUEST['last']) && isset($_REQUEST['ema
             $sql2 = "INSERT INTO `users_role`(`user_id`, `id_role`) VALUES ($usr,1)";
             // echo $sql2;
             if ($conn->query($sql2) === TRUE) {
+                create_action('create account with id '.$usr);
                 $sql = "SELECT *
                 FROM users
                 INNER JOIN users_role ON users.id = users_role.user_id
@@ -75,8 +134,10 @@ if(isset($_REQUEST['first']) && isset($_REQUEST['last']) && isset($_REQUEST['ema
                 $user->set_roles($roles);
                 // echo count($user->get_roles());
                 $_SESSION["user"] = $user;
+                create_action('login to account with id '.$id);
                 header("Location: home");
             }
+        
         }
         } else {
         echo "Error: " . $sql . "<br>" . $conn->error;
@@ -140,6 +201,7 @@ else if(!isset($_REQUEST['first']) && !isset($_REQUEST['last']) && isset($_REQUE
     $user->set_roles($roles);
     // echo count($user->get_roles());
     $_SESSION["user"] = $user;
+    create_action('login to account with id '.$id);
     header("Location: home");
     }
     
@@ -174,6 +236,7 @@ else if(isset($_REQUEST['service']) && isset($_REQUEST['type']))
             }
             $resp = rtrim($resp,',');
             $resp.=']';
+            // create_action('view users as a admin');
             echo $resp;
             }
             else if($_REQUEST['service'] == "gigs")
@@ -192,6 +255,7 @@ else if(isset($_REQUEST['service']) && isset($_REQUEST['type']))
             }
             $resp = rtrim($resp,',');
             $resp.=']';
+            // create_action('view gigs as a admin');
             echo $resp;
             }
             else if($_REQUEST['service'] == "deletegigs")
@@ -204,7 +268,27 @@ else if(isset($_REQUEST['service']) && isset($_REQUEST['type']))
                     } else {
                     echo "Error: " . $sql . "<br>" . $conn->error;
                     }
-                
+                    create_action('delete a gig as a admin');
+            }
+            else if($_REQUEST['service'] == "getgig")
+            {
+                $idg = $_REQUEST['ide'];
+                $resp="[";
+                $sql = "SELECT * from gigs where id=$idg";
+                $result = mysqli_query($conn, $sql);
+                if($row = mysqli_fetch_assoc($result)) {
+                    $id = $row["id"];
+                    $name = $row['name'];
+                    $path = $row['path'];
+                    $domaine = $row['domaine'];
+                    $created = $row["created"];
+                    $resp.="{\"id\":\"$id\",\"name\":\"$name\",\"path\":\"$path\",\"domaine\":\"$domaine\",\"created\":\"$created\"},";
+                }
+                        
+                $resp = rtrim($resp,',');
+                $resp.=']';
+                create_action('edit a gig as a admin');
+                echo $resp;
             }
             else if($_REQUEST['service'] == "activity")
             {
@@ -221,13 +305,17 @@ else if(isset($_REQUEST['service']) && isset($_REQUEST['type']))
             while($row = mysqli_fetch_assoc($result)) {
                 $id = $row["id"];
                 $name = $row["name"];
+                $name = trim(preg_replace('/\s\s+/', ' ', $name));
                 $lastname = $row["lastname"];
+                $lastname = trim(preg_replace('/\s\s+/', ' ', $lastname));
                 $status = $row["status"];
+                $status = trim(preg_replace('/\s\s+/', ' ', $status));
                 $created = $row["created"];
                 $resp.="{\"id\":\"$id\",\"name\":\"$name\",\"lastname\":\"$lastname\",\"status\":\"$status\",\"created\":\"$created\"},";
             }
             $resp = rtrim($resp,',');
             $resp.=']';
+            // create_action('view last activities as a admin');
             echo $resp;
             }
             else if($_REQUEST['service'] == "mailsm")
@@ -261,6 +349,7 @@ else if(isset($_REQUEST['service']) && isset($_REQUEST['type']))
                     $email = $row["email"];
                     $subject = $row["subject"];
                     $message = $row["message"];
+                    $message = trim(preg_replace('/\s\s+/', ' ', $message));
                     $created = $row["created"];
                     $resp.="{\"mailn\":\"$mailn\",\"email\":\"$email\",\"subject\":\"$subject\",\"message\":\"$message\",\"created\":\"$created\"},";
             
@@ -285,6 +374,7 @@ else if(isset($_REQUEST['service']) && isset($_REQUEST['type']))
                 }
             $resp = rtrim($resp,',');
             $resp.=']';
+            // create_action('view mails received as a admin');
             echo $resp;
             }
             
@@ -307,6 +397,7 @@ else if(isset($_REQUEST['name']) && isset($_REQUEST['subject']) && isset($_REQUE
     $name = $_REQUEST['name'];
     $message = $_REQUEST['message'];
     $idu = NULL;
+    $ik=NULL;
 
     if(isset($_SESSION["user"]))
     {
@@ -318,6 +409,16 @@ else if(isset($_REQUEST['name']) && isset($_REQUEST['subject']) && isset($_REQUE
     }
 
     if ($conn->query($sql2) === TRUE) {
+        $usr = $conn->insert_id;
+        if(empty($ik))
+        {
+            create_action('send a mail with id '.$usr.' as unknown');
+        }
+        else
+        {
+            create_action('send a mail with id '.$usr.' as '.$ik);
+        }
+        
         if($_REQUEST['adouna'] == "index")
         {
             echo "the mail was sended successfly";

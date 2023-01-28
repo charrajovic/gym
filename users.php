@@ -53,6 +53,14 @@
         button{
             margin-top:20px;
         }
+        ::-webkit-scrollbar {
+    width: 0;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
+}
+/* Optional: show position indicator in red */
+::-webkit-scrollbar-thumb {
+    background: black;
+}
     </style>
 </head>
 

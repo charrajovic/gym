@@ -25,7 +25,7 @@
 <body data-spy="scroll" data-target=".navbar-nav">
     
      <!-- Preloader -->
-    <div class="preloader">
+    <div class="preloader" style="opacity:.5">
         <div class="spinner">
             <div class="cube1"></div>
             <div class="cube2"></div>
@@ -56,6 +56,7 @@
                         <li class="nav-item"><a class="nav-link hrvatski" href="#service">SERVICES</a></li>
                         <li class="nav-item"><a class="nav-link hrvatski" href="#portfolio">GIGS</a></li>
                         <li class="nav-item"><a class="nav-link pr0 hrvatski" href="#contact">CONTACT</a></li>
+                        <li style="display:none" class="nav-item"><a class="nav-link pr0 hrvatski" href="#footer-area">FOOTER</a></li>
                         <li class="nav-item"><a class="nav-link hrvatski" href="login">LOGIN</a></li>
                     </ul>
                 </div>
@@ -110,11 +111,12 @@
                             <div class="featured-icon">
                                 <i class="fa fa-edit"></i>
                             </div>
-                            <p class="hrvatski liman"> - <b>Data analysis and visualization :</b> This involves using statistical and analytical techniques to extract insights from data, and presenting the results in a clear and concise manner using visualizations and other graphical representations.</p>
-                            <p class="hrvatski liman"> - <b>Predictive modeling :</b> This involves building statistical or machine learning models to make predictions about future outcomes based on data from the past.</p>
-                            <p class="hrvatski liman"> - <b>Machine learning :</b> This involves building and training algorithms that can automatically learn patterns in data and make decisions or predictions based on that learning.</p>
-                            <p class="hrvatski liman"> - <b>Data engineering :</b> This involves building and maintaining the infrastructure and processes necessary to store, process, and analyze large amounts of data.</p>
-                            <p class="hrvatski liman"> - <b>Data consulting :</b> This involves advising organizations on how to collect, store, and use data effectively, and identifying areas where data-driven decision making could be beneficial.</p>
+                            <p class="liman"> - <b class="hrvatski">Data analysis and visualization </b></p>
+                            <p class="liman"> - <b class="hrvatski">Predictive modeling </b></p>
+                            <p class="liman"> - <b class="hrvatski">Machine learning </b></p>
+                            <p class="liman"> - <b class="hrvatski">Data engineering </b></p>
+                            <p class="liman"> - <b class="hrvatski">Data consulting </b></p>
+                            <p class="liman"> - <b class="hrvatski">Natural language processing </b></p>
                         </div>
                     </div>
                 </div>
@@ -127,13 +129,13 @@
                             <div class="featured-icon">
                                 <i class="fa fa-code"></i>
                             </div>
-                            <p class="hrvatski liman"> - <b>Designing and building websites from scratch:</b> This involves creating the layout, structure, and overall look and feel of a website.</p>
-                            <p class="hrvatski liman"> - <b>Customizing and improving existing websites:</b> This could involve adding new features, improving the user experience, or updating the design of a website.</p>
-                            <p class="hrvatski liman"> - <b>Maintenance and support for websites:</b> This could include fixing bugs, making updates to the content or design, and ensuring that a website is functioning properly.</p>
-                            <p class="hrvatski liman"> - <b>E-commerce development:</b> This involves building online stores and integrating them with payment gateways and other necessary systems.</p>            
-                            <p class="hrvatski liman"> - <b>Mobile app development:</b> This involves creating apps for smartphones and other mobile devices.</p>
-                            <p class="hrvatski liman"> - <b>Content creation:</b> This could include writing website content, blog posts, and social media posts.</p>    
-                            <p class="hrvatski liman"> - <b>Domain registration:</b> This involves registering a domain name (e.g. example.com) and linking it to a website.</p>
+                            <p class=" liman"> - <b class="hrvatski">Designing and building websites from scratch</b> </p>
+                            <p class=" liman"> - <b class="hrvatski">Customizing and improving existing websites</b> </p>
+                            <p class=" liman"> - <b class="hrvatski">Maintenance and support for websites</b> </p>
+                            <p class=" liman"> - <b class="hrvatski">E-commerce development</b> </p>            
+                            <p class=" liman"> - <b class="hrvatski">Mobile app development</b> </p>
+                            <p class=" liman"> - <b class="hrvatski">Content creation</b> </p>    
+                            <p class=" liman"> - <b class="hrvatski">Domain registration</b></p>
                         </div>
                     </div>
                 </div>
@@ -146,12 +148,12 @@
                             <div class="featured-icon">
                                 <i class="fa fa-search"></i>
                             </div>
-                            <p class="hrvatski liman"> - <b>Keyword research:</b> Identifying the most relevant and popular keywords and phrases that people are searching for, and incorporating them into the content and structure of a website.</p>
-                            <p class="hrvatski liman"> - <b>On-page optimization:</b> Optimizing the content and structure of individual web pages to make them more attractive to search engines and more relevant to users.</p>
-                            <p class="hrvatski liman"> - <b>Technical SEO:</b> Optimizing the technical aspects of a website, such as its loading speed, mobile responsiveness, and security, to improve its ranking and user experience.</p>
-                            <p class="hrvatski liman"> - <b>Social media management:</b> This involves creating and managing social media accounts and campaigns for a business or organization.</p>  
-                            <p class="hrvatski liman"> - <b>Content marketing:</b> Creating and promoting valuable, relevant, and consistent content to attract and retain a clearly defined audience, and ultimately drive profitable customer action.</p>  
-                            <p class="hrvatski liman"> - <b>Reporting and analytics:</b> Using tools like Google Analytics to track the performance of a website and identify areas for improvement.</p>    
+                            <p class="liman"> - <b class="hrvatski">Keyword research</b> </p>
+                            <p class="liman"> - <b class="hrvatski">On-page optimization</b> </p>
+                            <p class="liman"> - <b class="hrvatski">Technical SEO</b> </p>
+                            <p class="liman"> - <b class="hrvatski">Social media management</b> </p>  
+                            <p class="liman"> - <b class="hrvatski">Content marketing</b> </p>  
+                            <p class="liman"> - <b class="hrvatski">Reporting and analytics</b> </p>    
                         </div>
                     </div>
                 </div>
@@ -330,20 +332,11 @@
                         <div class="service-icon">
                             <i class="fa fa-code"></i>
                         </div>
-                        <h2 class="hrvatski">UI/UX Creator & Consultancy</h2>
+                        <h2 class="hrvatski">Graphic Design</h2>
                     </div>
                     
                 </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="single-service">
-                        <div class="service-icon">
-                            <i class="fa fa-code"></i>
-                        </div>
-                        <h2 class="hrvatski">Data Science ( Machine learning , Deep Learning and NLP)</h2>
-                    </div>
-                </div>
-                <!-- //Single Service -->
-                <!-- Single Service -->
+                   <!-- Single Service -->
                 <div class="col-lg-4 col-md-6">
                     <div class="single-service">
                         <div class="service-icon">
@@ -352,6 +345,16 @@
                         <h2 class="hrvatski">Business Intelligence and Analytics</h2>
                                            </div>
                 </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="single-service">
+                        <div class="service-icon">
+                            <i class="fa fa-code"></i>
+                        </div>
+                        <h2 class="hrvatski">Data Science</h2>
+                    </div>
+                </div>
+                <!-- //Single Service -->
+             
                 <!-- //Single Service -->
             </div>
 
@@ -894,10 +897,10 @@
                             <h3>$25<span>/ Per Month</span></h3>
                         </div>
                         <ul>
-                            <li>2 GIGS</li>
+                            <li>2 Graphic Design GIGS</li>
                             <li>Live chat Support</li>
                         </ul>
-                        <a href="#" class="button">BOOK NOW</a>
+                        <a href="#" class="button">Order now</a>
                     </div>
                 </div>
                 <!-- // Single Price Box -->
@@ -909,11 +912,11 @@
                             <h3>$50<span>/ Per Month</span></h3>
                         </div>
                         <ul>
-                            <li>4 GIGS</li>
+                            <li>2 Data Analysis GIGS</li>
                             <li>Good Output</li>
                             <li>Live chat Support</li>
                         </ul>
-                        <a href="#" class="button">BOOK NOW</a>
+                        <a href="#" class="button">Order now</a>
                     </div>
                 </div>
                 <!-- // Single Price Box -->
@@ -925,12 +928,12 @@
                             <h3>$80<span>/ Per Month</span></h3>
                         </div>
                         <ul>
-                            <li>6 GIGS</li>
+                            <li>2 Web Development GIGS</li>
                             <li>Great Output</li>
                             <li>Free Update</li>
                             <li>Live chat Support</li>
                         </ul>
-                        <a href="#" class="button">BOOK NOW</a>
+                        <a href="#" class="button">Order now</a>
                     </div>
                 </div>
                 <!-- // Single Price Box -->
@@ -939,15 +942,15 @@
                     <div class="single-price-box text-center">
                         <div class="price-head">
                             <h2>Business</h2>
-                            <h3>$199<span>/ Per Year</span></h3>
+                            <h3>$199<span>/ Per Month</span></h3>
                         </div>
                         <ul>
-                            <li>20 GIGS</li>
+                            <li>4 GIGS</li>
                             <li>Best Output</li>
                             <li>Free Update</li>
                             <li>Live chat Support</li>
                         </ul>
-                        <a href="#" class="button">BOOK NOW</a>
+                        <a href="#" class="button">Order now</a>
                     </div>
                 </div>
                 <!-- // Single Price Box -->
@@ -1011,13 +1014,27 @@
 
 
     <!-- ====== Footer Area ====== -->
-    <footer class="footer-area">
+    <footer class="footer-area" id="footer-area">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <div class="copyright-text">
                         <p class="text-white">&copy; 2023 <a href="">Designed by DIGITAL IT Services</a></p>
                     </div>
+                </div>
+            </div>
+            <div class="row" style="padding: 5px;border: 2px solid white;border-radius: 20px;margin: 20px 0;">
+                <div class="offset-md-2 col-md-2">
+                    <img src="./assets/images/footer/upwork.png" style="height: 50px;width: 100%;">
+                </div>
+                <div class="col-md-2">
+                <img src="./assets/images/footer/freelencer.png" style="height: 50px;width: 100%;">
+                </div>
+                <div class="col-md-2">
+                <img src="./assets/images/footer/fiverr.png" style="height: 50px;width: 100%;">
+                </div>
+                <div class="col-md-2">
+                <img src="./assets/images/footer/behance.png" style="height: 50px;width: 100%;">
                 </div>
             </div>
         </div>
