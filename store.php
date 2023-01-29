@@ -1,7 +1,7 @@
 <?php
             include 'user.php';
-            include 'connect.php';
             session_start();
+            include 'connect.php';
             if(isset($_SESSION["user"]))
             {
                 $role='User';
@@ -19,7 +19,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>User management</title>
+    <title>Store</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -54,7 +54,7 @@
     </style>
 </head>
 
-<body>
+<body style="overflow-x:hidden">
     <div class="container-fluid position-relative d-flex p-0">
         <!-- Spinner Start -->
         <div id="spinner" class="show bg-dark position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
@@ -117,7 +117,7 @@
                     <a href="found" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Add found</a>
                     <?php } ?>
                     <?php if($role=='User'){ ?>
-                    <a href="store" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Store</a>
+                    <a href="store" class="nav-item nav-link active"><i class="fa fa-chart-bar me-2"></i>Store</a>
                     <?php } ?>
                     <!-- <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Pages</a>
@@ -241,41 +241,43 @@
 
 
             <!-- Sale & Revenue Start -->
-            <div class="row" style="margin-top:21px">
-                <div class="offset-md-2 col-md-8">
-                    <h2 style="text-align:center;border:2px solid">Contact:</h2>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <input type="text" name="name" id="name" placeholder="Name" class="form-control">
-                        </div>
-                        <div class="col-md-6">
-                            <input type="text" name="email" id="email" placeholder="Email" class="form-control">
-                        </div>
-                    </div>
-                    <div class="row">
-                    <div class="col-md-12">
-                            <input type="text" name="subject" id="subject" placeholder="Subject" class="form-control">
-                        </div>
-                    </div>
-                    <div class="row" style="display:none">
-                    <div class="col-md-12">
-                    <input type="text" class="form-control" id="name" name="adouna" value="contact">
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                    <textarea name="message" id="message" class="form-control" required="" placeholder="Message" rows="10"></textarea>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                            <p id="uploaded" style="display:none;text-align: center;color: greenyellow;"></p>
-                        </div>
-                    </div>
-                    <div class="form-btn text-center">
-                            <button class="btn btn-success" id='bton' type="button" onclick='sendmail()'>Send Message</button>
-                            <p class="form-message"></p>
+        <div class="row" style="margin-top:21px;padding:0 30px">
+            <div class="col-md-12">
+                <div class="card">
+                <div class="card-header" style="background: #fcd703;color: black;"><i class="fa fa-hand-holding"></i><b>Choose the service</b></div>
+                <div class="card-body" style="color:black">
+                    <label for="">Categorie</label>
+                    <select name="domain" id="domain" class="form-control" style="color:brown;font-weight:bold" onchange="chnge()">
+                        <option value="" disabled selected>-</option>
+                        <option value="Web Development">Web Development</option>
+                        <option value="Graphic Design">Graphic Design</option>
+                        <option value="Data Science">Data Science</option>
+                        <option value="Data Analysis">Data Analysis</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <label for="">Service</label>
+                    <select name="service" id="service" class="form-control" style="color:brown;font-weight:bold">
+                        <option value="" disabled selected>-</option>
+                    </select>
+                    <label for="">Email</label>
+                    <input type="email" class="form-control" id="email" name="email">
+                    <label for="">Message</label>
+                    <textarea class="form-control" id="message" name="message"></textarea>
+                </div> 
+                <div class="card-footer">
+                        <div class="row">
+                            <div class="col-md-6">
+                            <button class="btn btn-info form-control" style="background:#fcd703;border: none;" onclick='pay()'>Pay</button>
+                            </div>
+                            <div class="col-md-6">
+                            <button class="btn btn-info form-control" style="background:#00ff59;border: none;" onclick='cart()'><i class="fa fa-cart-plus" aria-hidden="true"></i> Add to cart</button>
+                            </div>
                         </div>
                 </div>
             </div>
+            </div>
+            
+            
         </div>
         <!-- Content End -->
 
@@ -297,6 +299,51 @@
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
     <script>
+
+        function pay()
+        {
+            var domain = document.getElementById("domain").value;
+            var service = document.getElementById("service").value;
+            var email = document.getElementById("email").value;
+            var message = document.getElementById("message").value;
+            console.log(domain+service+email+message);
+        }
+
+        function cart()
+        {
+            var domain = document.getElementById("domain").value;
+            var service = document.getElementById("service").value;
+            var email = document.getElementById("email").value;
+            var message = document.getElementById("message").value;
+            $.post('controller', {adouna:'walo',service:document.getElementById("service").value,email:document.getElementById("email").value,message:document.getElementById("message").value}).done(function(response){
+                if(response!='no' && response!='error')
+                {
+                    document.getElementById("domain").value = '';
+                    document.getElementById("service").innerHTML = '<option value="" disabled selected>-</option>';
+                    document.getElementById("email").value = '';
+                    document.getElementById("message").value = "";
+                    var aa = response.split(":");
+                    document.getElementById("number").textContent = aa[0];
+                    document.getElementById("price").textContent = aa[1]+" $";
+                }
+            
+});
+        }
+
+        function chnge()
+        {
+            document.getElementById("service").innerHTML = "";
+            $.post('controller', {adouna:'walo',domain:document.getElementById("domain").value}).done(function(response){
+                console.log(response)
+                obj = JSON.parse(response);
+                for (let i = 0; i < obj.length; i++) {
+                    document.getElementById("service").innerHTML += "<option value='"+obj[i].id+"'>"+obj[i].name+" per "+obj[i].price+"</option>";
+                }
+            
+            
+});
+        }
+
         function sendmail()
         {
             var A = document.getElementById("bton");

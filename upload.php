@@ -17,9 +17,10 @@ if(isset($_FILES["file"]))
         
         $name = $_REQUEST['name'];
         $domain = $_REQUEST['domain'];
+        $price = $_REQUEST['price'];
         if(!isset($_REQUEST['ided']))
         {
-            $spl="INSERT INTO `gigs`(`name`, `path`, `domaine`) VALUES ('$name','$location','$domain')";
+            $spl="INSERT INTO `gigs`(`name`, `path`, `domaine`,`price`) VALUES ('$name','$location','$domain',$price)";
             $res=mysqli_query($conn,$spl);
             if($res==1)
             {
@@ -34,7 +35,7 @@ if(isset($_FILES["file"]))
         else
         {
             $ide = $_REQUEST['ided'];
-            $spl="UPDATE `gigs` SET `name`='$name',`path`='$location',`domaine`='$domain' WHERE id=$ide";
+            $spl="UPDATE `gigs` SET `name`='$name',`path`='$location',`domaine`='$domain',`price`=$price WHERE id=$ide";
             $res=mysqli_query($conn,$spl);
             if($res==1)
             {
@@ -63,7 +64,8 @@ else
             $ide = $_REQUEST['ided'];
             $name = $_REQUEST['name'];
             $domain = $_REQUEST['domain'];
-            $spl="UPDATE `gigs` SET `name`='$name',`domaine`='$domain' WHERE id=$ide";
+            $price = $_REQUEST['price'];
+            $spl="UPDATE `gigs` SET `name`='$name',`domaine`='$domain',`price`=$price WHERE id=$ide";
             $res=mysqli_query($conn,$spl);
             if($res==1)
             {

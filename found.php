@@ -19,7 +19,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>User management</title>
+    <title>Add found</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -54,7 +54,7 @@
     </style>
 </head>
 
-<body>
+<body style="overflow-x:hidden">
     <div class="container-fluid position-relative d-flex p-0">
         <!-- Spinner Start -->
         <div id="spinner" class="show bg-dark position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
@@ -114,7 +114,7 @@
                     <a href="activity" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Last activities</a>
                     <?php } ?>
                     <?php if($role=='User'){ ?>
-                    <a href="found" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Add found</a>
+                    <a href="found" class="nav-item nav-link active"><i class="fa fa-chart-bar me-2"></i>Add found</a>
                     <?php } ?>
                     <?php if($role=='User'){ ?>
                     <a href="store" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Store</a>
@@ -241,41 +241,37 @@
 
 
             <!-- Sale & Revenue Start -->
-            <div class="row" style="margin-top:21px">
-                <div class="offset-md-2 col-md-8">
-                    <h2 style="text-align:center;border:2px solid">Contact:</h2>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <input type="text" name="name" id="name" placeholder="Name" class="form-control">
-                        </div>
-                        <div class="col-md-6">
-                            <input type="text" name="email" id="email" placeholder="Email" class="form-control">
-                        </div>
-                    </div>
-                    <div class="row">
-                    <div class="col-md-12">
-                            <input type="text" name="subject" id="subject" placeholder="Subject" class="form-control">
-                        </div>
-                    </div>
-                    <div class="row" style="display:none">
-                    <div class="col-md-12">
-                    <input type="text" class="form-control" id="name" name="adouna" value="contact">
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                    <textarea name="message" id="message" class="form-control" required="" placeholder="Message" rows="10"></textarea>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                            <p id="uploaded" style="display:none;text-align: center;color: greenyellow;"></p>
-                        </div>
-                    </div>
-                    <div class="form-btn text-center">
-                            <button class="btn btn-success" id='bton' type="button" onclick='sendmail()'>Send Message</button>
-                            <p class="form-message"></p>
+            <div class="row" style="margin-top:21px;padding:0 30px">
+            <div class="col-md-6">
+                <div class="card">
+                <div class="card-header" style="background: #fcd703;color: black;"><b>Choose Payment Method</b><p style="font-weight: 600;font-size:10px;    margin-bottom: 0;">You can make your payment below.</p></div>
+                <div class="card-body" style="color:black">
+                    <label for="">Method</label>
+                    <select name="methode" id="methode" class="form-control" style="color:blue;font-weight:bold">
+                        <option value="youcan">YouCan Pay / Visa / Master Card - Paiments in Morocco</option>
+                    </select>
+                    <label for="">Email</label>
+                    <input type="text" class="form-control" id="email" name="email">
+                    <label for="">Amount $</label>
+                    <input type="number" class="form-control" id="amount" name="amount">
+                </div> 
+                <div class="card-footer">
+                        <div class="row">
+                            <div class="col-md-6">
+                            <button class="btn btn-info form-control" style="background:#fcd703;border: none;">Pay</button>
+                            </div>
                         </div>
                 </div>
             </div>
+            </div>
+            <div class="col-md-6">
+            <div class="card">
+                <div class="card-header" style="background: #fcd703;color: black;"><b>Last payments</b></div>
+                <div class="card-body" style="color:black">
+                    
+                </div>
+            </div>
+            
         </div>
         <!-- Content End -->
 

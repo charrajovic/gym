@@ -243,7 +243,7 @@ else if(isset($_REQUEST['service']) && isset($_REQUEST['type']))
             {
                 $resp="[";
             $email = $_SESSION['user']->get_email();
-            $sql = "SELECT `id`,`name`,`path`,`domaine`,`updated`,DATE_FORMAT(`created`,'%d %M %Y at %T') as created FROM `gigs` order by created";
+            $sql = "SELECT `id`,`name`,`path`,`domaine`,`price`,`updated`,DATE_FORMAT(`created`,'%d %M %Y at %T') as created FROM `gigs` order by created";
             $result = mysqli_query($conn, $sql);
             while($row = mysqli_fetch_assoc($result)) {
                 $id = $row["id"];
@@ -251,7 +251,8 @@ else if(isset($_REQUEST['service']) && isset($_REQUEST['type']))
                 $path = $row["path"];
                 $domain = $row["domaine"];
                 $created = $row["created"];
-                $resp.="{\"id\":\"$id\",\"name\":\"$name\",\"path\":\"$path\",\"domain\":\"$domain\",\"created\":\"$created\"},";
+                $price = $row["price"];
+                $resp.="{\"id\":\"$id\",\"price\":\"$price\",\"name\":\"$name\",\"path\":\"$path\",\"domain\":\"$domain\",\"created\":\"$created\"},";
             }
             $resp = rtrim($resp,',');
             $resp.=']';
@@ -270,6 +271,7 @@ else if(isset($_REQUEST['service']) && isset($_REQUEST['type']))
                     }
                     create_action('delete a gig as a admin');
             }
+            
             else if($_REQUEST['service'] == "getgig")
             {
                 $idg = $_REQUEST['ide'];
@@ -282,7 +284,8 @@ else if(isset($_REQUEST['service']) && isset($_REQUEST['type']))
                     $path = $row['path'];
                     $domaine = $row['domaine'];
                     $created = $row["created"];
-                    $resp.="{\"id\":\"$id\",\"name\":\"$name\",\"path\":\"$path\",\"domaine\":\"$domaine\",\"created\":\"$created\"},";
+                    $price = $row["price"];
+                    $resp.="{\"id\":\"$id\",\"price\":\"$price\",\"name\":\"$name\",\"path\":\"$path\",\"domaine\":\"$domaine\",\"created\":\"$created\"},";
                 }
                         
                 $resp = rtrim($resp,',');
@@ -381,6 +384,58 @@ else if(isset($_REQUEST['service']) && isset($_REQUEST['type']))
         }
         
     }
+    else
+    {
+        if($_REQUEST['service'] == "deletecart")
+        {
+            session_start();
+            $idg = $_REQUEST['idc'];
+            $sql = "DELETE from cart where id=$idg";
+
+            if ($res = $conn->query($sql) === TRUE) {
+                $idu = $_SESSION["user"]->get_id();
+                $sql = "SELECT count(*) as number,sum(price) as prices
+                FROM cart
+                INNER JOIN users ON users.id = cart.user_id
+                INNER JOIN gigs ON gigs.id = cart.gigs_id WHERE user_id=$idu";
+                $result = mysqli_query($conn, $sql);
+                if($row = mysqli_fetch_assoc($result)) {
+                    echo $row['number'].':'.$row['prices'];
+                }
+                else
+                {
+                    echo 'error2';
+                }
+                } else {
+                echo "error";
+                }
+                
+        }
+        else if($_REQUEST['service'] == "trash")
+        {
+            session_start();
+            $idu = $_SESSION["user"]->get_id();
+            $sql = "DELETE from cart where user_id=$idu";
+
+            if ($res = $conn->query($sql) === TRUE) {
+                $sql = "SELECT count(*) as number,sum(price) as prices
+                FROM cart
+                INNER JOIN users ON users.id = cart.user_id
+                INNER JOIN gigs ON gigs.id = cart.gigs_id WHERE user_id=$idu";
+                $result = mysqli_query($conn, $sql);
+                if($row = mysqli_fetch_assoc($result)) {
+                    echo $row['number'].':'.$row['prices'];
+                }
+                else
+                {
+                    echo 'error2';
+                }
+                } else {
+                echo "error";
+                }
+                
+        }
+    }
 }
 else if(isset($_REQUEST['name']) && isset($_REQUEST['subject']) && isset($_REQUEST['email']) && isset($_REQUEST['message']) && isset($_REQUEST['adouna']))
 {
@@ -457,6 +512,56 @@ else if(isset($_REQUEST['name']) && isset($_REQUEST['subject']) && isset($_REQUE
     
     
     
+
+}
+else if(isset($_REQUEST['adouna']) && isset($_REQUEST['domain']))
+{
+    $resp="[";
+    $domain = $_REQUEST['domain'];
+    $sql = "SELECT `id`, `name`, `path`, `domaine`, `price`, `created`, `updated` FROM `gigs` WHERE domaine like '$domain'";
+    $result = mysqli_query($conn, $sql);
+    while($row = mysqli_fetch_assoc($result)) {
+        $id = $row["id"];
+        $name = $row["name"];
+        $path = $row["path"];
+        $domain = $row["domaine"];
+        $created = $row["created"];
+        $price = $row["price"];
+        $resp.="{\"id\":\"$id\",\"price\":\"$price\",\"name\":\"$name\",\"path\":\"$path\",\"domain\":\"$domain\",\"created\":\"$created\"},";
+    }
+    $resp = rtrim($resp,',');
+    $resp.=']';
+    // create_action('view users as a admin');
+    echo $resp;
+}
+else if(isset($_REQUEST['adouna']) && isset($_REQUEST['service']) && isset($_REQUEST['email']) && isset($_REQUEST['message']))
+{
+    session_start();
+    $idu = $_SESSION["user"]->get_id();
+    $service = $_REQUEST['service'];
+    $email = $_REQUEST['email'];
+    $message = $_REQUEST['message'];
+
+    $sql2 = "INSERT INTO `cart`(`user_id`, `gigs_id`, `email`, `message`) VALUES ($idu,$service,'$email','$message')";
+
+    if ($conn->query($sql2) === TRUE) {
+        $sql = "SELECT count(*) as number,sum(price) as prices
+        FROM cart
+        INNER JOIN users ON users.id = cart.user_id
+        INNER JOIN gigs ON gigs.id = cart.gigs_id WHERE user_id=$idu";
+        $result = mysqli_query($conn, $sql);
+        if($row = mysqli_fetch_assoc($result)) {
+            echo $row['number'].':'.$row['prices'];
+        }
+        else
+        {
+            echo 'error';
+        }
+    }
+    else
+    {
+        echo 'no';
+    }
 
 }
 else if(isset($_REQUEST['typeu']))

@@ -1,16 +1,17 @@
 <?php
             include 'user.php';
             session_start();
+            include 'connect.php';
             if(isset($_SESSION["user"]))
             {
                 $role='User';
                 foreach ($_SESSION["user"]->get_roles() as $value) {
                     if($value == 'ROLE_ADMIN')
                     {
-                        $role = 'Admin';
+                        $role = 'User';
                     }
                     }
-                    if($role=='Admin')
+                    if($role=='User')
                     {
             ?>
 <!DOCTYPE html>
@@ -18,7 +19,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Gigs management</title>
+    <title>Cart</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -45,10 +46,11 @@
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
     <style>
-        input{
-            background:white !important;
-            margin-bottom:15px
-        }
+    input, textarea{
+        background:white !important;
+        margin-bottom:5px;
+        color:black !important;
+    }
     </style>
 </head>
 
@@ -115,7 +117,7 @@
                     <a href="found" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Add found</a>
                     <?php } ?>
                     <?php if($role=='User'){ ?>
-                    <a href="store" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Store</a>
+                    <a href="store" class="nav-item nav-link active"><i class="fa fa-chart-bar me-2"></i>Store</a>
                     <?php } ?>
                     <!-- <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Pages</a>
@@ -135,9 +137,7 @@
         <!-- Content Start -->
         <div class="content">
             <!-- Navbar Start -->
-            <div class="row">
-                <div class="col-md-12" style="padding:0">
-                <nav class="navbar navbar-expand bg-secondary navbar-dark sticky-top px-4 py-0">
+            <nav class="navbar navbar-expand bg-secondary navbar-dark sticky-top px-4 py-0">
                 <a href="home" class="navbar-brand d-flex d-lg-none me-4" style="display: block;text-align: center;width: 100%;">
                 <img src="assets/images/logo.png" alt="logo" style='width: 45px;'>
                 </a>
@@ -148,10 +148,23 @@
                     <input class="form-control bg-dark border-0" type="search" placeholder="Search">
                 </form>
                 <div class="navbar-nav align-items-center ms-auto">
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                            <i class="fa fa-envelope me-lg-2"></i>
-                            <span class="d-none d-lg-inline-flex">Message</span>
+                    <div class="nav-item">
+                        <a href="cart" class="nav-link" style="font-weight:bold">
+                            <i><span id="number"><?php 
+                            $idu = $_SESSION["user"]->get_id();
+                            $sql = "SELECT count(*) as number,sum(price) as prices
+                            FROM cart
+                            INNER JOIN users ON users.id = cart.user_id
+                            INNER JOIN gigs ON gigs.id = cart.gigs_id WHERE user_id=$idu";
+                            $result = mysqli_query($conn, $sql);
+                            if($row = mysqli_fetch_assoc($result)) {
+                                echo $row['number'];
+                                 ?></span>
+                        <i class="fas fa-shopping-cart"> </i>
+                        
+                            </i>
+                            <span class="d-none d-lg-inline-flex" style="color: cadetblue;" id="price"><?php echo $row['prices']." $";
+                            } ?></span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
                             <a href="#" class="dropdown-item">
@@ -224,151 +237,73 @@
                     </div>
                 </div>
             </nav>
-                </div>
-            </div>
-            
             <!-- Navbar End -->
 
 
             <!-- Sale & Revenue Start -->
-            <div class="row" style='padding-left: 18px;padding-right: 5px;'>
-                <div class="offset-md-2 col-md-8" style="margin-top:50px;margin-bottom:50px;    box-shadow: 0 0 10px #eee;padding:5px;">
-                <div class="row" style="margin-bottom:30px">
-                    <div class="offset-md-1 col-md-10">
-                        <h2 style='text-align:center;' onclick="user()">gigs management:</h2>
-                        
-                    </div> 
-                    <div class="col-md-1" style="margin:auto">
-                    <i class="fa fa-plus" aria-hidden="true" onclick='add_gigs()' style="color:green;cursor:pointer"></i>
-                    </div>
-                </div>
-                
-                
-                <table id="users" style="width:100% !important;text-align:center">
-                <tr>
-                    <th>Thumbnail</th>
-                    <th>Name</th>
-                    <th>Domain</th>
-                    <th>Price</th>
-                    <th>Created at</th>
-                    <th></th>
-                </tr>  
-                </table>
+        <div class="row" style="margin-top:21px;padding:0 30px">
+            <div class="col-md-12">
+                <div class="card">
+                <div class="card-header" style="background: #fcd703;color: black;"><i class="fas fa-shopping-cart"></i><b>Cart</b></div>
+                <div class="card-body" style="background:black">
+                <table class="table" style="width:100%;color:white;font-weight:bold">
+                    <thead>
+                        <tr>
+                        <th scope="col" style="width:10%">#</th>
+                        <th scope="col" style="width:20%"></th>
+                        <th scope="col" style="width:20%">Gigs</th>
+                        <th scope="col" style="width:20%">Prix</th>
+                        <th scope="col" style="width:10%">Quantité</th>
+                        <th scope="col" style="width:20%">Sous totale</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
 
+                            $idu = $_SESSION["user"]->get_id();
+                            $sql = "SELECT cart.id as id,path,gigs.name as name,price
+                            FROM cart
+                            INNER JOIN users ON users.id = cart.user_id
+                            INNER JOIN gigs ON gigs.id = cart.gigs_id WHERE user_id=$idu";
+                            $result = mysqli_query($conn, $sql);
+                            while($row = mysqli_fetch_assoc($result)) {
+                                ?>
+                                <tr class="cart_items">
+                                    <th scope="row"><i class="fa fa-trash" aria-hidden="true" style="color:red;cursor:pointer" onclick="delete_cart(this,<?php echo $row['id']; ?>)"></i></th>
+                                    <td scope="row" style="background-image:url(<?php echo $row['path']; ?>);background-size: 100% 100%;"></td>
+                                    <td><?php echo $row['name']; ?></td>
+                                    <td><?php echo $row['price'].' $'; ?></td>
+                                    <td><input type="number" name="" id="" min="1" max="10" class="form-control" value="1" disabled style="background: black !important;    box-shadow: 2px 2px white;color: white !important;border: 1px solid;"></td>
+                                    <td><span class="prices"><?php echo $row['price']; ?></span> $</td>
+                                </tr>
+                                <?php
+                            }
+
+                        ?>
+                    </tbody>
+                    </table>
+                </div> 
+                <div class="card-footer" style="background: black;border: 1px solid white;">
+                        <div class="row">
+                            <div class="col-md-6">
+                            <button class="btn btn-info form-control" style="background:#fcd703;border: none;font-weight:bold" onclick='pay()' id="pay">Pay</button>
+                            </div>
+                            <div class="col-md-6">
+                            <button class="btn btn-info form-control" style="    background: #FF2900;border: none;color: black;font-weight: bold;" onclick='trash()'><i class="fa fa-trash" aria-hidden="true"></i> Clear cart</button>
+                            </div>
+                        </div>
                 </div>
             </div>
+            </div>
+            
+            
         </div>
         <!-- Content End -->
-        
 
 
         <!-- Back to Top -->
         <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
     </div>
-    <div id="full" style="position:fixed;top:0;left:0;width:100%;height:100%;background:red;    background: rgba(120,120,120,0.5);z-index: 9999;display:none">
-            <div class="row" style="margin-top:20px">
-                <div class="offset-md-2 col-md-8">
-                    <div class="row" style="margin-bottom:25px">
-                        <div class="offset-1 col-10">
-                        <h2 style="text-align:center;border:2px solid">Add gigs:</h2>
-                        </div>
-                        <div class="col-1" style="margin:auto">
-                        <p onclick="exit()" style="color:white;font-weight:bold;cursor:pointer;;text-align:center">X</p>
-                        </div>
-                    </div>
-                
-                
-                    <div class="row">
-                        <div class="col-md-6">
-                            <input type="text" name="name" id="name" placeholder="Name" class="form-control">
-                        </div>
-                        <div class="col-md-6">
-                            <select name="domain" id="domain" class="form-control">
-                                <option value="Web Development">Web Development</option>
-                                <option value="Graphic Design">Graphic Design</option>
-                                <option value="Data Science">Data Science</option>
-                                <option value="Data Analysis">Data Analysis</option>
-                                <option value="Other">Other</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row">
-                    <div class="col-md-12">
-                            <input type="number" id="price" name="price" placeholder="Price" class="form-control">
-                        </div>
-                    </div>
-                    <div class="row">
-                    <div class="col-md-12">
-                            <input type="file" id="file" name="imge" class="form-control">
-                        </div>
-                    </div>
-                    <div class="row">
-                    <div class="col-md-12">
-                            <p id="uploaded_image" style="display:none"></p>
-                        </div>
-                    </div>
-                    
-                    <div class="form-btn text-center">
-                            <button class="btn btn-success" onclick='upload()' type="button">Add gigs</button>
-                            <p id="form-message"></p>
-                        </div>
-                </div>
-            </div>
-        </div>
-        <div id="full2" style="position:fixed;top:0;left:0;width:100%;height:100%;background:red;    background: rgba(120,120,120,0.5);z-index: 9999;display:none">
-            <div class="row" style="margin-top:20px">
-                <div class="offset-md-2 col-md-8">
-                    <div class="row" style="margin-bottom:25px">
-                        <div class="offset-1 col-10">
-                        <h2 style="text-align:center;border:2px solid">Add gigs:</h2>
-                        </div>
-                        <div class="col-1" style="margin:auto">
-                        <p onclick="exit()" style="color:white;font-weight:bold;cursor:pointer;text-align:center">X</p>
-                        </div>
-                    </div>
-                
-                
-                    <div class="row">
-                        <div class="col-md-6">
-                            <input type="text" name="name" id="name2" placeholder="Name" class="form-control">
-                        </div>
-                        <div class="col-md-6">
-                            <select name="domain" id="domain2" class="form-control">
-                                <option value="Web Development">Web Development</option>
-                                <option value="Graphic Design">Graphic Design</option>
-                                <option value="Data Science">Data Science</option>
-                                <option value="Data Analysis">Data Analysis</option>
-                                <option value="Other">Other</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row">
-                    <div class="col-md-12">
-                            <input type="number" id="price2" name="price2" placeholder="Price" class="form-control">
-                        </div>
-                    </div>
-                    <div class="row">
-                    <div class="col-md-12">
-                            <img src="" id="path2" style="width: inherit;    height: 300px;">
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                            <input type="file" id="file2" name="imge" class="form-control">
-                        </div>
-                    </div>
-                    <div class="row">
-                    <div class="col-md-12">
-                            <p id="uploaded_image" style="display:none"></p>
-                        </div>
-                    </div>
-                    
-                    <div class="form-btn text-center">
-                            <button class="btn btn-success" onclick='edit()' type="button" style="margin-top: 10px;">Modify</button>
-                            <p id="form-message"></p>
-                        </div>
-                </div>
-            </div>
-        </div>
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -383,136 +318,147 @@
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
     <script>
-        var ida;
-        function user()
-        {
-            document.getElementById('users').innerHTML="<tr><th>Thumbnail</th><th>Name</th> <th>Domain</th><th>Price</th><th>Created at</th><th></th></tr> ";
-            $.post('controller', {service:'gigs', type:'<?php echo $role; ?>'}).done(function(response){
-                console.log(response)
-            obj = JSON.parse(response);
-            for (let i = 0; i < obj.length; i++) {
-                var rol="User";
-                
-                document.getElementById('users').innerHTML+='<tr style="height:70px"><th scope="row" style="background-image:url(\''+obj[i].path+'\');background-size: 100% 100%;"></th> <td>'+obj[i].name+'</td><td>'+obj[i].domain+'</td><td>'+obj[i].price+'</td><td>'+obj[i].created+'</td><td><i class="fa fa-edit" style="color:brown;cursor:pointer" onclick="edit_us('+obj[i].id+')" aria-hidden="true"></i><i class="fa fa-trash" style="color:red;cursor:pointer" onclick="delete_us('+obj[i].id+')" aria-hidden="true"></i></td></tr>'
-            }
-});
-        }
 
-        function edit_us(id)
+        function delete_cart(yy,id)
         {
-            ida = id;
-            $.post('controller', {service:'getgig',ide:id, type:'<?php echo $role; ?>'}).done(function(response){
-                document.getElementById('full2').style.display = "block";
-                console.log(response)
-                obj = JSON.parse(response);
-                for (let i = 0; i < obj.length; i++) {
-                    document.getElementById('name2').value = obj[i].name;
-                    document.getElementById('path2').src = obj[i].path;
-                    document.getElementById('domain2').value = obj[i].domaine;
-                    document.getElementById('price2').value = obj[i].price;
-                }
-});
-        }
-
-        function edit()
-        {
-            console.log(document.getElementById('file2').files[0]==null)
-            var form_data = new FormData();
-            form_data.append("ided", ida);
-            if(document.getElementById('file2').files[0]!=null)
-            {
-                form_data.append("file", document.getElementById('file2').files[0]);
-            }
-            form_data.append("name", document.getElementById('name2').value);
-            form_data.append("price", document.getElementById('price2').value);
-            console.log(document.getElementById('price2').value)
-            form_data.append("domain", document.getElementById('domain2').value);
-            $.ajax({
-                url:"upload",
-                method:"POST",
-                data: form_data,
-                contentType: false,
-                cache: false,
-                processData: false,
-                beforeSend:function(){
-                    document.getElementById('uploaded_image').style.display = 'block';
-                $('#uploaded_image').html("<label class='text-success'>Image Uploading...</label>");
-                },   
-                success:function(response)
-                {
-                    console.log(response);
-                    if(response == 'yes')
-                    {
-                        document.getElementById('name2').value='';
-                        document.getElementById('file2').value='';
-                        document.getElementById('price2').value='';
-                        document.getElementById('domain2').value='Web Development';
-                        console.log(response);
-                        exit();
-                        user();
-                    }
-                    
-                }
-            });
-        }
-
-        function delete_us(id)
-        {
+            var A = yy;
+            console.log(A.parentElement.parentElement)
             console.log(id)
             var result = confirm("Want to delete?");
             if (result) {
-                $.post('controller', {service:'deletegigs',idg:id, type:'<?php echo $role; ?>'}).done(function(response){
+                $.post('controller', {service:'deletecart',idc:id, type:'<?php echo $role; ?>'}).done(function(response){
                 console.log(response)
-                if(response=='done')
+                if(response != 'error' && response != "error2")
                 {
-                    user();
+                    A.parentElement.parentElement.remove();
+                    var aa = response.split(":");
+                    if(aa[1] == '')
+                    {
+                        aa[1] = 0;
+                    }
+                    document.getElementById("number").textContent = aa[0];
+                    document.getElementById("price").textContent = aa[1]+" $";
+                    document.getElementById("pay").textContent = "Pay with "+aa[1]+" $";
                 }
                         });
             }
         }
-        function add_gigs()
+
+        function trash()
         {
-            console.log('hole')
-            document.getElementById('full').style.display = "block";
-        }
-        function exit()
-        {
-            document.getElementById('full').style.display = "none";
-            document.getElementById('full2').style.display = "none";
-        }
-        function upload()
-        {
-            var form_data = new FormData();
-            form_data.append("file", document.getElementById('file').files[0]);
-            form_data.append("name", document.getElementById('name').value);
-            form_data.append("price", document.getElementById('price').value);
-            form_data.append("domain", document.getElementById('domain').value);
-            $.ajax({
-                url:"upload",
-                method:"POST",
-                data: form_data,
-                contentType: false,
-                cache: false,
-                processData: false,
-                beforeSend:function(){
-                    document.getElementById('uploaded_image').style.display = 'block';
-                $('#uploaded_image').html("<label class='text-success'>Image Uploading...</label>");
-                },   
-                success:function(response)
+            $.post('controller', {service:'trash', type:'<?php echo $role; ?>'}).done(function(response){
+                console.log(response)
+                if(response != 'error' && response != "error2")
                 {
-                    document.getElementById('name').value='';
-                    document.getElementById('file').value='';
-                    document.getElementById('price').value='';
-                    document.getElementById('domain').value='Web Development';
-                console.log(response);
-                exit();
-                user();
+                    var cc = document.getElementsByClassName('cart_items');
+                    console.log(cc)
+                    
+                    for (let i = 0; i < cc.length; i++) {
+                        console.log(cc[i])
+                        cc[i].remove();
+                        i--;
+                    }
+                    var aa = response.split(":");
+                    if(aa[1] == '')
+                    {
+                        aa[1] = 0;
+                    }
+                    document.getElementById("number").textContent = aa[0];
+                    document.getElementById("price").textContent = aa[1]+" $";
+                    document.getElementById("pay").textContent = "Pay with "+aa[1]+" $";
                 }
-            });
+                        });
         }
+
+        function pay()
+        {
+            var domain = document.getElementById("domain").value;
+            var service = document.getElementById("service").value;
+            var email = document.getElementById("email").value;
+            var message = document.getElementById("message").value;
+            console.log(domain+service+email+message);
+        }
+
+        function cart()
+        {
+            var domain = document.getElementById("domain").value;
+            var service = document.getElementById("service").value;
+            var email = document.getElementById("email").value;
+            var message = document.getElementById("message").value;
+            $.post('controller', {adouna:'walo',service:document.getElementById("service").value,email:document.getElementById("email").value,message:document.getElementById("message").value}).done(function(response){
+                if(response!='no' && response!='error')
+                {
+                    document.getElementById("domain").value = '';
+                    document.getElementById("service").innerHTML = '<option value="" disabled selected>-</option>';
+                    document.getElementById("email").value = '';
+                    document.getElementById("message").value = "";
+                    var aa = response.split(":");
+                    document.getElementById("number").textContent = aa[0];
+                    document.getElementById("price").textContent = aa[1]+" $";
+                    document.getElementById("pay").textContent = "Pay with " + aa[1]+" $";
+                }
+            
+});
+        }
+
+        function chnge()
+        {
+            document.getElementById("service").innerHTML = "";
+            $.post('controller', {adouna:'walo',domain:document.getElementById("domain").value}).done(function(response){
+                console.log(response)
+                obj = JSON.parse(response);
+                for (let i = 0; i < obj.length; i++) {
+                    document.getElementById("service").innerHTML += "<option value='"+obj[i].id+"'>"+obj[i].name+" per "+obj[i].price+"</option>";
+                }
+            
+            
+});
+        }
+
+        function sendmail()
+        {
+            var A = document.getElementById("bton");
+            document.getElementById("bton").disabled = true;
+            $.post('controller', {adouna:'walo',name:document.getElementById('name').value,email:document.getElementById('email').value,subject:document.getElementById('subject').value,message:document.getElementById('message').value}).done(function(response){
+            console.log(response);
+            if(response=="the mail was sended successfly")
+            {
+                A.disabled = false;
+                document.getElementById('name').value='';
+                document.getElementById('email').value='';
+                document.getElementById('subject').value='';
+                document.getElementById('message').value='';
+                document.getElementById('uploaded').textContent=response;
+                document.getElementById('uploaded').style.display='block';
+                setTimeout(function(){ document.getElementById('uploaded').style.display='none'; }, 10000);
+            }
+            
+});
+        }
+//         function user()
+//         {
+//             document.getElementById('users').innerHTML="";
+//             $.post('controller', {service:'users', type:'<?php echo $role; ?>'}).done(function(response){
+//             obj = JSON.parse(response);
+//             for (let i = 0; i < obj.length; i++) {
+//                 var rol="User";
+//                 if(obj[i].roles.includes('ROLE_ADMIN'))
+//                 {
+//                     rol = 'Admin';
+//                 }
+//                 document.getElementById('users').innerHTML+='<tr><th scope="row">'+obj[i].id+'</th> <td>'+obj[i].name+'</td><td>'+obj[i].last+'</td><td>'+obj[i].email+'</td><td>'+rol+'</td></tr>'
+//             }
+// });
+//         }
         window.onload = function()
         {
-            user();
+            var bb = document.getElementsByClassName('prices');
+            var n = 0;
+            for (let i = 0; i < bb.length; i++) {
+                n += Number(bb[i].textContent);
+                
+            }
+            document.getElementById('pay').textContent = "Pay with "+Number(n)+' $';
         }
     </script>
 </body>

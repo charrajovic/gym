@@ -1,5 +1,6 @@
 <?php
             include 'user.php';
+            include 'connect.php';
             session_start();
             if(isset($_SESSION["user"]))
             {
@@ -93,17 +94,20 @@
                     <?php if($role=='User'){ ?>
                     <a href="contact" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Contact</a>
                     <?php } ?>
-                    <?php if($role=='User'){ ?>
+                    <!-- <?php if($role=='User'){ ?>
                     <a href="reviews" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Reviews</a>
-                    <?php } ?>
+                    <?php } ?> -->
                     <?php if($role=='Admin'){ ?>
                     <a href="mails" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Mails manage</a>
                     <?php } ?>
                     <?php if($role=='Admin'){ ?>
                     <a href="activity" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Last activities</a>
                     <?php } ?>
-                    <?php if($role=='Admin'){ ?>
-                    <a href="chart.html" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Reviews Manage</a>
+                    <?php if($role=='User'){ ?>
+                    <a href="found" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Add found</a>
+                    <?php } ?>
+                    <?php if($role=='User'){ ?>
+                    <a href="store" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Store</a>
                     <?php } ?>
                     <!-- <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Pages</a>
@@ -122,6 +126,7 @@
 
         <!-- Content Start -->
         <div class="content">
+            <?php if($role=='Admin'){ ?>
             <!-- Navbar Start -->
             <nav class="navbar navbar-expand bg-secondary navbar-dark sticky-top px-4 py-0">
                 <a href="home" class="navbar-brand d-flex d-lg-none me-4" style="display: block;text-align: center;width: 100%;">
@@ -210,9 +215,112 @@
                     </div>
                 </div>
             </nav>
+            <?php }else{ ?>
+
+            <nav class="navbar navbar-expand bg-secondary navbar-dark sticky-top px-4 py-0">
+                <a href="home" class="navbar-brand d-flex d-lg-none me-4" style="display: block;text-align: center;width: 100%;">
+                <img src="assets/images/logo.png" alt="logo" style='width: 45px;'>
+                </a>
+                <a href="#" class="sidebar-toggler flex-shrink-0">
+                    <i class="fa fa-bars"></i>
+                </a>
+                <form class="d-none d-md-flex ms-4">
+                    <input class="form-control bg-dark border-0" type="search" placeholder="Search">
+                </form>
+                <div class="navbar-nav align-items-center ms-auto">
+                    <div class="nav-item">
+                        <a href="cart" class="nav-link" style="font-weight:bold">
+                            <i><span id="number"><?php 
+                            $idu = $_SESSION["user"]->get_id();
+                            $sql = "SELECT count(*) as number,sum(price) as prices
+                            FROM cart
+                            INNER JOIN users ON users.id = cart.user_id
+                            INNER JOIN gigs ON gigs.id = cart.gigs_id WHERE user_id=$idu";
+                            $result = mysqli_query($conn, $sql);
+                            if($row = mysqli_fetch_assoc($result)) {
+                                echo $row['number'];
+                                 ?></span>
+                        <i class="fas fa-shopping-cart"> </i>
+                        
+                            </i>
+                            <span class="d-none d-lg-inline-flex" style="color: cadetblue;" id="price"><?php echo $row['prices']." $";
+                            } ?></span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
+                            <a href="#" class="dropdown-item">
+                                <div class="d-flex align-items-center">
+                                    <img class="rounded-circle" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                                    <div class="ms-2">
+                                        <h6 class="fw-normal mb-0">Jhon send you a message</h6>
+                                        <small>15 minutes ago</small>
+                                    </div>
+                                </div>
+                            </a>
+                            <hr class="dropdown-divider">
+                            <a href="#" class="dropdown-item">
+                                <div class="d-flex align-items-center">
+                                    <img class="rounded-circle" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                                    <div class="ms-2">
+                                        <h6 class="fw-normal mb-0">Jhon send you a message</h6>
+                                        <small>15 minutes ago</small>
+                                    </div>
+                                </div>
+                            </a>
+                            <hr class="dropdown-divider">
+                            <a href="#" class="dropdown-item">
+                                <div class="d-flex align-items-center">
+                                    <img class="rounded-circle" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                                    <div class="ms-2">
+                                        <h6 class="fw-normal mb-0">Jhon send you a message</h6>
+                                        <small>15 minutes ago</small>
+                                    </div>
+                                </div>
+                            </a>
+                            <hr class="dropdown-divider">
+                            <a href="#" class="dropdown-item text-center">See all message</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                            <i class="fa fa-bell me-lg-2"></i>
+                            <span class="d-none d-lg-inline-flex">Notificatin</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
+                            <a href="#" class="dropdown-item">
+                                <h6 class="fw-normal mb-0">Profile updated</h6>
+                                <small>15 minutes ago</small>
+                            </a>
+                            <hr class="dropdown-divider">
+                            <a href="#" class="dropdown-item">
+                                <h6 class="fw-normal mb-0">New user added</h6>
+                                <small>15 minutes ago</small>
+                            </a>
+                            <hr class="dropdown-divider">
+                            <a href="#" class="dropdown-item">
+                                <h6 class="fw-normal mb-0">Password changed</h6>
+                                <small>15 minutes ago</small>
+                            </a>
+                            <hr class="dropdown-divider">
+                            <a href="#" class="dropdown-item text-center">See all notifications</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                            <img class="rounded-circle me-lg-2" src="img/unknown.png" alt="" style="width: 40px; height: 40px;">
+                            <span class="d-none d-lg-inline-flex"><?php echo $_SESSION["user"]->get_name()." ".$_SESSION["user"]->get_last(); ?></span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
+                            <a href="#" class="dropdown-item">My Profile</a>
+                            <a href="#" class="dropdown-item">Settings</a>
+                            <a href="logout" class="dropdown-item">Log Out</a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <?php } ?>
             <!-- Navbar End -->
 
-
+            <?php if($role=='Admin'){ ?>
             <!-- Sale & Revenue Start -->
             <div class="container-fluid pt-4 px-4">
                 <div class="row g-4">
@@ -254,6 +362,19 @@
                     </div>
                 </div>
             </div>
+            <?php }  else{ ?>
+                <div class="container-fluid pt-4 px-4">
+                <div class="row g-4">
+                <div class="col-sm-12 col-xl-12">
+                        <div class="bg-secondary rounded align-items-center p-4" style="text-align:center">
+                            <div class="ms-3">
+                                <h2 class="mb-2">Welcome to <span style="color: #fcd703;font-weight: 900;">DIGITAL IT SERVICES</span></h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                <?php } ?>
             <!-- Sale & Revenue End -->
             <!-- <canvas id="users-chart" style='width:100px !important;height:80px !important;'></canvas> -->
 

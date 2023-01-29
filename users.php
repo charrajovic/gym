@@ -114,17 +114,20 @@
                     <?php if($role=='User'){ ?>
                     <a href="contact" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Contact</a>
                     <?php } ?>
-                    <?php if($role=='User'){ ?>
+                    <!-- <?php if($role=='User'){ ?>
                     <a href="reviews" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Reviews</a>
-                    <?php } ?>
+                    <?php } ?> -->
                     <?php if($role=='Admin'){ ?>
                     <a href="mails" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Mails manage</a>
                     <?php } ?>
                     <?php if($role=='Admin'){ ?>
                     <a href="activity" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Last activities</a>
                     <?php } ?>
-                    <?php if($role=='Admin'){ ?>
-                    <a href="chart.html" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Reviews Manage</a>
+                    <?php if($role=='User'){ ?>
+                    <a href="found" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Add found</a>
+                    <?php } ?>
+                    <?php if($role=='User'){ ?>
+                    <a href="store" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Store</a>
                     <?php } ?>
                     <!-- <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Pages</a>

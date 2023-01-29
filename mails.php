@@ -1,5 +1,6 @@
 <?php
             include 'user.php';
+            include 'connect.php';
             session_start();
             if(isset($_SESSION["user"]))
             {
@@ -96,17 +97,20 @@
                     <?php if($role=='User'){ ?>
                     <a href="contact" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Contact</a>
                     <?php } ?>
-                    <?php if($role=='User'){ ?>
+                    <!-- <?php if($role=='User'){ ?>
                     <a href="reviews" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Reviews</a>
-                    <?php } ?>
+                    <?php } ?> -->
                     <?php if($role=='Admin'){ ?>
-                    <a href="mails" class="nav-item nav-link active"><i class="fa fa-table me-2"></i>Mails manage</a>
+                    <a href="mails" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Mails manage</a>
                     <?php } ?>
                     <?php if($role=='Admin'){ ?>
                     <a href="activity" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Last activities</a>
                     <?php } ?>
-                    <?php if($role=='Admin'){ ?>
-                    <a href="chart.html" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Reviews Manage</a>
+                    <?php if($role=='User'){ ?>
+                    <a href="found" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Add found</a>
+                    <?php } ?>
+                    <?php if($role=='User'){ ?>
+                    <a href="store" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Store</a>
                     <?php } ?>
                     <!-- <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Pages</a>
@@ -126,6 +130,7 @@
         <!-- Content Start -->
         <div class="content">
             <!-- Navbar Start -->
+            <?php if($role=='User'){ ?>
             <nav class="navbar navbar-expand bg-secondary navbar-dark sticky-top px-4 py-0">
                 <a href="home" class="navbar-brand d-flex d-lg-none me-4" style="display: block;text-align: center;width: 100%;">
                 <img src="assets/images/logo.png" alt="logo" style='width: 45px;'>
@@ -137,10 +142,23 @@
                     <input class="form-control bg-dark border-0" type="search" placeholder="Search">
                 </form>
                 <div class="navbar-nav align-items-center ms-auto">
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                            <i class="fa fa-envelope me-lg-2"></i>
-                            <span class="d-none d-lg-inline-flex">Message</span>
+                    <div class="nav-item">
+                        <a href="cart" class="nav-link" style="font-weight:bold">
+                            <i><span id="number"><?php 
+                            $idu = $_SESSION["user"]->get_id();
+                            $sql = "SELECT count(*) as number,sum(price) as prices
+                            FROM cart
+                            INNER JOIN users ON users.id = cart.user_id
+                            INNER JOIN gigs ON gigs.id = cart.gigs_id WHERE user_id=$idu";
+                            $result = mysqli_query($conn, $sql);
+                            if($row = mysqli_fetch_assoc($result)) {
+                                echo $row['number'];
+                                 ?></span>
+                        <i class="fas fa-shopping-cart"> </i>
+                        
+                            </i>
+                            <span class="d-none d-lg-inline-flex" style="color: cadetblue;" id="price"><?php echo $row['prices']." $";
+                            } ?></span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
                             <a href="#" class="dropdown-item">
@@ -213,6 +231,7 @@
                     </div>
                 </div>
             </nav>
+            <?php } ?>
             <!-- Navbar End -->
 
 
