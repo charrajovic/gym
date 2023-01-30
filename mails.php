@@ -19,7 +19,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>User management</title>
+    <title>Mails management</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -146,7 +146,7 @@
                         <a href="cart" class="nav-link" style="font-weight:bold">
                             <i><span id="number"><?php 
                             $idu = $_SESSION["user"]->get_id();
-                            $sql = "SELECT count(*) as number,sum(price) as prices
+                            $sql = "SELECT count(*) as number,sum(price*quantity) as prices
                             FROM cart
                             INNER JOIN users ON users.id = cart.user_id
                             INNER JOIN gigs ON gigs.id = cart.gigs_id WHERE user_id=$idu";
@@ -238,7 +238,7 @@
             <!-- Sale & Revenue Start -->
             <div class="row">
                 <div class="offset-md-2 col-md-8" style="margin-top:50px;margin-bottom:50px;box-shadow: 0 0 10px #eee;padding:5px;overflow:auto">
-                <h2 style='text-align:center' onclick="user()">user management:</h2>
+                <h2 style='text-align:center' onclick="user()">Mails management:</h2>
                 <table class="table" style='border: 2px solid white;margin-bottom:0'>
   <thead class="thead-dark" style='border: 2px solid white;'>
     <tr>

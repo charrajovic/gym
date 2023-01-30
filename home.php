@@ -232,7 +232,7 @@
                         <a href="cart" class="nav-link" style="font-weight:bold">
                             <i><span id="number"><?php 
                             $idu = $_SESSION["user"]->get_id();
-                            $sql = "SELECT count(*) as number,sum(price) as prices
+                            $sql = "SELECT count(*) as number,sum(price*quantity) as prices
                             FROM cart
                             INNER JOIN users ON users.id = cart.user_id
                             INNER JOIN gigs ON gigs.id = cart.gigs_id WHERE user_id=$idu";

@@ -394,7 +394,7 @@ else if(isset($_REQUEST['service']) && isset($_REQUEST['type']))
 
             if ($res = $conn->query($sql) === TRUE) {
                 $idu = $_SESSION["user"]->get_id();
-                $sql = "SELECT count(*) as number,sum(price) as prices
+                $sql = "SELECT count(*) as number,sum(price*quantity) as prices
                 FROM cart
                 INNER JOIN users ON users.id = cart.user_id
                 INNER JOIN gigs ON gigs.id = cart.gigs_id WHERE user_id=$idu";
@@ -418,7 +418,61 @@ else if(isset($_REQUEST['service']) && isset($_REQUEST['type']))
             $sql = "DELETE from cart where user_id=$idu";
 
             if ($res = $conn->query($sql) === TRUE) {
-                $sql = "SELECT count(*) as number,sum(price) as prices
+                $sql = "SELECT count(*) as number,sum(price*quantity) as prices
+                FROM cart
+                INNER JOIN users ON users.id = cart.user_id
+                INNER JOIN gigs ON gigs.id = cart.gigs_id WHERE user_id=$idu";
+                $result = mysqli_query($conn, $sql);
+                if($row = mysqli_fetch_assoc($result)) {
+                    echo $row['number'].':'.$row['prices'];
+                }
+                else
+                {
+                    echo 'error2';
+                }
+                } else {
+                echo "error";
+                }
+                
+        }
+        else if($_REQUEST['service'] == "plusq")
+        {
+            session_start();
+            $idg = $_REQUEST['idc'];
+            $sql = "UPDATE cart
+            SET quantity = quantity + 1
+            WHERE id = $idg";
+
+            if ($res = $conn->query($sql) === TRUE) {
+                $idu = $_SESSION["user"]->get_id();
+                $sql = "SELECT count(*) as number,sum(price*quantity) as prices
+                FROM cart
+                INNER JOIN users ON users.id = cart.user_id
+                INNER JOIN gigs ON gigs.id = cart.gigs_id WHERE user_id=$idu";
+                $result = mysqli_query($conn, $sql);
+                if($row = mysqli_fetch_assoc($result)) {
+                    echo $row['number'].':'.$row['prices'];
+                }
+                else
+                {
+                    echo 'error2';
+                }
+                } else {
+                echo "error";
+                }
+                
+        }
+        else if($_REQUEST['service'] == "moinsq")
+        {
+            session_start();
+            $idg = $_REQUEST['idc'];
+            $sql = "UPDATE cart
+            SET quantity = quantity - 1
+            WHERE id = $idg  and quantity > 1  ";
+
+            if ($res = $conn->query($sql) === TRUE) {
+                $idu = $_SESSION["user"]->get_id();
+                $sql = "SELECT count(*) as number,sum(price*quantity) as prices
                 FROM cart
                 INNER JOIN users ON users.id = cart.user_id
                 INNER JOIN gigs ON gigs.id = cart.gigs_id WHERE user_id=$idu";
@@ -545,7 +599,7 @@ else if(isset($_REQUEST['adouna']) && isset($_REQUEST['service']) && isset($_REQ
     $sql2 = "INSERT INTO `cart`(`user_id`, `gigs_id`, `email`, `message`) VALUES ($idu,$service,'$email','$message')";
 
     if ($conn->query($sql2) === TRUE) {
-        $sql = "SELECT count(*) as number,sum(price) as prices
+        $sql = "SELECT count(*) as number,sum(price*quantity) as prices
         FROM cart
         INNER JOIN users ON users.id = cart.user_id
         INNER JOIN gigs ON gigs.id = cart.gigs_id WHERE user_id=$idu";

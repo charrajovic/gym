@@ -238,7 +238,7 @@
                         
                     </div> 
                     <div class="col-1" style="margin:auto">
-                    <i class="fa fa-plus" aria-hidden="true" onclick='add_user()' style="color:green;cursor:pointer"></i>
+                    <!-- <i class="fa fa-plus" aria-hidden="true" onclick='add_user()' style="color:green;cursor:pointer"></i> -->
                     </div>
                 </div>
                 

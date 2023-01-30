@@ -152,7 +152,7 @@
                         <a href="cart" class="nav-link" style="font-weight:bold">
                             <i><span id="number"><?php 
                             $idu = $_SESSION["user"]->get_id();
-                            $sql = "SELECT count(*) as number,sum(price) as prices
+                            $sql = "SELECT count(*) as number,sum(price*quantity) as prices
                             FROM cart
                             INNER JOIN users ON users.id = cart.user_id
                             INNER JOIN gigs ON gigs.id = cart.gigs_id WHERE user_id=$idu";
@@ -261,7 +261,7 @@
                         <?php
 
                             $idu = $_SESSION["user"]->get_id();
-                            $sql = "SELECT cart.id as id,path,gigs.name as name,price
+                            $sql = "SELECT cart.id as id,path,gigs.name as name,price,quantity
                             FROM cart
                             INNER JOIN users ON users.id = cart.user_id
                             INNER JOIN gigs ON gigs.id = cart.gigs_id WHERE user_id=$idu";
@@ -272,9 +272,20 @@
                                     <th scope="row"><i class="fa fa-trash" aria-hidden="true" style="color:red;cursor:pointer" onclick="delete_cart(this,<?php echo $row['id']; ?>)"></i></th>
                                     <td scope="row" style="background-image:url(<?php echo $row['path']; ?>);background-size: 100% 100%;"></td>
                                     <td><?php echo $row['name']; ?></td>
-                                    <td><?php echo $row['price'].' $'; ?></td>
-                                    <td><input type="number" name="" id="" min="1" max="10" class="form-control" value="1" disabled style="background: black !important;    box-shadow: 2px 2px white;color: white !important;border: 1px solid;"></td>
-                                    <td><span class="prices"><?php echo $row['price']; ?></span> $</td>
+                                    <td><span><?php echo $row['price']; ?></span>$</td>
+                                    <td><div class="row">
+                                            <div class="col-2" style="padding:0;margin-top:5px;">
+                                                <i class="fa fa-minus" style="color:red;cursor:pointer" onclick="moinsq(this,<?php echo $row['id']; ?>)"></i>
+                                            </div>
+                                            <div class="col-8" style="padding-left: 0;padding-right: 5px;">
+                                                <input type="number" name="" id="" min="1" max="10" class="form-control" disabled value="<?php echo $row["quantity"]; ?>" style="background: black !important;    box-shadow: 2px 2px white;color: white !important;border: 1px solid;">
+                                            </div>
+                                            <div class="col-2" style="padding:0;margin-top:5px;">
+                                                <i class="fa fa-plus" style="color:green;cursor:pointer" onclick="plusq(this,<?php echo $row['id']; ?>)"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span class="prices"><?php echo $row['price']*$row['quantity']; ?></span> $</td>
                                 </tr>
                                 <?php
                             }
@@ -342,6 +353,55 @@
                 }
                         });
             }
+        }
+
+        function plusq(yy,id)
+        {
+            var pr = yy.parentElement.parentElement.parentElement.previousElementSibling.children[0].textContent;
+            // var nx = yy.parentElement.parentElement.parentElement.nextElementSibling.children[0].textContent;
+            var A = yy;
+            $.post('controller', {service:'plusq',idc:id, type:'<?php echo $role; ?>'}).done(function(response){
+                console.log(response)
+                if(response != 'error' && response != "error2")
+                {
+                    yy.parentElement.parentElement.children[1].children[0].value = Number(yy.parentElement.parentElement.children[1].children[0].value) + Number(1);
+                    var aa = response.split(":");
+                    if(aa[1] == '')
+                    {
+                        aa[1] = 0;
+                    }
+                    document.getElementById("number").textContent = aa[0];
+                    document.getElementById("price").textContent = aa[1]+" $";
+                    document.getElementById("pay").textContent = "Pay with "+aa[1]+" $";
+                    yy.parentElement.parentElement.parentElement.nextElementSibling.children[0].textContent = Number(pr) * yy.parentElement.parentElement.children[1].children[0].value;
+                }
+                        });
+        }
+        function moinsq(yy,id)
+        {
+            var pr = yy.parentElement.parentElement.parentElement.previousElementSibling.children[0].textContent;
+            console.log(Number(yy.parentElement.parentElement.children[1].children[0].value) + Number(1))
+            var A = yy;
+            $.post('controller', {service:'moinsq',idc:id, type:'<?php echo $role; ?>'}).done(function(response){
+                console.log(response)
+                if(response != 'error' && response != "error2")
+                {
+                    if(Number(yy.parentElement.parentElement.children[1].children[0].value)>1)
+                    {
+                    yy.parentElement.parentElement.children[1].children[0].value = Number(yy.parentElement.parentElement.children[1].children[0].value) - Number(1);
+                    }
+                    var aa = response.split(":");
+                    if(aa[1] == '')
+                    {
+                        aa[1] = 0;
+                    }
+                    document.getElementById("number").textContent = aa[0];
+                    document.getElementById("price").textContent = aa[1]+" $";
+                    document.getElementById("pay").textContent = "Pay with "+aa[1]+" $";
+                    
+                    yy.parentElement.parentElement.parentElement.nextElementSibling.children[0].textContent = Number(pr) * yy.parentElement.parentElement.children[1].children[0].value;
+                }
+                        });
         }
 
         function trash()
