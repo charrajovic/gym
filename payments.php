@@ -2,6 +2,7 @@
             include 'user.php';
             session_start();
             include 'connect.php';
+            $sumk = 0;
             if(isset($_SESSION["user"]))
             {
                 $role='User';
@@ -19,7 +20,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Cart</title>
+    <title>Payments</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -117,10 +118,10 @@
                     <a href="found" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Add found</a>
                     <?php } ?>
                     <?php if($role=='User'){ ?>
-                    <a href="store" class="nav-item nav-link active"><i class="fa fa-chart-bar me-2"></i>Store</a>
+                    <a href="store" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Store</a>
                     <?php } ?>
                     <?php if($role=='User'){ ?>
-                    <a href="payments" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Payments</a>
+                    <a href="payments" class="nav-item nav-link active"><i class="fa fa-chart-bar me-2"></i>Payments</a>
                     <?php } ?>
                     <!-- <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Pages</a>
@@ -161,6 +162,7 @@
                             INNER JOIN gigs ON gigs.id = cart.gigs_id WHERE user_id=$idu and cart.status is null";
                             $result = mysqli_query($conn, $sql);
                             if($row = mysqli_fetch_assoc($result)) {
+                                $sumk = $row['prices'];
                                 echo $row['number'];
                                  ?></span>
                         <i class="fas fa-shopping-cart"> </i>
@@ -246,67 +248,57 @@
             <!-- Sale & Revenue Start -->
         <div class="row" style="margin-top:21px;padding:0 30px">
             <div class="col-md-12">
-                <div class="card">
-                <div class="card-header" style="background: #fcd703;color: black;"><i class="fas fa-shopping-cart"></i><b>Cart</b></div>
-                <div class="card-body" style="background:black">
-                <table class="table" style="width:100%;color:white;font-weight:bold">
-                    <thead>
-                        <tr>
-                        <th scope="col" style="width:10%">#</th>
-                        <th scope="col" style="width:20%"></th>
-                        <th scope="col" style="width:20%">Gigs</th>
-                        <th scope="col" style="width:20%">Prix</th>
-                        <th scope="col" style="width:10%">Quantité</th>
-                        <th scope="col" style="width:20%">Sous totale</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-
-                            $idu = $_SESSION["user"]->get_id();
-                            $sql = "SELECT cart.id as id,path,gigs.name as name,price,quantity
-                            FROM cart
-                            INNER JOIN users ON users.id = cart.user_id
-                            INNER JOIN gigs ON gigs.id = cart.gigs_id WHERE user_id=$idu and cart.status is null";
-                            $result = mysqli_query($conn, $sql);
-                            while($row = mysqli_fetch_assoc($result)) {
-                                ?>
-                                <tr class="cart_items">
-                                    <th scope="row"><i class="fa fa-trash" aria-hidden="true" style="color:red;cursor:pointer" onclick="delete_cart(this,<?php echo $row['id']; ?>)"></i></th>
-                                    <td scope="row" style="background-image:url(<?php echo $row['path']; ?>);background-size: 100% 100%;"></td>
-                                    <td><?php echo $row['name']; ?></td>
-                                    <td><span><?php echo $row['price']; ?></span>$</td>
-                                    <td><div class="row">
-                                            <div class="col-2" style="padding:0;margin-top:5px;">
-                                                <i class="fa fa-minus" style="color:red;cursor:pointer" onclick="moinsq(this,<?php echo $row['id']; ?>)"></i>
-                                            </div>
-                                            <div class="col-8" style="padding-left: 0;padding-right: 5px;">
-                                                <input type="number" name="" id="" min="1" max="10" class="form-control" disabled value="<?php echo $row["quantity"]; ?>" style="background: black !important;    box-shadow: 2px 2px white;color: white !important;border: 1px solid;">
-                                            </div>
-                                            <div class="col-2" style="padding:0;margin-top:5px;">
-                                                <i class="fa fa-plus" style="color:green;cursor:pointer" onclick="plusq(this,<?php echo $row['id']; ?>)"></i>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td><span class="prices"><?php echo $row['price']*$row['quantity']; ?></span> $</td>
-                                </tr>
-                                <?php
-                            }
-
+            <form action="controller" method="post" enctype="multipart/form-data">
+            <div class="card">
+                <div class="card-header" style="background: #fcd703;color: black;"><b>Last payments</b></div>
+                <div class="card-body" id="card-body" style="color:black">
+                <?php
+                    if(isset($_REQUEST['message']))
+                    {
                         ?>
-                    </tbody>
-                    </table>
-                </div> 
-                <div class="card-footer" style="background: black;border: 1px solid white;">
-                        <div class="row">
-                            <div class="col-md-6">
-                            <button class="btn btn-info form-control" style="background:#fcd703;border: none;font-weight:bold" onclick='pay()' id="pay">Pay</button>
-                            </div>
-                            <div class="col-md-6">
-                            <button class="btn btn-info form-control" style="    background: #FF2900;border: none;color: black;font-weight: bold;" onclick='trash()'><i class="fa fa-trash" aria-hidden="true"></i> Clear cart</button>
-                            </div>
+                        <div class="alert alert-success" id="alert" role="alert">
+                            Proof of payment has been sent to the administrator it can take up to 24 hours to respond
                         </div>
-                </div>
+                        <?php
+                    }
+                ?>
+                <div class="row">
+                <?php
+                $id = $_SESSION['user']->get_id();
+                    $sql = "SELECT DISTINCT(pay),pay.email,pay.method,pay.image,DATE_FORMAT(pay.created,'%d %M %Y at %T') as created,pay.status,pay.amount
+                    FROM pay_cart
+                    INNER JOIN cart ON pay_cart.cart = cart.id
+                    INNER JOIN pay ON pay_cart.pay = pay.id
+                    where cart.user_id = $id";
+                    $result = mysqli_query($conn, $sql);
+                    while($row = mysqli_fetch_assoc($result)) {
+                        ?>
+                        <div class="col-md-6">
+                        <div class="card" style="margin-bottom:10px">
+                        <img class="card-img-top" src="<?php echo $row['image']; ?>" alt="Card image cap">
+                        <div class="card-body">
+                            <p class="card-text">Email : <b><?php echo $row['email']; ?></b></p>
+                            <p class="card-text">Payment method : <b><?php echo $row['method']; ?></b></p>
+                            <p class="card-text">Payment date : <b><?php echo $row['created']; ?></b></p>
+                            <p class="card-text">Status : <?php if(empty($row['status']))
+                            {
+                                echo '<b style="color:orange">Pending</b>';
+                            }else if($row['status'] == 1)
+                            {
+                                echo '<b style="color:green">Paid</b>';
+                            }else{
+                                echo '<b style="color:red">Rejected</b>';
+                            } ?></p>
+                        </div>
+                        </div>
+                        </div>
+                        <?php
+                    }
+                ?>
+                    </div>
+                </div> 
+            </div>
+            </form>
             </div>
             </div>
             
@@ -333,167 +325,219 @@
     <script src="js/main.js"></script>
     <script>
 
-        function delete_cart(yy,id)
-        {
-            var A = yy;
-            console.log(A.parentElement.parentElement)
-            console.log(id)
-            var result = confirm("Want to delete?");
-            if (result) {
-                $.post('controller', {service:'deletecart',idc:id, type:'<?php echo $role; ?>'}).done(function(response){
-                console.log(response)
-                if(response != 'error' && response != "error2")
-                {
-                    A.parentElement.parentElement.remove();
-                    var aa = response.split(":");
-                    if(aa[1] == '')
-                    {
-                        aa[1] = 0;
-                    }
-                    document.getElementById("number").textContent = aa[0];
-                    document.getElementById("price").textContent = aa[1]+" $";
-                    document.getElementById("pay").textContent = "Pay with "+aa[1]+" $";
-                }
-                        });
-            }
-        }
-
-        function plusq(yy,id)
-        {
-            var pr = yy.parentElement.parentElement.parentElement.previousElementSibling.children[0].textContent;
-            // var nx = yy.parentElement.parentElement.parentElement.nextElementSibling.children[0].textContent;
-            var A = yy;
-            $.post('controller', {service:'plusq',idc:id, type:'<?php echo $role; ?>'}).done(function(response){
-                console.log(response)
-                if(response != 'error' && response != "error2")
-                {
-                    yy.parentElement.parentElement.children[1].children[0].value = Number(yy.parentElement.parentElement.children[1].children[0].value) + Number(1);
-                    var aa = response.split(":");
-                    if(aa[1] == '')
-                    {
-                        aa[1] = 0;
-                    }
-                    document.getElementById("number").textContent = aa[0];
-                    document.getElementById("price").textContent = aa[1]+" $";
-                    document.getElementById("pay").textContent = "Pay with "+aa[1]+" $";
-                    yy.parentElement.parentElement.parentElement.nextElementSibling.children[0].textContent = Number(pr) * yy.parentElement.parentElement.children[1].children[0].value;
-                }
-                        });
-        }
-        function moinsq(yy,id)
-        {
-            var pr = yy.parentElement.parentElement.parentElement.previousElementSibling.children[0].textContent;
-            console.log(Number(yy.parentElement.parentElement.children[1].children[0].value) + Number(1))
-            var A = yy;
-            $.post('controller', {service:'moinsq',idc:id, type:'<?php echo $role; ?>'}).done(function(response){
-                console.log(response)
-                if(response != 'error' && response != "error2")
-                {
-                    if(Number(yy.parentElement.parentElement.children[1].children[0].value)>1)
-                    {
-                    yy.parentElement.parentElement.children[1].children[0].value = Number(yy.parentElement.parentElement.children[1].children[0].value) - Number(1);
-                    }
-                    var aa = response.split(":");
-                    if(aa[1] == '')
-                    {
-                        aa[1] = 0;
-                    }
-                    document.getElementById("number").textContent = aa[0];
-                    document.getElementById("price").textContent = aa[1]+" $";
-                    document.getElementById("pay").textContent = "Pay with "+aa[1]+" $";
-                    
-                    yy.parentElement.parentElement.parentElement.nextElementSibling.children[0].textContent = Number(pr) * yy.parentElement.parentElement.children[1].children[0].value;
-                }
-                        });
-        }
-
-        function trash()
-        {
-            $.post('controller', {service:'trash', type:'<?php echo $role; ?>'}).done(function(response){
-                console.log(response)
-                if(response != 'error' && response != "error2")
-                {
-                    var cc = document.getElementsByClassName('cart_items');
-                    console.log(cc)
-                    
-                    for (let i = 0; i < cc.length; i++) {
-                        console.log(cc[i])
-                        cc[i].remove();
-                        i--;
-                    }
-                    var aa = response.split(":");
-                    if(aa[1] == '')
-                    {
-                        aa[1] = 0;
-                    }
-                    document.getElementById("number").textContent = aa[0];
-                    document.getElementById("price").textContent = aa[1]+" $";
-                    document.getElementById("pay").textContent = "Pay with "+aa[1]+" $";
-                }
-                        });
-        }
-
-        function pay()
-        {
-            window.location = "pay";
-        }
-
-        function cart()
-        {
-            var domain = document.getElementById("domain").value;
-            var service = document.getElementById("service").value;
-            var email = document.getElementById("email").value;
-            var message = document.getElementById("message").value;
-            $.post('controller', {adouna:'walo',service:document.getElementById("service").value,email:document.getElementById("email").value,message:document.getElementById("message").value}).done(function(response){
-                if(response!='no' && response!='error')
-                {
-                    document.getElementById("domain").value = '';
-                    document.getElementById("service").innerHTML = '<option value="" disabled selected>-</option>';
-                    document.getElementById("email").value = '';
-                    document.getElementById("message").value = "";
-                    var aa = response.split(":");
-                    document.getElementById("number").textContent = aa[0];
-                    document.getElementById("price").textContent = aa[1]+" $";
-                    document.getElementById("pay").textContent = "Pay with " + aa[1]+" $";
-                }
-            
-});
-        }
-
-        function chnge()
-        {
-            document.getElementById("service").innerHTML = "";
-            $.post('controller', {adouna:'walo',domain:document.getElementById("domain").value}).done(function(response){
-                console.log(response)
-                obj = JSON.parse(response);
-                for (let i = 0; i < obj.length; i++) {
-                    document.getElementById("service").innerHTML += "<option value='"+obj[i].id+"'>"+obj[i].name+" per "+obj[i].price+"</option>";
-                }
-            
-            
-});
-        }
-
-        function sendmail()
-        {
-            var A = document.getElementById("bton");
-            document.getElementById("bton").disabled = true;
-            $.post('controller', {adouna:'walo',name:document.getElementById('name').value,email:document.getElementById('email').value,subject:document.getElementById('subject').value,message:document.getElementById('message').value}).done(function(response){
-            console.log(response);
-            if(response=="the mail was sended successfly")
+            function exit()
             {
-                A.disabled = false;
-                document.getElementById('name').value='';
-                document.getElementById('email').value='';
-                document.getElementById('subject').value='';
-                document.getElementById('message').value='';
-                document.getElementById('uploaded').textContent=response;
-                document.getElementById('uploaded').style.display='block';
-                setTimeout(function(){ document.getElementById('uploaded').style.display='none'; }, 10000);
+                window.location = 'cart'
             }
+
+            function chri()
+            {
+                if(document.getElementById("methode").value=="bank")
+                {
+                        console.log('chri')
+                        document.getElementById("chira2").type = "submit"
+                }
+                else
+                {
+                    document.getElementById("bank").innerHTML = ""
+                    document.getElementById("chira2").onclick = paye;
+                }
+            }
+
+            function paye()
+            {
+                console.log(document.getElementById("methode").value)
+                if(document.getElementById("methode").value=="bank")
+                {
+                    console.log(document.getElementById("methode").value=="bank")
+                    if(!document.getElementById("ban"))
+                    {
+                        if(!document.getElementById("bank"))
+                        {
+                            var email = document.getElementById("email").value;
+                            document.getElementById("card-body").innerHTML += '<div id="bank"><div class="row" id="ban" style="margin-top:20px;margin-bottom:20px"><div class="col-md-12"><label for="">Our Bank Accounts:</label><table width="100%"><tr style="border:2px solid"><th style="border:2px solid">Bank Name</th><th style="border:2px solid">Account number</th><th style="border:2px solid">RIB</th><th style="border:2px solid">Service</th></tr><tr style="border:2px solid"><th style="border:2px solid">CIH BANK</th><th style="border:2px solid">3944978211003500</th><th style="border:2px solid">230 780 3944978211003500 56</th><th style="border:2px solid">SERVICES</th></tr></table></div></div><label for="">Payment screen</label><input type="file" class="form-control" id="fille" name="fille" required></div>'
+                        document.getElementById("methode").value="bank";
+                        document.getElementById("email").value=email;
+                        document.getElementById("chira2").onclick = chri;
+                        }
+                        else if(document.getElementById("bank"))
+                        {
+                            var email = document.getElementById("email").value;
+                            document.getElementById("bank").innerHTML = '<div class="row" id="ban" style="margin-top:20px;margin-bottom:20px"><div class="col-md-12"><label for="">Our Bank Accounts:</label><table width="100%"><tr style="border:2px solid"><th style="border:2px solid">Bank Name</th><th style="border:2px solid">Account number</th><th style="border:2px solid">RIB</th><th style="border:2px solid">Service</th></tr><tr style="border:2px solid"><th style="border:2px solid">CIH BANK</th><th style="border:2px solid">3944978211003500</th><th style="border:2px solid">230 780 3944978211003500 56</th><th style="border:2px solid">SERVICES</th></tr></table></div></div><label for="">Payment screen</label><input type="file" class="form-control" id="fille" name="fille" required>'
+                        document.getElementById("methode").value="bank";
+                        document.getElementById("email").value=email;
+                        document.getElementById("chira2").onclick = chri;
+                        }
+                        
+                        
+                    }
+                    
+                }
+                else
+                {
+                    console.log('ach')
+                    document.getElementById("bank").innerHTML = ""
+                }
+            }
+
+//         function delete_cart(yy,id)
+//         {
+//             var A = yy;
+//             console.log(A.parentElement.parentElement)
+//             console.log(id)
+//             var result = confirm("Want to delete?");
+//             if (result) {
+//                 $.post('controller', {service:'deletecart',idc:id, type:'<?php echo $role; ?>'}).done(function(response){
+//                 console.log(response)
+//                 if(response != 'error' && response != "error2")
+//                 {
+//                     A.parentElement.parentElement.remove();
+//                     var aa = response.split(":");
+//                     if(aa[1] == '')
+//                     {
+//                         aa[1] = 0;
+//                     }
+//                     document.getElementById("number").textContent = aa[0];
+//                     document.getElementById("price").textContent = aa[1]+" $";
+//                     document.getElementById("pay").textContent = "Pay with "+aa[1]+" $";
+//                 }
+//                         });
+//             }
+//         }
+
+//         function plusq(yy,id)
+//         {
+//             var pr = yy.parentElement.parentElement.parentElement.previousElementSibling.children[0].textContent;
+//             // var nx = yy.parentElement.parentElement.parentElement.nextElementSibling.children[0].textContent;
+//             var A = yy;
+//             $.post('controller', {service:'plusq',idc:id, type:'<?php echo $role; ?>'}).done(function(response){
+//                 console.log(response)
+//                 if(response != 'error' && response != "error2")
+//                 {
+//                     yy.parentElement.parentElement.children[1].children[0].value = Number(yy.parentElement.parentElement.children[1].children[0].value) + Number(1);
+//                     var aa = response.split(":");
+//                     if(aa[1] == '')
+//                     {
+//                         aa[1] = 0;
+//                     }
+//                     document.getElementById("number").textContent = aa[0];
+//                     document.getElementById("price").textContent = aa[1]+" $";
+//                     document.getElementById("pay").textContent = "Pay with "+aa[1]+" $";
+//                     yy.parentElement.parentElement.parentElement.nextElementSibling.children[0].textContent = Number(pr) * yy.parentElement.parentElement.children[1].children[0].value;
+//                 }
+//                         });
+//         }
+//         function moinsq(yy,id)
+//         {
+//             var pr = yy.parentElement.parentElement.parentElement.previousElementSibling.children[0].textContent;
+//             console.log(Number(yy.parentElement.parentElement.children[1].children[0].value) + Number(1))
+//             var A = yy;
+//             $.post('controller', {service:'moinsq',idc:id, type:'<?php echo $role; ?>'}).done(function(response){
+//                 console.log(response)
+//                 if(response != 'error' && response != "error2")
+//                 {
+//                     if(Number(yy.parentElement.parentElement.children[1].children[0].value)>1)
+//                     {
+//                     yy.parentElement.parentElement.children[1].children[0].value = Number(yy.parentElement.parentElement.children[1].children[0].value) - Number(1);
+//                     }
+//                     var aa = response.split(":");
+//                     if(aa[1] == '')
+//                     {
+//                         aa[1] = 0;
+//                     }
+//                     document.getElementById("number").textContent = aa[0];
+//                     document.getElementById("price").textContent = aa[1]+" $";
+//                     document.getElementById("pay").textContent = "Pay with "+aa[1]+" $";
+                    
+//                     yy.parentElement.parentElement.parentElement.nextElementSibling.children[0].textContent = Number(pr) * yy.parentElement.parentElement.children[1].children[0].value;
+//                 }
+//                         });
+//         }
+
+//         function trash()
+//         {
+//             $.post('controller', {service:'trash', type:'<?php echo $role; ?>'}).done(function(response){
+//                 console.log(response)
+//                 if(response != 'error' && response != "error2")
+//                 {
+//                     var cc = document.getElementsByClassName('cart_items');
+//                     console.log(cc)
+                    
+//                     for (let i = 0; i < cc.length; i++) {
+//                         console.log(cc[i])
+//                         cc[i].remove();
+//                         i--;
+//                     }
+//                     var aa = response.split(":");
+//                     if(aa[1] == '')
+//                     {
+//                         aa[1] = 0;
+//                     }
+//                     document.getElementById("number").textContent = aa[0];
+//                     document.getElementById("price").textContent = aa[1]+" $";
+//                     document.getElementById("pay").textContent = "Pay with "+aa[1]+" $";
+//                 }
+//                         });
+//         }
+
+        
+
+//         function cart()
+//         {
+//             var domain = document.getElementById("domain").value;
+//             var service = document.getElementById("service").value;
+//             var email = document.getElementById("email").value;
+//             var message = document.getElementById("message").value;
+//             $.post('controller', {adouna:'walo',service:document.getElementById("service").value,email:document.getElementById("email").value,message:document.getElementById("message").value}).done(function(response){
+//                 if(response!='no' && response!='error')
+//                 {
+//                     document.getElementById("domain").value = '';
+//                     document.getElementById("service").innerHTML = '<option value="" disabled selected>-</option>';
+//                     document.getElementById("email").value = '';
+//                     document.getElementById("message").value = "";
+//                     var aa = response.split(":");
+//                     document.getElementById("number").textContent = aa[0];
+//                     document.getElementById("price").textContent = aa[1]+" $";
+//                     document.getElementById("pay").textContent = "Pay with " + aa[1]+" $";
+//                 }
             
-});
-        }
+// });
+//         }
+
+//         function chnge()
+//         {
+//             document.getElementById("service").innerHTML = "";
+//             $.post('controller', {adouna:'walo',domain:document.getElementById("domain").value}).done(function(response){
+//                 console.log(response)
+//                 obj = JSON.parse(response);
+//                 for (let i = 0; i < obj.length; i++) {
+//                     document.getElementById("service").innerHTML += "<option value='"+obj[i].id+"'>"+obj[i].name+" per "+obj[i].price+"</option>";
+//                 }
+            
+            
+// });
+//         }
+
+//         function sendmail()
+//         {
+//             var A = document.getElementById("bton");
+//             document.getElementById("bton").disabled = true;
+//             $.post('controller', {adouna:'walo',name:document.getElementById('name').value,email:document.getElementById('email').value,subject:document.getElementById('subject').value,message:document.getElementById('message').value}).done(function(response){
+//             console.log(response);
+//             if(response=="the mail was sended successfly")
+//             {
+//                 A.disabled = false;
+//                 document.getElementById('name').value='';
+//                 document.getElementById('email').value='';
+//                 document.getElementById('subject').value='';
+//                 document.getElementById('message').value='';
+//                 document.getElementById('uploaded').textContent=response;
+//                 document.getElementById('uploaded').style.display='block';
+//                 setTimeout(function(){ document.getElementById('uploaded').style.display='none'; }, 10000);
+//             }
+            
+// });
+//         }
 //         function user()
 //         {
 //             document.getElementById('users').innerHTML="";
@@ -511,13 +555,14 @@
 //         }
         window.onload = function()
         {
-            var bb = document.getElementsByClassName('prices');
-            var n = 0;
-            for (let i = 0; i < bb.length; i++) {
-                n += Number(bb[i].textContent);
+            // var bb = document.getElementsByClassName('prices');
+            // var n = 0;
+            // for (let i = 0; i < bb.length; i++) {
+            //     n += Number(bb[i].textContent);
                 
-            }
-            document.getElementById('pay').textContent = "Pay with "+Number(n)+' $';
+            // }
+            // document.getElementById('pay').textContent = "Pay with "+Number(n)+' $';
+            setTimeout(function(){ document.getElementById('alert').style.display = 'none' }, 5000);
         }
     </script>
 </body>

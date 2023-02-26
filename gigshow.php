@@ -39,7 +39,7 @@
 <body>
 
   <!-- ======= Header ======= -->
-  <header id="header" class="fixed-top ">
+  <header id="header" class="fixed-top " style="background: #37517e;">
     <div class="container d-flex align-items-center">
 
       <h1 class="logo me-auto"><sub><a href="index.html">Digital IT Services</a></sub></h1>
@@ -48,12 +48,12 @@
 
       <nav id="navbar" class="navbar">
         <ul>
-          <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
-          <li><a class="nav-link scrollto" href="#services">Services</a></li>
-          <li><a class="nav-link   scrollto" href="#portfolio">Gigs</a></li>
-          <li><a class="nav-link   scrollto" href="#pricing">Pricing</a></li>
+          <li><a class="nav-link scrollto" href="index#hero">Home</a></li>
+          <li><a class="nav-link scrollto" href="index#services">Services</a></li>
+          <li><a class="nav-link   scrollto active" href="#portfolio">Gigs</a></li>
+          <li><a class="nav-link   scrollto" href="index#pricing">Pricing</a></li>
           <li><a class="nav-link   scrollto" href="https://payhip.com/DigitalITServices" target="_blank">Shop</a></li>
-          <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
+          <li><a class="nav-link scrollto" href="index#contact">Contact</a></li>
           <li><a class="getstarted scrollto" href="login">Login</a></li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
@@ -62,139 +62,14 @@
     </div>
   </header><!-- End Header -->
 
-  <!-- ======= Hero Section ======= -->
-  <section id="hero" class="d-flex align-items-center" style="height: fit-content;">
-
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-6 d-flex flex-column justify-content-center pt-4 pt-lg-0 order-2 order-lg-1" data-aos="fade-up" data-aos-delay="200">
-          <h1>Better & Competitive Solutions For Your Business</h1>
-          <h2>Our freelancing startup aims to connect businesses and individuals with skilled professionals for a variety of project needs. Websites | Mobile Apps | Graphic designs | Data Science and Data Analytics Projects.</h2>
-          <div class="d-flex justify-content-center justify-content-lg-start">
-            <a href="#about" class="btn-get-started scrollto">Get Started</a>
-            <a href="https://digitalit.services/assets/images/video.mp4" class="glightbox btn-watch-video"><i class="bi bi-play-circle"></i><span>Watch Video</span></a>
-          </div>
-        </div>
-        <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="zoom-in" data-aos-delay="200">
-          <img src="assets/img/hero-img.png" class="img-fluid animated" alt="">
-        </div>
-      </div>
-    </div>
-
-  </section><!-- End Hero -->
   
   
 
-  <main id="main">
-      
-    
-
-    <!-- ======= Clients Section ======= -->
-    <section id="clients" class="clients section-bg">
-      <div class="container">
-
-        <div class="row" data-aos="zoom-in">
-
-          <div class="col-lg-2 col-md-4 col-6 d-flex align-items-center justify-content-center">
-            <img src="assets/img/clients/client-1.png" class="img-fluid" alt="">
-          </div>
-
-          <div class="col-lg-2 col-md-4 col-6 d-flex align-items-center justify-content-center">
-            <img src="assets/img/clients/client-2.png" class="img-fluid" alt="">
-          </div>
-
-          <div class="col-lg-2 col-md-4 col-6 d-flex align-items-center justify-content-center">
-            <img src="assets/img/clients/client-3.png" class="img-fluid" alt="">
-          </div>
-
-          <div class="col-lg-2 col-md-4 col-6 d-flex align-items-center justify-content-center">
-            <img src="assets/img/clients/client-4.png" class="img-fluid" alt="">
-          </div>
-
-          <div class="col-lg-2 col-md-4 col-6 d-flex align-items-center justify-content-center">
-            <img src="assets/img/clients/client-5.png" class="img-fluid" alt="">
-          </div>
-
-          <div class="col-lg-2 col-md-4 col-6 d-flex align-items-center justify-content-center">
-            <img src="assets/img/clients/client-6.png" class="img-fluid" alt="">
-          </div>
-
-        </div>
-
-      </div>
-    </section><!-- End Cliens Section -->
-
-
-   <!-- ======= Cta Section ======= -->
-    <section id="cta" class="cta">
-      <div class="container" data-aos="zoom-in">
-
-        <div class="row">
-          <div class="col-lg-9 text-center text-lg-start">
-            <h3>We highly recommend that our clients take advantage of our freelancing services to help them achieve their business goals.</h3>
-            <p> By purchasing our services, clients can access a pool of highly skilled professionals who are able to work on a variety of projects, from small tasks to large-scale endeavors. With our platform, clients can find the right freelancer for their specific needs, ensuring that the work is completed to the highest standards.</p>
-          </div>
-          <div class="col-lg-3 cta-btn-container text-center">
-            <a class="cta-btn align-middle" href="#">Call To Action</a>
-          </div>
-        </div>
-
-      </div>
-    </section><!-- End Cta Section -->
-  
-
-    <!-- ======= Services Section ======= -->
-    <section id="services" class="services section-bg">
-      <div class="container" data-aos="fade-up">
-
-        <div class="section-title">
-          <h2>Services</h2>
-          <p>Here are our main SERVICES.</p>
-        </div>
-
-        <div class="row">
-          <div class="col-xl-3 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
-            <div class="icon-box">
-              <div class="icon"><i class="bx bxl-dribbble"></i></div>
-              <h4><a href="">Website Development</a></h4>
-              <p>We specialize in creating visually stunning and user-friendly websites that meet the unique needs of our clients. Our team of experts use the latest web technologies to build custom, responsive websites that are optimized for performance and search engines.</p>
-            </div>
-          </div>
-
-          <div class="col-xl-3 col-md-6 d-flex align-items-stretch mt-4 mt-md-0" data-aos="zoom-in" data-aos-delay="200">
-            <div class="icon-box">
-              <div class="icon"><i class="bx bx-file"></i></div>
-              <h4><a href="">Graphic Design</a></h4>
-              <p>Bring your vision to life with the help of our graphic design services. From logos and brochures to packaging and advertising materials, we provide a wide range of graphic design solutions that are tailored to your specific needs. </p>
-            </div>
-          </div>
-
-          <div class="col-xl-3 col-md-6 d-flex align-items-stretch mt-4 mt-xl-0" data-aos="zoom-in" data-aos-delay="300">
-            <div class="icon-box">
-              <div class="icon"><i class="bx bx-tachometer"></i></div>
-              <h4><a href="">Business Intelligence and Analytics</a></h4>
-              <p> Turn data into actionable insights that drive growth and improve performance. Collect, analyze and visualize complex data, providing you with a clear understanding of your business and the insights needed to make informed decisions.</p>
-            </div>
-          </div>
-
-
-          <div class="col-xl-3 col-md-6 d-flex align-items-stretch mt-4 mt-xl-0" data-aos="zoom-in" data-aos-delay="400">
-            <div class="icon-box">
-              <div class="icon"><i class="bx bx-layer"></i></div>
-              <h4><a href="">Data Science</a></h4>
-              <p>From predictive modeling and machine learning to data visualization and optimization, we provide a full range of data science services to help organizations make better decisions and improve their bottom line. </p>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-    </section><!-- End Services Section -->
 
  
 
     <!-- ======= Portfolio Section ======= -->
-    <section id="portfolio" class="portfolio">
+    <section id="portfolio" class="portfolio" style="margin-top: 23px;">
       <div class="container" data-aos="fade-up">
 
         <div class="section-title">
@@ -214,7 +89,7 @@
         <div class="row portfolio-cont" data-aos="fade-up" data-aos-delay="200">
         <?php 
                 include 'connect.php';
-                $sql2 = "SELECT * FROM `gigs` ORDER BY rand() LIMIT 3";
+                $sql2 = "SELECT * FROM `gigs`";
                 $result2 = mysqli_query($conn, $sql2);
                 while($row = mysqli_fetch_assoc($result2)) {
                 ?>
@@ -233,180 +108,6 @@
       </div>
       
     </section><!-- End Portfolio Section -->
-    <div class="row">
-        <div class="offset-md-1 col-md-10">
-          <a href="gigshow" class="form-control btn btn-primary" style="cursor:pointer;background:rgba(40, 58, 90, 0.9)">Show more</a>
-        </div>
-      </div>
-    
-              <!-- ======= Skills Section ======= -->
-    <section id="skills" class="skills" style="background-color: #f3f5fa;">
-      <div class="container" data-aos="fade-up">
-
-        <div class="row">
-          <div class="col-lg-6 d-flex align-items-center" data-aos="fade-right" data-aos-delay="100">
-            <img src="assets/img/skills.png" class="img-fluid" alt="">
-          </div>
-          <div class="col-lg-6 pt-4 pt-lg-0 content" data-aos="fade-left" data-aos-delay="100">
-            <h3>Product Testing & Support 24/7</h3>
-            <br>
-            <p class="fst-italic">
-              With a reactive team of professional, multidisciplinary and highly skilled technical support, the ticket system also guarantees you careful monitoring of your request 24 hours a day, 7 days a week in order to meet your needs as soon as possible.
-            </p>
-
-            <div class="skills-content">
-
-            
-            </div>
-
-          </div>
-        </div>
-
-      </div>
-    </section><!-- End Skills Section -->
-
-   
-    <!-- ======= Pricing Section ======= -->
-    <section id="pricing" class="pricing">
-      <div class="container" data-aos="fade-up">
-
-        <div class="section-title">
-          <h2>Pricing</h2>
-          <p>Our Prices.</p>
-        </div>
-
-        <div class="row">
-
-          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
-            <div class="box">
-              <h3>Basic Plan</h3>
-              <h4><sup>$</sup>25<span></span></h4>
-              <ul>
-                <li><i class="bx bx-check"></i> 1 Graphic Design GIG</li>
-                <li><i class="bx bx-check"></i> Custom Design </li>
-                <li class="na"><i class="bx bx-x"></i> <span>Free Update</span></li>
-                <li class="na"><i class="bx bx-x"></i> <span>Live chat Support</span></li>
-              </ul>
-              <a href="https://digitalit1.gumroad.com/l/cuotj" target="_blank" class="buy-btn">Buy Now</a>
-            </div>
-          </div>
-
-          <div class="col-lg-4 mt-4 mt-lg-0" data-aos="fade-up" data-aos-delay="200">
-            <div class="box featured">
-              <h3>Business Plan</h3>
-              <h4><sup>$</sup>80<span></span></h4>
-              <ul>
-                <li><i class="bx bx-check"></i> 1 Data Science GIG</li>
-                <li><i class="bx bx-check"></i> 1 Data Analysis GIG</li>
-                <li><i class="bx bx-check"></i> Free Update</li>
-                <li><i class="bx bx-check"></i> Live chat Support</li>
-              </ul>
-              <a href="https://digitalit1.gumroad.com/l/eslcn" target="_blank" class="buy-btn">Buy Now</a>
-            </div>
-          </div>
-
-          <div class="col-lg-4 mt-4 mt-lg-0" data-aos="fade-up" data-aos-delay="300">
-            <div class="box">
-              <h3>Developer Plan</h3>
-              <h4><sup>$</sup>100<span></span></h4>
-              <ul>
-                <li><i class="bx bx-check"></i> 1 Web Development GIG</li>
-                <li><i class="bx bx-check"></i> 1 Year Free Hosting</li>
-                <li><i class="bx bx-check"></i> Free Update</li>
-                <li><i class="bx bx-check"></i> Best Output</li>
-                <li><i class="bx bx-check"></i> Live chat Support</li>
-              </ul>
-              <a href="https://digitalit1.gumroad.com/l/nqjev" target="_blank" class="buy-btn">Buy Now</a>
-            </div>
-          </div>
-
-        </div>
-        <div class="row">
-          <div class="col-md-12" style="text-align:center">
-            <img src="assets/images/footer/paypal.png" alt="" style="width: unset;height:100px;">
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12" style="text-align:center">
-            Other way to pay <a href="https://digitalit.services/assets/images/video2.mp4" class="glightbox btn-watch-video"><i class="bi bi-play-circle"></i><span>Watch Video</span></a>
-          </div>
-        </div>
-      </div>
-    </section><!-- End Pricing Section -->
-    
-
-
-    <!-- ======= Frequently Asked Questions Section ======= -->
-    <section id="faq" class="faq section-bg">
-      <div class="container" data-aos="fade-up">
-
-        <div class="section-title">
-          <h2>Frequently Asked Questions</h2>
-          <p></p>
-        </div>
-
-
-
-        <div class="faq-list">
-          <ul>
-              
-              <li data-aos="fade-up" data-aos-delay="400">
-              <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" data-bs-target="#faq-list-4" class="collapsed">How to buy GIGS?  <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
-              <div id="faq-list-4" class="collapse show" data-bs-parent=".faq-list">
-                <p>
-                  You can pay with Paypal secure 100%
-                </p>
-                 
-
-                </p>
-              </div>
-            </li>  
-            
-            
-            <li data-aos="fade-up" data-aos-delay="100">
-              <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" class="collapse" data-bs-target="#faq-list-1">Why should someone choose our freelancing company? <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
-              <div id="faq-list-1" class="collapse" data-bs-parent=".faq-list">
-                <p>
-                  Our freelancing company offers a wide range of services and has a team of highly skilled and experienced freelancers who are experts in their respective fields. We also have a strict vetting process to ensure that only the best freelancers are selected to work with us. Additionally, our company is dedicated to providing excellent customer service and ensuring that all of our clients are satisfied with the work we provide.What sets our freelancing company apart from others? Our freelancing company sets itself apart from others by offering a wide range of services and having a team of highly skilled and experienced freelancers. Additionally, we have a strict vetting process in place to ensure that only the best freelancers are selected to work with us. Our company is also dedicated to providing excellent customer service and ensuring that all of our clients are satisfied with the work we provide.
-                </p>
-              </div>
-            </li>
-
-            <li data-aos="fade-up" data-aos-delay="200">
-              <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" data-bs-target="#faq-list-2" class="collapsed">How does our freelancing company ensure quality work for clients? <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
-              <div id="faq-list-2" class="collapse" data-bs-parent=".faq-list">
-                <p>
-                  Our freelancing company ensures quality work for clients by only hiring highly skilled and experienced freelancers. Additionally, we have a strict vetting process in place to ensure that only the best freelancers are selected to work with us. We also have a dedicated quality assurance team that reviews all work before it is submitted to the client to ensure that it meets the clients specifications and is of the highest quality.
-                </p>
-              </div>
-            </li>
-
-            <li data-aos="fade-up" data-aos-delay="300">
-              <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" data-bs-target="#faq-list-3" class="collapsed">How do we handle client communication and project management? <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
-              <div id="faq-list-3" class="collapse" data-bs-parent=".faq-list">
-                <p>
-                  Our freelancing company has a dedicated project management team that handles all client communication and project management. They work closely with clients to ensure that all of their needs are met and that projects are completed on time and to the clients satisfaction. They are also available 24/7 to address any questions or concerns that clients may have throughout the project.
-                </p>
-              </div>
-            </li>
-
-               <li data-aos="fade-up" data-aos-delay="400">
-              <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" data-bs-target="#faq-list-3" class="collapsed">How we handle customer complaints and not satisfaction? <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
-              <div id="faq-list-3" class="collapse" data-bs-parent=".faq-list">
-                <p>
-                  Immediately refund if you not happy with your order within 24h.
-                  
-                </p>
-              </div>
-            </li>
-
-
-        
-          </ul>
-        </div>
-
-      </div>
-    </section><!-- End Frequently Asked Questions Section -->
     
 
 

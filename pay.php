@@ -2,6 +2,7 @@
             include 'user.php';
             session_start();
             include 'connect.php';
+            $sumk = 0;
             if(isset($_SESSION["user"]))
             {
                 $role='User';
@@ -19,7 +20,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Store</title>
+    <title>Payment</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -161,6 +162,7 @@
                             INNER JOIN gigs ON gigs.id = cart.gigs_id WHERE user_id=$idu and cart.status is null";
                             $result = mysqli_query($conn, $sql);
                             if($row = mysqli_fetch_assoc($result)) {
+                                $sumk = $row['prices'];
                                 echo $row['number'];
                                  ?></span>
                         <i class="fas fa-shopping-cart"> </i>
@@ -246,37 +248,43 @@
             <!-- Sale & Revenue Start -->
         <div class="row" style="margin-top:21px;padding:0 30px">
             <div class="col-md-12">
-                <div class="card">
-                <div class="card-header" style="background: #fcd703;color: black;"><i class="fa fa-hand-holding"></i><b>Choose the service</b></div>
-                <div class="card-body" style="color:black">
-                    <label for="">Categorie</label>
-                    <select name="domain" id="domain" class="form-control" style="color:brown;font-weight:bold" onchange="chnge()">
-                        <option value="" disabled selected>-</option>
-                        <option value="Web Development">Web Development</option>
-                        <option value="Graphic Design">Graphic Design</option>
-                        <option value="Data Science">Data Science</option>
-                        <option value="Data Analysis">Data Analysis</option>
-                        <option value="Other">Other</option>
-                    </select>
-                    <label for="">Service</label>
-                    <select name="service" id="service" class="form-control" style="color:brown;font-weight:bold">
-                        <option value="" disabled selected>-</option>
+            <form action="controller" method="post" enctype="multipart/form-data">
+            <div class="card">
+                <div class="card-header" style="background: #fcd703;color: black;"><b>Choose Payment Method</b><p style="font-weight: 600;font-size:10px;    margin-bottom: 0;">You can make your payment below.</p></div>
+                <div class="card-body" id="card-body" style="color:black">
+                <?php
+                    if(isset($_REQUEST['message']))
+                    {
+                        ?>
+                        <div class="alert alert-success" id="alert" role="alert">
+                            Proof of payment has been sent to the administrator it can take up to 24 hours to respond
+                        </div>
+                        <?php
+                    }
+                ?>
+                    <label for="">Method</label>
+                    <select name="methode" id="methode" class="form-control" style="color:blue;font-weight:bold">
+                        <option value="youcan">YouCan Pay / Visa / Master Card - Paiments in Morocco</option>
+                        <option value="bank">Bank transfer</option>
                     </select>
                     <label for="">Email</label>
-                    <input type="email" class="form-control" id="email" name="email">
-                    <label for="">Message</label>
-                    <textarea class="form-control" id="message" name="message"></textarea>
+                    <input type="text" class="form-control" id="email" name="email" required>
+                    <label for="">Amount $</label>
+                    <input type="number" class="form-control" id="amount" name="amount" value="<?php echo $sumk; ?>" disabled>
+                    
                 </div> 
                 <div class="card-footer">
                         <div class="row">
                             <div class="col-md-6">
-                            <button class="btn btn-info form-control" style="background:#fcd703;border: none;" onclick='pay()'>Pay</button>
+                            <button type="button" class="btn btn-info form-control" id="chira2" style="background:#fcd703;border: none;font-weight:bold" onclick="paye()">Pay <?php echo $sumk; ?> $</button>
                             </div>
                             <div class="col-md-6">
-                            <button class="btn btn-info form-control" style="background:#00ff59;border: none;" onclick='cart()'><i class="fa fa-cart-plus" aria-hidden="true"></i> Add to cart</button>
+                            <button type="button" class="btn btn-info form-control" style="background:#FF2900;border: none;font-weight:bold" onclick="exit()">exit</button>
                             </div>
                         </div>
                 </div>
+            </div>
+            </form>
             </div>
             </div>
             
@@ -303,70 +311,219 @@
     <script src="js/main.js"></script>
     <script>
 
-        function pay()
-        {
-            var domain = document.getElementById("domain").value;
-            var service = document.getElementById("service").value;
-            var email = document.getElementById("email").value;
-            var message = document.getElementById("message").value;
-            console.log(domain+service+email+message);
-        }
-
-        function cart()
-        {
-            var domain = document.getElementById("domain").value;
-            var service = document.getElementById("service").value;
-            var email = document.getElementById("email").value;
-            var message = document.getElementById("message").value;
-            $.post('controller', {adouna:'walo',service:document.getElementById("service").value,email:document.getElementById("email").value,message:document.getElementById("message").value}).done(function(response){
-                if(response!='no' && response!='error')
-                {
-                    document.getElementById("domain").value = '';
-                    document.getElementById("service").innerHTML = '<option value="" disabled selected>-</option>';
-                    document.getElementById("email").value = '';
-                    document.getElementById("message").value = "";
-                    var aa = response.split(":");
-                    document.getElementById("number").textContent = aa[0];
-                    document.getElementById("price").textContent = aa[1]+" $";
-                }
-            
-});
-        }
-
-        function chnge()
-        {
-            document.getElementById("service").innerHTML = "";
-            $.post('controller', {adouna:'walo',domain:document.getElementById("domain").value}).done(function(response){
-                console.log(response)
-                obj = JSON.parse(response);
-                for (let i = 0; i < obj.length; i++) {
-                    document.getElementById("service").innerHTML += "<option value='"+obj[i].id+"'>"+obj[i].name+" per "+obj[i].price+"</option>";
-                }
-            
-            
-});
-        }
-
-        function sendmail()
-        {
-            var A = document.getElementById("bton");
-            document.getElementById("bton").disabled = true;
-            $.post('controller', {adouna:'walo',name:document.getElementById('name').value,email:document.getElementById('email').value,subject:document.getElementById('subject').value,message:document.getElementById('message').value}).done(function(response){
-            console.log(response);
-            if(response=="the mail was sended successfly")
+            function exit()
             {
-                A.disabled = false;
-                document.getElementById('name').value='';
-                document.getElementById('email').value='';
-                document.getElementById('subject').value='';
-                document.getElementById('message').value='';
-                document.getElementById('uploaded').textContent=response;
-                document.getElementById('uploaded').style.display='block';
-                setTimeout(function(){ document.getElementById('uploaded').style.display='none'; }, 10000);
+                window.location = 'cart'
             }
+
+            function chri()
+            {
+                if(document.getElementById("methode").value=="bank")
+                {
+                        console.log('chri')
+                        document.getElementById("chira2").type = "submit"
+                }
+                else
+                {
+                    document.getElementById("bank").innerHTML = ""
+                    document.getElementById("chira2").onclick = paye;
+                }
+            }
+
+            function paye()
+            {
+                console.log(document.getElementById("methode").value)
+                if(document.getElementById("methode").value=="bank")
+                {
+                    console.log(document.getElementById("methode").value=="bank")
+                    if(!document.getElementById("ban"))
+                    {
+                        if(!document.getElementById("bank"))
+                        {
+                            var email = document.getElementById("email").value;
+                            document.getElementById("card-body").innerHTML += '<div id="bank"><div class="row" id="ban" style="margin-top:20px;margin-bottom:20px"><div class="col-md-12"><label for="">Our Bank Accounts:</label><table width="100%"><tr style="border:2px solid"><th style="border:2px solid">Bank Name</th><th style="border:2px solid">Account number</th><th style="border:2px solid">RIB</th><th style="border:2px solid">Service</th></tr><tr style="border:2px solid"><th style="border:2px solid">CIH BANK</th><th style="border:2px solid">3297081211030200</th><th style="border:2px solid">230 787 3297081211030200 13</th><th style="border:2px solid">SERVICES</th></tr></table></div></div><label for="">Payment screen</label><input type="file" class="form-control" id="fille" name="fille" required></div>'
+                        document.getElementById("methode").value="bank";
+                        document.getElementById("email").value=email;
+                        document.getElementById("chira2").onclick = chri;
+                        }
+                        else if(document.getElementById("bank"))
+                        {
+                            var email = document.getElementById("email").value;
+                            document.getElementById("bank").innerHTML = '<div class="row" id="ban" style="margin-top:20px;margin-bottom:20px"><div class="col-md-12"><label for="">Our Bank Accounts:</label><table width="100%"><tr style="border:2px solid"><th style="border:2px solid">Bank Name</th><th style="border:2px solid">Account number</th><th style="border:2px solid">RIB</th><th style="border:2px solid">Service</th></tr><tr style="border:2px solid"><th style="border:2px solid">CIH BANK</th><th style="border:2px solid">3297081211030200</th><th style="border:2px solid">230 787 3297081211030200 13</th><th style="border:2px solid">SERVICES</th></tr></table></div></div><label for="">Payment screen</label><input type="file" class="form-control" id="fille" name="fille" required>'
+                        document.getElementById("methode").value="bank";
+                        document.getElementById("email").value=email;
+                        document.getElementById("chira2").onclick = chri;
+                        }
+                        
+                        
+                    }
+                    
+                }
+                else
+                {
+                    console.log('ach')
+                    document.getElementById("bank").innerHTML = ""
+                }
+            }
+
+//         function delete_cart(yy,id)
+//         {
+//             var A = yy;
+//             console.log(A.parentElement.parentElement)
+//             console.log(id)
+//             var result = confirm("Want to delete?");
+//             if (result) {
+//                 $.post('controller', {service:'deletecart',idc:id, type:'<?php echo $role; ?>'}).done(function(response){
+//                 console.log(response)
+//                 if(response != 'error' && response != "error2")
+//                 {
+//                     A.parentElement.parentElement.remove();
+//                     var aa = response.split(":");
+//                     if(aa[1] == '')
+//                     {
+//                         aa[1] = 0;
+//                     }
+//                     document.getElementById("number").textContent = aa[0];
+//                     document.getElementById("price").textContent = aa[1]+" $";
+//                     document.getElementById("pay").textContent = "Pay with "+aa[1]+" $";
+//                 }
+//                         });
+//             }
+//         }
+
+//         function plusq(yy,id)
+//         {
+//             var pr = yy.parentElement.parentElement.parentElement.previousElementSibling.children[0].textContent;
+//             // var nx = yy.parentElement.parentElement.parentElement.nextElementSibling.children[0].textContent;
+//             var A = yy;
+//             $.post('controller', {service:'plusq',idc:id, type:'<?php echo $role; ?>'}).done(function(response){
+//                 console.log(response)
+//                 if(response != 'error' && response != "error2")
+//                 {
+//                     yy.parentElement.parentElement.children[1].children[0].value = Number(yy.parentElement.parentElement.children[1].children[0].value) + Number(1);
+//                     var aa = response.split(":");
+//                     if(aa[1] == '')
+//                     {
+//                         aa[1] = 0;
+//                     }
+//                     document.getElementById("number").textContent = aa[0];
+//                     document.getElementById("price").textContent = aa[1]+" $";
+//                     document.getElementById("pay").textContent = "Pay with "+aa[1]+" $";
+//                     yy.parentElement.parentElement.parentElement.nextElementSibling.children[0].textContent = Number(pr) * yy.parentElement.parentElement.children[1].children[0].value;
+//                 }
+//                         });
+//         }
+//         function moinsq(yy,id)
+//         {
+//             var pr = yy.parentElement.parentElement.parentElement.previousElementSibling.children[0].textContent;
+//             console.log(Number(yy.parentElement.parentElement.children[1].children[0].value) + Number(1))
+//             var A = yy;
+//             $.post('controller', {service:'moinsq',idc:id, type:'<?php echo $role; ?>'}).done(function(response){
+//                 console.log(response)
+//                 if(response != 'error' && response != "error2")
+//                 {
+//                     if(Number(yy.parentElement.parentElement.children[1].children[0].value)>1)
+//                     {
+//                     yy.parentElement.parentElement.children[1].children[0].value = Number(yy.parentElement.parentElement.children[1].children[0].value) - Number(1);
+//                     }
+//                     var aa = response.split(":");
+//                     if(aa[1] == '')
+//                     {
+//                         aa[1] = 0;
+//                     }
+//                     document.getElementById("number").textContent = aa[0];
+//                     document.getElementById("price").textContent = aa[1]+" $";
+//                     document.getElementById("pay").textContent = "Pay with "+aa[1]+" $";
+                    
+//                     yy.parentElement.parentElement.parentElement.nextElementSibling.children[0].textContent = Number(pr) * yy.parentElement.parentElement.children[1].children[0].value;
+//                 }
+//                         });
+//         }
+
+//         function trash()
+//         {
+//             $.post('controller', {service:'trash', type:'<?php echo $role; ?>'}).done(function(response){
+//                 console.log(response)
+//                 if(response != 'error' && response != "error2")
+//                 {
+//                     var cc = document.getElementsByClassName('cart_items');
+//                     console.log(cc)
+                    
+//                     for (let i = 0; i < cc.length; i++) {
+//                         console.log(cc[i])
+//                         cc[i].remove();
+//                         i--;
+//                     }
+//                     var aa = response.split(":");
+//                     if(aa[1] == '')
+//                     {
+//                         aa[1] = 0;
+//                     }
+//                     document.getElementById("number").textContent = aa[0];
+//                     document.getElementById("price").textContent = aa[1]+" $";
+//                     document.getElementById("pay").textContent = "Pay with "+aa[1]+" $";
+//                 }
+//                         });
+//         }
+
+        
+
+//         function cart()
+//         {
+//             var domain = document.getElementById("domain").value;
+//             var service = document.getElementById("service").value;
+//             var email = document.getElementById("email").value;
+//             var message = document.getElementById("message").value;
+//             $.post('controller', {adouna:'walo',service:document.getElementById("service").value,email:document.getElementById("email").value,message:document.getElementById("message").value}).done(function(response){
+//                 if(response!='no' && response!='error')
+//                 {
+//                     document.getElementById("domain").value = '';
+//                     document.getElementById("service").innerHTML = '<option value="" disabled selected>-</option>';
+//                     document.getElementById("email").value = '';
+//                     document.getElementById("message").value = "";
+//                     var aa = response.split(":");
+//                     document.getElementById("number").textContent = aa[0];
+//                     document.getElementById("price").textContent = aa[1]+" $";
+//                     document.getElementById("pay").textContent = "Pay with " + aa[1]+" $";
+//                 }
             
-});
-        }
+// });
+//         }
+
+//         function chnge()
+//         {
+//             document.getElementById("service").innerHTML = "";
+//             $.post('controller', {adouna:'walo',domain:document.getElementById("domain").value}).done(function(response){
+//                 console.log(response)
+//                 obj = JSON.parse(response);
+//                 for (let i = 0; i < obj.length; i++) {
+//                     document.getElementById("service").innerHTML += "<option value='"+obj[i].id+"'>"+obj[i].name+" per "+obj[i].price+"</option>";
+//                 }
+            
+            
+// });
+//         }
+
+//         function sendmail()
+//         {
+//             var A = document.getElementById("bton");
+//             document.getElementById("bton").disabled = true;
+//             $.post('controller', {adouna:'walo',name:document.getElementById('name').value,email:document.getElementById('email').value,subject:document.getElementById('subject').value,message:document.getElementById('message').value}).done(function(response){
+//             console.log(response);
+//             if(response=="the mail was sended successfly")
+//             {
+//                 A.disabled = false;
+//                 document.getElementById('name').value='';
+//                 document.getElementById('email').value='';
+//                 document.getElementById('subject').value='';
+//                 document.getElementById('message').value='';
+//                 document.getElementById('uploaded').textContent=response;
+//                 document.getElementById('uploaded').style.display='block';
+//                 setTimeout(function(){ document.getElementById('uploaded').style.display='none'; }, 10000);
+//             }
+            
+// });
+//         }
 //         function user()
 //         {
 //             document.getElementById('users').innerHTML="";
@@ -382,10 +539,17 @@
 //             }
 // });
 //         }
-//         window.onload = function()
-//         {
-//             user();
-//         }
+        window.onload = function()
+        {
+            // var bb = document.getElementsByClassName('prices');
+            // var n = 0;
+            // for (let i = 0; i < bb.length; i++) {
+            //     n += Number(bb[i].textContent);
+                
+            // }
+            // document.getElementById('pay').textContent = "Pay with "+Number(n)+' $';
+            setTimeout(function(){ document.getElementById('alert').style.display = 'none' }, 5000);
+        }
     </script>
 </body>
 

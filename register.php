@@ -1,3 +1,9 @@
+<?php
+include 'user.php';
+session_start();
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,6 +31,10 @@
         label{
             margin-top:10px
         }
+        html{
+            height: fit-content;
+            min-height: -webkit-fill-available;
+        }
     </style>
 </head>
 <body>
@@ -35,12 +45,49 @@
                 <form action="controller.php" method="post">
                 <div class="card">
       <div class="card-body" style="text-align:left">
+            <?php if(!isset($_REQUEST['email']) && !isset($_REQUEST['username']) && !isset($_REQUEST['error']) && !isset($_REQUEST['us'])){ ?>
+            <div class="alert alert-info" role="alert">
+            Account activation does not need to verify the email, you must remember the username to log in
+            </div>
+            <?php }else if(isset($_REQUEST['email'])){ ?>
+                <div class="alert alert-danger" role="alert">
+                    Email already exist
+                </div>
+                <?php }else if(isset($_REQUEST['us'])){ ?>
+                <div class="alert alert-danger" role="alert">
+                    Username already exist
+                </div>
+                <?php }else if(isset($_REQUEST['error'])){ ?>
+                <div class="alert alert-danger" role="alert">
+                The value must be 3 or more characters long
+                </div>
+                <?php }else if(isset($_REQUEST['username'])){ ?>
+                <div class="alert alert-danger" role="alert">
+                    Username must be 3 or more characters long
+                </div>
+            <?php } ?>
+            
             <label for="first">First name</label>
-            <input type="text" name="first" class="form-control">
+            <input type="text" name="first" class="form-control" value="<?php if(isset($_REQUEST['email']) || isset($_REQUEST['username']) || isset($_REQUEST['error']) || isset($_REQUEST['us'])){
+             if(isset($_SESSION['prov']))
+            {
+                echo $_SESSION['prov']->get_name();
+            }} ?>">
             <label for="last">Last name</label>
-            <input type="text" name="last" class="form-control">
+            <input type="text" name="last" class="form-control" value="<?php if(isset($_REQUEST['email']) || isset($_REQUEST['username']) || isset($_REQUEST['error']) || isset($_REQUEST['us'])){ if(isset($_SESSION['prov']))
+            {
+                echo $_SESSION['prov']->get_last();
+            }} ?>">
+            <label for="last">Username</label>
+            <input type="text" name="username" class="form-control" value="<?php if(isset($_REQUEST['email']) || isset($_REQUEST['username']) || isset($_REQUEST['error']) || isset($_REQUEST['us'])){ if(isset($_SESSION['username']))
+            {
+                echo $_SESSION['username'];
+            }} ?>">
             <label for="email">email</label>
-            <input type="text" name="email" class="form-control">
+            <input type="text" name="email" class="form-control" value="<?php if(isset($_REQUEST['email']) || isset($_REQUEST['username']) || isset($_REQUEST['error']) || isset($_REQUEST['us'])){ if(isset($_SESSION['prov']))
+            {
+                echo $_SESSION['prov']->get_email();
+            }} ?>">
             <label for="password">password</label>
             <input type="password" name="password" class="form-control">
         

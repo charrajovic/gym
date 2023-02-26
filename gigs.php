@@ -50,6 +50,24 @@
             margin-bottom:15px
         }
     </style>
+    <style>
+        input,select,textarea{
+            background:white !important;
+            margin-top:20px;
+            color:black !important;
+        }
+        button{
+            margin-top:20px;
+        }
+        ::-webkit-scrollbar {
+    width: 0;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
+}
+/* Optional: show position indicator in red */
+::-webkit-scrollbar-thumb {
+    background: black;
+}
+    </style>
 </head>
 
 <body style="overflow-x:hidden">
@@ -232,7 +250,7 @@
 
             <!-- Sale & Revenue Start -->
             <div class="row" style='padding-left: 18px;padding-right: 5px;'>
-                <div class="offset-md-2 col-md-8" style="margin-top:50px;margin-bottom:50px;    box-shadow: 0 0 10px #eee;padding:5px;">
+                <div class="offset-md-2 col-md-8" style="margin-top:50px;margin-bottom:50px;    box-shadow: 0 0 10px #eee;padding:5px;overflow:auto">
                 <div class="row" style="margin-bottom:30px">
                     <div class="offset-md-1 col-md-10">
                         <h2 style='text-align:center;' onclick="user()">gigs management:</h2>
@@ -240,6 +258,21 @@
                     </div> 
                     <div class="col-md-1" style="margin:auto">
                     <i class="fa fa-plus" aria-hidden="true" onclick='add_gigs()' style="color:green;cursor:pointer"></i>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <input type="text" placeholder="Search" id="search" class="form-control">
+                    </div>
+                    <div class="col-md-2">
+                        <select name="domain" id="domain" class="form-control">
+                            <option value="all">All</option>
+                            <option value="Web Development">Web Development</option>
+                            <option value="Graphic Design">Graphic Design</option>
+                            <option value="Data Science">Data Science</option>
+                            <option value="Data Analysis">Data Analysis</option>
+                            <option value="Other">Other</option>
+                        </select>
                     </div>
                 </div>
                 
@@ -254,8 +287,22 @@
                     <th></th>
                 </tr>  
                 </table>
+                <nav aria-label="..." style="float:right">
+                <ul class="pagination" style="    margin-top: 20px;margin-bottom: 0;">
+                    <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1">Previous</a>
+                    </li>
+                    
+                    <p id="pagi" style="display: contents;">
 
+                    </p>
+                    <li class="page-item">
+                    <a class="page-link" href="#">Next</a>
+                    </li>
+                </ul>
+                </nav>
                 </div>
+                
             </div>
         </div>
         <!-- Content End -->
@@ -265,7 +312,7 @@
         <!-- Back to Top -->
         <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
     </div>
-    <div id="full" style="position:fixed;top:0;left:0;width:100%;height:100%;background:red;    background: rgba(120,120,120,0.5);z-index: 9999;display:none">
+    <div id="full" style="position:fixed;top:0;left:0;width:100%;height:100%;background:red;    background: rgba(120,120,120,0.5);z-index: 9999;display:none;overflow:auto">
             <div class="row" style="margin-top:20px">
                 <div class="offset-md-2 col-md-8">
                     <div class="row" style="margin-bottom:25px">
@@ -307,7 +354,11 @@
                             <p id="uploaded_image" style="display:none"></p>
                         </div>
                     </div>
-                    
+                    <div class="row">
+                    <div class="col-md-12">
+                            <textarea id="description" name="description" placeholder="Description" class="form-control"></textarea>
+                        </div>
+                    </div>
                     <div class="form-btn text-center">
                             <button class="btn btn-success" onclick='upload()' type="button">Add gigs</button>
                             <p id="form-message"></p>
@@ -315,12 +366,12 @@
                 </div>
             </div>
         </div>
-        <div id="full2" style="position:fixed;top:0;left:0;width:100%;height:100%;background:red;    background: rgba(120,120,120,0.5);z-index: 9999;display:none">
+        <div id="full2" style="position:fixed;top:0;left:0;width:100%;height:100%;background:red;    background: rgba(120,120,120,0.5);z-index: 9999;display:none;overflow:auto">
             <div class="row" style="margin-top:20px">
                 <div class="offset-md-2 col-md-8">
                     <div class="row" style="margin-bottom:25px">
                         <div class="offset-1 col-10">
-                        <h2 style="text-align:center;border:2px solid">Add gigs:</h2>
+                        <h2 style="text-align:center;border:2px solid">Edit gigs:</h2>
                         </div>
                         <div class="col-1" style="margin:auto">
                         <p onclick="exit()" style="color:white;font-weight:bold;cursor:pointer;text-align:center">X</p>
@@ -355,12 +406,18 @@
                     <div class="col-md-12">
                             <input type="file" id="file2" name="imge" class="form-control">
                         </div>
+                    
+                    <div class="row">
+                    <div class="col-md-12">
+                            <textarea id="description2" name="description" placeholder="Description" class="form-control"></textarea>
+                        </div>
                     </div>
                     <div class="row">
                     <div class="col-md-12">
                             <p id="uploaded_image" style="display:none"></p>
                         </div>
                     </div>
+
                     
                     <div class="form-btn text-center">
                             <button class="btn btn-success" onclick='edit()' type="button" style="margin-top: 10px;">Modify</button>
@@ -369,6 +426,12 @@
                 </div>
             </div>
         </div>
+        <div id="allf" style="position:fixed;top:0;left:0;width:100%;height:100%;background:red;    background: rgba(120,120,120,0.5);z-index: 9999;display:none">
+        <p onclick="exit()" style="color:white;font-weight:bold;cursor:pointer;text-align:center;position: absolute;text-align: right;">X</p>
+                    
+                        <img src="" alt="" id="mokh" style="    width: inherit;;">
+                    
+    </div>
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -384,6 +447,36 @@
     <script src="js/main.js"></script>
     <script>
         var ida;
+
+        // function pagi(a)
+        // {
+        //     console.log(10*a.textContent)
+        //     var A = document.getElementsByClassName('tbdomaine');
+        //     console.log(10*a.textContent)
+        //     console.log(10*a.textContent-10)
+        //     for (let i = 0; i < A.length; i++) {
+        //         if(i>10*a.textContent || i<=10*a.textContent-10)
+        //         {
+        //             A[i].parentElement.style.display = 'none'
+        //         }
+        //         else
+        //         {
+        //             A[i].parentElement.style.display = 'table-row'  
+        //         }
+        //     }
+        //     var B = document.getElementsByClassName('page-item');
+        //     for (let j = 0; j < B.length; j++) {
+        //         B[j].classList.remove("active");
+        //     }
+        //     a.parentElement.classList.add("active");
+        // }
+
+        function allfull(a)
+        {
+            document.getElementById('allf').style.display = "block"
+            document.getElementById('mokh').src = a.children[0].textContent;
+        }
+
         function user()
         {
             document.getElementById('users').innerHTML="<tr><th>Thumbnail</th><th>Name</th> <th>Domain</th><th>Price</th><th>Created at</th><th></th></tr> ";
@@ -393,9 +486,37 @@
             for (let i = 0; i < obj.length; i++) {
                 var rol="User";
                 
-                document.getElementById('users').innerHTML+='<tr style="height:70px"><th scope="row" style="background-image:url(\''+obj[i].path+'\');background-size: 100% 100%;"></th> <td>'+obj[i].name+'</td><td>'+obj[i].domain+'</td><td>'+obj[i].price+'</td><td>'+obj[i].created+'</td><td><i class="fa fa-edit" style="color:brown;cursor:pointer" onclick="edit_us('+obj[i].id+')" aria-hidden="true"></i><i class="fa fa-trash" style="color:red;cursor:pointer" onclick="delete_us('+obj[i].id+')" aria-hidden="true"></i></td></tr>'
+                document.getElementById('users').innerHTML+='<tr style="height:70px"><th scope="row" style="background-image:url(\''+obj[i].path+'\');background-size: 100% 100%;" onclick="allfull(this)"><span style="display:none">'+obj[i].path+'</span></th> <td class="tbname">'+obj[i].name+'</td><td class="tbdomaine">'+obj[i].domain+'</td><td class="tbprice">'+obj[i].price+'</td><td class="tbcreated">'+obj[i].created+'</td><td><i class="fa fa-edit" style="color:brown;cursor:pointer" onclick="edit_us('+obj[i].id+')" aria-hidden="true"></i><i class="fa fa-trash" style="color:red;cursor:pointer" onclick="delete_us('+obj[i].id+')" aria-hidden="true"></i></td></tr>'
             }
+        //     var A = document.getElementsByClassName('tbdomaine');
+        //     for (let i = 0; i < A.length; i++) {
+        //         if(i>=10)
+        //         {
+        //             A[i].parentElement.style.display = 'none'
+        //         }
+        //     }
+        // console.log(Math.floor(A.length/10))
+        // var b = Math.floor(A.length/10);
+        // var c = A.length % 10;
+        // if(A.length % 10 != 0)
+        // {
+        //     b++;
+        // }
+        // console.log(b)
+        // var t= '';
+        // for (let i = 1; i <= b; i++) {
+        //     if(i==1)
+        //     {
+        //         t='active';
+        //     }
+        //     else{
+        //         t='';
+        //     }
+        //     document.getElementById('pagi').innerHTML += '<li class="page-item '+t+'"><a class="page-link" onclick="pagi(this)" style="cursor:pointer">'+i+'</a></li>'
+        // }
+        
 });
+        
         }
 
         function edit_us(id)
@@ -410,6 +531,7 @@
                     document.getElementById('path2').src = obj[i].path;
                     document.getElementById('domain2').value = obj[i].domaine;
                     document.getElementById('price2').value = obj[i].price;
+                    document.getElementById('description2').value = obj[i].description;
                 }
 });
         }
@@ -427,6 +549,7 @@
             form_data.append("price", document.getElementById('price2').value);
             console.log(document.getElementById('price2').value)
             form_data.append("domain", document.getElementById('domain2').value);
+            form_data.append("description", document.getElementById('description2').value);
             $.ajax({
                 url:"upload",
                 method:"POST",
@@ -479,6 +602,7 @@
         {
             document.getElementById('full').style.display = "none";
             document.getElementById('full2').style.display = "none";
+            document.getElementById('allf').style.display = "none";
         }
         function upload()
         {
@@ -487,6 +611,7 @@
             form_data.append("name", document.getElementById('name').value);
             form_data.append("price", document.getElementById('price').value);
             form_data.append("domain", document.getElementById('domain').value);
+            form_data.append("description", document.getElementById('description').value);
             $.ajax({
                 url:"upload",
                 method:"POST",
@@ -503,6 +628,7 @@
                     document.getElementById('name').value='';
                     document.getElementById('file').value='';
                     document.getElementById('price').value='';
+                    document.getElementById('description').value='';
                     document.getElementById('domain').value='Web Development';
                 console.log(response);
                 exit();

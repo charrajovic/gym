@@ -25,6 +25,10 @@
         label{
             margin-top:10px
         }
+        html{
+            height: fit-content;
+            min-height: -webkit-fill-available;
+        }
     </style>
 </head>
 <body>
@@ -35,8 +39,12 @@
                 <form  action="controller.php" method="post">
                 <div class="card">
       <div class="card-body" style="text-align:left">
-        
-            <label for="email">Email:</label>
+        <?php if(isset($_REQUEST['error'])){ ?>
+            <div class="alert alert-danger" role="alert" style="margin-bottom:0">
+            (Username/Email) or password is wrong
+            </div>
+            <?php } ?>
+            <label for="email">Email or Username:</label>
             <input type="text" name="email" class="form-control">
             <label for="password">Password:</label>
             <input type="password" name="password" class="form-control">

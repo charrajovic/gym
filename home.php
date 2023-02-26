@@ -109,6 +109,9 @@
                     <?php if($role=='User'){ ?>
                     <a href="store" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Store</a>
                     <?php } ?>
+                    <?php if($role=='User'){ ?>
+                    <a href="payments" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Payments</a>
+                    <?php } ?>
                     <!-- <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Pages</a>
                         <div class="dropdown-menu bg-transparent border-0">
@@ -379,6 +382,7 @@
             <!-- <canvas id="users-chart" style='width:100px !important;height:80px !important;'></canvas> -->
 
             <!-- Sales Chart Start -->
+            <?php if($role=='Admin'){ ?>
             <div class="container-fluid pt-4 px-4">
                 <div class="row g-4">
                     <div class="col-sm-12 col-xl-6">
@@ -403,6 +407,32 @@
                     </div>
                 </div>
             </div>
+            <?php }else{ ?>
+                <div class="container-fluid pt-4 px-4">
+                <div class="row g-4">
+                    <div class="col-sm-12 col-xl-6">
+                        <div class="bg-secondary text-center rounded p-4">
+                            <div class="d-flex align-items-center justify-content-between mb-4">
+                                <h6 class="mb-0">Account manage</h6>
+                                <?php if($role=='Admin'){ ?>
+                                <a>Show All</a>
+                            <?php } ?>
+                            </div>
+                            <canvas id="account-chart"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-xl-6">
+                        <div class="bg-secondary text-center rounded p-4">
+                            <div class="d-flex align-items-center justify-content-between mb-4">
+                                <h6 class="mb-0">Mails sended</h6>
+                                <a>Show All</a>
+                            </div>
+                            <canvas id="mails_sended"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php } ?>
             <!-- Sales Chart End -->
 
 
@@ -637,7 +667,8 @@
     <script src="lib/tempusdominus/js/moment.min.js"></script>
     <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
     <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
-
+    <script src="js/main.js"></script>
+    <?php if($role=='Admin'){ ?>
                     <?php 
 
                     include 'connect.php';
@@ -675,7 +706,7 @@
     print_r($arr); ?>
 
     <!-- Template Javascript -->
-    <script src="js/main.js"></script>
+    
     <script>
         var ctx2 = $("#users-chart").get(0).getContext("2d");
         var myChart2 = new Chart(ctx2, { 
@@ -739,6 +770,81 @@
                 <?php } ?>
 
     </script>
+    <?php }else{ 
+        $idu = $_SESSION["user"]->get_id();
+        $sql = "SELECT city,count(*) as numbers FROM `actions` WHERE user_id=$idu and action like 'login%' group by city";
+        $result = mysqli_query($conn, $sql);
+        $sql2 = "SELECT count(*) as numbers,DATE_FORMAT(`created`,'%d %M %Y') as created FROM `mails` WHERE user=$idu GROUP BY day(`created`)";
+        $result2 = mysqli_query($conn, $sql2);
+        //echo $sql;
+        $arr = array();
+        $arr2 = array();
+        $arry = array();
+        $arry2 = array();
+        while($row = mysqli_fetch_assoc($result)) {
+        
+            array_push($arr,$row["numbers"]);
+            array_push($arr2,$row["city"]);
+        }
+        while($row = mysqli_fetch_assoc($result2)) {
+        
+            array_push($arry,$row["created"]);
+            array_push($arry2,$row["numbers"]);
+        }
+        ?>
+            <script>
+                var ctx2 = $("#account-chart").get(0).getContext("2d");
+                var array = [];
+                var ln = [<?php echo '"'.implode('","', $arr).'"'; ?>].length;
+                for (let i = 0; i < ln; i++) {
+                    array[i] = '#' + Math.random().toString(16).substr(-6);
+                }
+                console.log([<?php echo '"'.implode('","', $arr).'"'; ?>].length)
+        var myChart2 = new Chart(ctx2, { 
+            type: 'pie',
+        data: {
+        labels: [<?php echo '"'.implode('","', $arr2).'"'; ?>],
+        datasets: [{
+            label: "Accounts type",
+            backgroundColor: array,
+            data: [<?php echo '"'.implode('","', $arr).'"'; ?>]
+        }]
+        },
+        options: {
+        title: {
+            display: true,
+            text: 'chart of numbers of each type of account'
+        }
+        },
+        options: {
+            responsive: true
+        }
+        });
+
+        var ctx2 = $("#mails_sended").get(0).getContext("2d");
+        var myChart2 = new Chart(ctx2, { 
+            type: 'bar',
+        data: {
+        labels: [<?php echo '"'.implode('","', $arry).'"'; ?>],
+        datasets: [{
+            label: "mails sended",
+            backgroundColor: ["#EB1616"],
+            data: [<?php echo '"'.implode('","', $arry2).'"'; ?>]
+        }]
+        },
+        options: {
+        title: {
+            display: true,
+            text: 'mails received in each date'
+        }
+        },
+        options: {
+            responsive: true
+        }
+        });
+            </script>
+        <?php
+         } ?>
 </body>
 
 </html>

@@ -312,6 +312,8 @@ function changeMode()
 window.onload = function()
 {
 
+    console.log('hole')
+
     function getVideoCardInfo() {
         const gl = document.createElement('canvas').getContext('webgl');
         if (!gl) {

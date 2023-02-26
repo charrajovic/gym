@@ -44,7 +44,7 @@ $platform = $browser->getPlatform();
 $browserr = $browser->getBrowser();
 $version = $browser->getVersion();
 
-function create_action($messages)
+function create_action($messages,$ida)
 {
     $ip = $GLOBALS["ip"];
     $city = $GLOBALS["city"];
@@ -58,7 +58,15 @@ function create_action($messages)
     $platform = $GLOBALS["platform"];
     $browserr = $GLOBALS["browserr"];
     $version = $GLOBALS["version"];
+    echo $ida;
+    if(empty($ida))
+    {
     $sql2 = "INSERT INTO `actions`(`adresse_ip`, `city`, `region`, `country`, `continent`, `timezone`, `currency_code`, `currency_symbol`, `browser_name`, `browser_version`, `plateform`, `action`) VALUES ('$ip','$city','$region','$country','$continent','$timezone','$currency_code','$currency_symbol','$browserr','$version','$platform','$messages')";
+    }
+    else
+    {   
+    $sql2 = "INSERT INTO `actions`(`user_id`,`adresse_ip`, `city`, `region`, `country`, `continent`, `timezone`, `currency_code`, `currency_symbol`, `browser_name`, `browser_version`, `plateform`, `action`) VALUES ($ida,'$ip','$city','$region','$country','$continent','$timezone','$currency_code','$currency_symbol','$browserr','$version','$platform','$messages')";
+    }
                 // echo $sql2;
                 if ($GLOBALS["conn"]->query($sql2) === TRUE) {
 
@@ -71,22 +79,40 @@ if(isset($_REQUEST['first']) && isset($_REQUEST['last']) && isset($_REQUEST['ema
 {
     session_start();
     $user = new User($_REQUEST['first'],$_REQUEST['last'],$_REQUEST['email'],$_REQUEST['password']);
+    $_SESSION['prov'] = new User($_REQUEST['first'],$_REQUEST['last'],$_REQUEST['email'],$_REQUEST['password']);
+    $_SESSION['username'] = $_REQUEST['username'];
 
     if($user->check())
     {
+        
         $name = $_REQUEST['first'];
         $last = $_REQUEST['last'];
         $email =  $_REQUEST['email'];
         $password =  $_REQUEST['password'];
+        $username =  $_REQUEST['username'];
+        
+        if(strlen($username)<3)
+        {
+            header("Location: register?username");
+        }
 
-        $sql = "INSERT INTO `users`(`name`, `lastname`, `email`, `password`) VALUES ('$name','$last','$email','$password')";
+        $sql8 = "SELECT *
+                FROM users where email = '$email'";
+        $result8 = mysqli_query($conn, $sql8);
+        $sql9 = "SELECT *
+                FROM users where username = '$username'";
+        $result9 = mysqli_query($conn, $sql9);
+        
+        if (mysqli_num_rows($result8) < 1) {
+            if (mysqli_num_rows($result9) < 1) {
+        $sql = "INSERT INTO `users`(`username`,`name`, `lastname`, `email`, `password`) VALUES ('$username','$name','$last','$email','$password')";
 
         if ($res = $conn->query($sql) === TRUE) {
             $usr = $conn->insert_id;
             $sql2 = "INSERT INTO `users_role`(`user_id`, `id_role`) VALUES ($usr,1)";
             // echo $sql2;
             if ($conn->query($sql2) === TRUE) {
-                create_action('create account with id '.$usr);
+                create_action('create account with id '.$usr,null);
                 $sql = "SELECT *
                 FROM users
                 INNER JOIN users_role ON users.id = users_role.user_id
@@ -134,7 +160,7 @@ if(isset($_REQUEST['first']) && isset($_REQUEST['last']) && isset($_REQUEST['ema
                 $user->set_roles($roles);
                 // echo count($user->get_roles());
                 $_SESSION["user"] = $user;
-                create_action('login to account with id '.$id);
+                create_action('login to account with id '.$id,$id);
                 header("Location: home");
             }
         
@@ -145,9 +171,15 @@ if(isset($_REQUEST['first']) && isset($_REQUEST['last']) && isset($_REQUEST['ema
         echo 'yes';
     }
     else{
-        echo 'no';
+        header("Location: register?us");
     }
-
+    }else{
+        header("Location: register?email");
+    }
+    }
+    else{
+        header("Location: register?error");
+    }
 }
 else if(!isset($_REQUEST['first']) && !isset($_REQUEST['last']) && isset($_REQUEST['email']) && isset($_REQUEST['password']))
 {
@@ -157,7 +189,7 @@ else if(!isset($_REQUEST['first']) && !isset($_REQUEST['last']) && isset($_REQUE
     $sql = "SELECT *
     FROM users
     INNER JOIN users_role ON users.id = users_role.user_id
-    INNER JOIN role ON role.role_id = users_role.id_role where users.email='$email' and users.password='$password'";
+    INNER JOIN role ON role.role_id = users_role.id_role where users.email='$email' and users.password='$password' OR users.username='$email' and users.password='$password'";
     $result = mysqli_query($conn, $sql);
     // echo mysqli_num_rows($result);
     $roles = array();
@@ -201,8 +233,12 @@ else if(!isset($_REQUEST['first']) && !isset($_REQUEST['last']) && isset($_REQUE
     $user->set_roles($roles);
     // echo count($user->get_roles());
     $_SESSION["user"] = $user;
-    create_action('login to account with id '.$id);
+    create_action('login to account with id '.$id,$id);
     header("Location: home");
+    }
+    else
+    {
+        header("Location: login?error");
     }
     
     // echo $_SESSION["user"]->get_roles()[1];
@@ -210,8 +246,10 @@ else if(!isset($_REQUEST['first']) && !isset($_REQUEST['last']) && isset($_REQUE
 }
 else if(isset($_REQUEST['service']) && isset($_REQUEST['type']))
 {
+    
     if($_REQUEST['type'] == "Admin")
     {
+        
         session_start();
         
         if(isset($_SESSION['user']))
@@ -242,8 +280,9 @@ else if(isset($_REQUEST['service']) && isset($_REQUEST['type']))
             else if($_REQUEST['service'] == "gigs")
             {
                 $resp="[";
-            $email = $_SESSION['user']->get_email();
-            $sql = "SELECT `id`,`name`,`path`,`domaine`,`price`,`updated`,DATE_FORMAT(`created`,'%d %M %Y at %T') as created FROM `gigs` order by created";
+            // $email = $_SESSION['user']->get_email();
+            $sql = "SELECT `id`,`name`,`path`,`domaine`,`price`,`updated`,DATE_FORMAT(`created`,'%d %M %Y at %T') as created FROM `gigs` order by gigs.`created` desc";
+            
             $result = mysqli_query($conn, $sql);
             while($row = mysqli_fetch_assoc($result)) {
                 $id = $row["id"];
@@ -269,7 +308,7 @@ else if(isset($_REQUEST['service']) && isset($_REQUEST['type']))
                     } else {
                     echo "Error: " . $sql . "<br>" . $conn->error;
                     }
-                    create_action('delete a gig as a admin');
+                    create_action('delete a gig as a admin',null);
             }
             
             else if($_REQUEST['service'] == "getgig")
@@ -285,12 +324,13 @@ else if(isset($_REQUEST['service']) && isset($_REQUEST['type']))
                     $domaine = $row['domaine'];
                     $created = $row["created"];
                     $price = $row["price"];
-                    $resp.="{\"id\":\"$id\",\"price\":\"$price\",\"name\":\"$name\",\"path\":\"$path\",\"domaine\":\"$domaine\",\"created\":\"$created\"},";
+                    $description = $row["description"];
+                    $resp.="{\"id\":\"$id\",\"price\":\"$price\",\"name\":\"$name\",\"path\":\"$path\",\"domaine\":\"$domaine\",\"created\":\"$created\",\"description\":\"$description\"},";
                 }
                         
                 $resp = rtrim($resp,',');
                 $resp.=']';
-                create_action('edit a gig as a admin');
+                create_action('edit a gig as a admin',null);
                 echo $resp;
             }
             else if($_REQUEST['service'] == "activity")
@@ -411,6 +451,27 @@ else if(isset($_REQUEST['service']) && isset($_REQUEST['type']))
                 }
                 
         }
+        else if($_REQUEST['service'] == "gigs")
+            {
+                $resp="[";
+            // $email = $_SESSION['user']->get_email();
+            $sql = "SELECT `id`,`name`,`path`,`domaine`,`price`,`updated`,DATE_FORMAT(`created`,'%d %M %Y at %T') as created FROM `gigs` order by created";
+            
+            $result = mysqli_query($conn, $sql);
+            while($row = mysqli_fetch_assoc($result)) {
+                $id = $row["id"];
+                $name = $row["name"];
+                $path = $row["path"];
+                $domain = $row["domaine"];
+                $created = $row["created"];
+                $price = $row["price"];
+                $resp.="{\"id\":\"$id\",\"price\":\"$price\",\"name\":\"$name\",\"path\":\"$path\",\"domain\":\"$domain\",\"created\":\"$created\"},";
+            }
+            $resp = rtrim($resp,',');
+            $resp.=']';
+            // create_action('view gigs as a admin');
+            echo $resp;
+            }
         else if($_REQUEST['service'] == "trash")
         {
             session_start();
@@ -521,11 +582,11 @@ else if(isset($_REQUEST['name']) && isset($_REQUEST['subject']) && isset($_REQUE
         $usr = $conn->insert_id;
         if(empty($ik))
         {
-            create_action('send a mail with id '.$usr.' as unknown');
+            create_action('send a mail with id '.$usr.' as unknown',null);
         }
         else
         {
-            create_action('send a mail with id '.$usr.' as '.$ik);
+            create_action('send a mail with id '.$usr.' as '.$ik,null);
         }
         
         if($_REQUEST['adouna'] == "index")
@@ -602,7 +663,7 @@ else if(isset($_REQUEST['adouna']) && isset($_REQUEST['service']) && isset($_REQ
         $sql = "SELECT count(*) as number,sum(price*quantity) as prices
         FROM cart
         INNER JOIN users ON users.id = cart.user_id
-        INNER JOIN gigs ON gigs.id = cart.gigs_id WHERE user_id=$idu";
+        INNER JOIN gigs ON gigs.id = cart.gigs_id WHERE user_id=$idu and cart.status is null";
         $result = mysqli_query($conn, $sql);
         if($row = mysqli_fetch_assoc($result)) {
             echo $row['number'].':'.$row['prices'];
@@ -653,6 +714,70 @@ else if(isset($_REQUEST['typeu']))
     else{
         echo 'no';
     }
+}
+else if(isset($_FILES["fille"]))
+{
+    session_start();
+    if($_FILES["fille"]["name"] != '')
+    {
+        echo $_FILES["fille"]["name"];
+        $email = $_REQUEST['email'];
+        $method = $_REQUEST['methode'];
+        $ip = $GLOBALS["ip"];
+        $id =  $_SESSION['user']->get_id();
+        $test = explode('.', $_FILES["fille"]["name"]);
+        $ext = end($test);
+        $name = "2".rand(1, 9999999) . '.' . $ext;
+        $location = './assets/images/' . $name;  
+        move_uploaded_file($_FILES["fille"]["tmp_name"], $location);
+        
+        $sql = "INSERT INTO `pay`(`amount`, `email`, `method`, `image`, `adresse_ip`) VALUES ((SELECT sum(price*quantity) as prices
+        FROM cart
+        INNER JOIN users ON users.id = cart.user_id
+        INNER JOIN gigs ON gigs.id = cart.gigs_id WHERE user_id=$id and cart.status is null),'$email','$method','$location','$ip')";
+        echo $location;
+        if ($conn->query($sql) === TRUE) {
+            $usr = $conn->insert_id;
+            $sql = "INSERT INTO `pay_cart`(`pay`,`cart`) select $usr,id from cart where user_id=$id and cart.status is null";
+            if ($conn->multi_query($sql) === TRUE) {
+                $sqll = "UPDATE `cart` SET `status`=1 WHERE `user_id` = $id and status is null";
+        if ($conn->query($sqll) === TRUE) {
+                try {
+                    require 'phpmailer/src/Exception.php';
+                    require 'phpmailer/src/PHPMailer.php';
+                    require 'phpmailer/src/SMTP.php';
+                    $mail = new PHPMailer(true);
+    
+                    $mail->isSMTP();
+                    $mail->Host = 'smtp.gmail.com';
+                    $mail->SMTPAuth = true;
+                    $mail->Username = 'digital.itservices2023@gmail.com';
+                    $mail->Password = 'qapqkfqqogxdwrwt';
+                    $mail->SMTPSecure = 'ssl';
+                    $mail->Port = 465;
+
+                    $mail->setFrom('digital.itservices2023@gmail.com','digital itservices');
+
+                    $mail->addAddress($email);
+                    
+                    $mail->isHTML(true);
+
+                    $mail->Subject = 'Payment check';
+                    $mail->Body = '<b>Proof of payment has been sent to the administrator it can take up to 24 hours to respond</b><a href="https://digitalit.services/login">Go to the siteweb</a>';
+
+                    $mail->send();
+                    header("Location: pay?message=success");
+                } catch (\Throwable $th) {
+                    header("Location: pay?message=success");
+                }
+                header("Location: pay?message=success");
+            }} else {
+            echo "Error: " . $sql . "<br>" . $conn->error;
+            
+        }
+    }
+    }
+    
 }
 
 
