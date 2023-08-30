@@ -204,16 +204,24 @@
 
         <ul id="portfolio-flters" class="justify-content-center" data-aos="fade-up" data-aos-delay="100" style="text-align: center;">
           <li data-filter="*" class="filter-active" id="allt">All</li>
-          <li class="filter hrvatski" data-filter=".WebDevelopment">Web Development</li>
+          <?php
+          include 'connect.php';
+          $sql = "SELECT `id`,`domaine`,DATE_FORMAT(`created`,'%d %M %Y at %T') as created FROM `category` order by category.`created` desc";
+            
+                                    $result = mysqli_query($conn, $sql);
+                                    while($row = mysqli_fetch_assoc($result)) { ?>
+                                        <li class="filter hrvatski" data-filter=".<?php echo str_replace(' ', '', $row['domaine']); ?>"><?php echo $row['domaine']; ?></li>
+                                    <?php } ?>
+          <!-- <li class="filter hrvatski" data-filter=".WebDevelopment">Web Development</li>
           <li class="filter hrvatski" data-filter=".GraphicDesign">Graphic Design</li>
           <li class="filter hrvatski" data-filter=".DataScience">Data Science</li>
           <li class="filter hrvatski" data-filter=".DataAnalysis">Data Analysis</li>
-          <li class="filter hrvatski" data-filter=".Other">Other</li>
+          <li class="filter hrvatski" data-filter=".Other">Other</li> -->
         </ul>
 
         <div class="row portfolio-cont" data-aos="fade-up" data-aos-delay="200">
         <?php 
-                include 'connect.php';
+                
                 $sql2 = "SELECT * FROM `gigs` ORDER BY rand() LIMIT 3";
                 $result2 = mysqli_query($conn, $sql2);
                 while($row = mysqli_fetch_assoc($result2)) {

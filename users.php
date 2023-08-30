@@ -1,5 +1,6 @@
 <?php
             include 'user.php';
+            include 'connection.php';
             session_start();
             if(isset($_SESSION["user"]))
             {
@@ -44,6 +45,7 @@
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         input,select{
             background:white !important;
@@ -109,25 +111,10 @@
                     </div>
                     <?php } ?>
                     <?php if($role=='Admin'){ ?>
-                    <a href="gigs" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Gigs</a>
-                    <?php } ?>
-                    <?php if($role=='User'){ ?>
-                    <a href="contact" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Contact</a>
-                    <?php } ?>
-                    <!-- <?php if($role=='User'){ ?>
-                    <a href="reviews" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Reviews</a>
-                    <?php } ?> -->
-                    <?php if($role=='Admin'){ ?>
-                    <a href="mails" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Mails manage</a>
+                    <a href="exercices" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Exercices</a>
                     <?php } ?>
                     <?php if($role=='Admin'){ ?>
-                    <a href="activity" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Last activities</a>
-                    <?php } ?>
-                    <?php if($role=='User'){ ?>
-                    <a href="found" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Add found</a>
-                    <?php } ?>
-                    <?php if($role=='User'){ ?>
-                    <a href="store" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Store</a>
+                    <a href="diet" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Diets</a>
                     <?php } ?>
                     <!-- <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Pages</a>
@@ -156,6 +143,7 @@
                 </a>
                 <form class="d-none d-md-flex ms-4">
                     <input class="form-control bg-dark border-0" type="search" placeholder="Search">
+                    
                 </form>
                 <div class="navbar-nav align-items-center ms-auto">
                     <div class="nav-item dropdown">
@@ -238,16 +226,20 @@
 
 
             <!-- Sale & Revenue Start -->
-            <div class="row" style="    width: 100%;padding-left: 10px;">
+            <div class="row" style="padding-left: 10px;">
                 <div class="offset-md-2 col-md-8" style="margin-top:50px;margin-bottom:50px;box-shadow: 0 0 10px #eee;padding:5px;overflow:auto">
-                <div class="row" style="margin-bottom:30px">
+                <div class="row">
                     <div class="offset-1 col-10">
                         <h2 style='text-align:center;' onclick="user()">users management:</h2>
                         
                     </div> 
                     <div class="col-1" style="margin:auto">
-                    <i class="fa fa-plus" aria-hidden="true" onclick='add_user()' style="color:green;cursor:pointer"></i>
+                    <!-- <i class="fa fa-plus" aria-hidden="true" onclick='add_user()' style="color:green;cursor:pointer"></i> -->
                     </div>
+                </div>
+                <div class="row" style="margin-bottom:30px">
+                    <div class="offset-md-1 col-md-10"><input type="text" class="form-control" onkeyup="search(this)"/><input type="checkbox" onclick="accp(this)" /> Accepted only</div>
+                    
                 </div>
                 <table class="table" style='border: 2px solid white;margin-bottom:0'>
   <thead class="thead-dark" style='border: 2px solid white;'>
@@ -256,6 +248,7 @@
       <th scope="col">FirstName</th>
       <th scope="col">LastName</th>
       <th scope="col">Email</th>
+      <th scope="col">Status</th>
       <th scope="col"></th>
     </tr>
   </thead>
@@ -273,12 +266,12 @@
         <!-- Back to Top -->
         <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
     </div>
-    <div id="full" style="position:absolute;top:0;left:0;width:100%;height:100%;background:red;    background: rgba(120,120,120,0.5);z-index: 9999;display:none">
+    <div id="full" style="position:fixed;top:0;left:0;width:100%;height:100%;background:red;    background: rgba(120,120,120,0.5);z-index: 9999;display:none;    overflow: auto;">
             <div class="row" style="margin-top:20px">
                 <div class="offset-md-2 col-md-8">
                     <div class="row" style="margin-bottom:25px">
                         <div class="offset-1 col-10">
-                        <h2 style="text-align:center;border:2px solid">Add gigs:</h2>
+                        <h2 style="text-align:center;border:2px solid">Show user</h2>
                         </div>
                         <div class="col-1" style="margin:auto">
                         <p onclick="exit()" style="color:white;font-weight:bold;cursor:pointer">X</p>
@@ -288,41 +281,138 @@
                 
                     <div class="row">
                         <div class="col-md-6">
-                            <input type="text" name="email" id="email" placeholder="Email" class="form-control">
+                        <label style="color:white; margin-top: 10px">name</label>
+                            <input style='margin-top:0' type="text" name="email" id="name_s" placeholder="Name" class="form-control" disabled>
                         </div>
                         <div class="col-md-6">
-                            <select name="type" id="type" class="form-control">
-                                <option value="User">User</option>
-                                <option value="Admin">Admin</option>
-                            </select>
+                        <label style="color:white; margin-top: 10px">lastname</label>
+                        <input style='margin-top:0' type="text" name="email" id="last_s" placeholder="Lastname" class="form-control" disabled>
                         </div>
                     </div>
                     <div class="row">
                     <div class="col-md-12">
-                            <input type="text" id="name" name="name" placeholder="Name" class="form-control">
+                    <label style="color:white; margin-top: 10px">email</label>
+                            <input style='margin-top:0' type="text" id="email_s" name="name" placeholder="Email" class="form-control" disabled>
+                        </div>
+                    </div>
+                    <div class="row">
+                    <div class="col-md-4">
+                    <label style="color:white; margin-top: 10px">taille</label>
+                            <input style='margin-top:0' type="text" id="taille_s" name="lastname" placeholder="Taille" class="form-control" disabled>
+                        </div>
+                        <div class="col-md-4">
+                        <label style="color:white; margin-top: 10px">age</label>
+                            <input style='margin-top:0' type="text" id="age_s" name="lastname" placeholder="Age" class="form-control" disabled>
+                        </div>
+                        <div class="col-md-4">
+                        <label style="color:white; margin-top: 10px">poids</label>
+                            <input style='margin-top:0' type="text" id="poids_s" name="lastname" placeholder="Poids" class="form-control" disabled>
+                        </div>
+                    </div>
+                    <div class="row">
+                    <div class="col-md-6">
+                    <label style="color:white; margin-top: 10px">gender</label>
+                            <input style='margin-top:0' type="text" id="gender_s" name="lastname" placeholder="Gender" class="form-control" disabled>
+                        </div>
+                        <div class="col-md-6">
+                        <label style="color:white; margin-top: 10px">blessure</label>
+                            <input style='margin-top:0' type="text" id="blessure_s" name="lastname" placeholder="Blessure" class="form-control" disabled>
                         </div>
                     </div>
                     <div class="row">
                     <div class="col-md-12">
-                            <input type="text" id="lastname" name="lastname" placeholder="Lastname" class="form-control">
+                    <label style="color:white; margin-top: 10px">objectif</label>
+                            <input style='margin-top:0' type="text" id="objectif_s" name="password" placeholder="Password" class="form-control" disabled>
                         </div>
                     </div>
                     <div class="row">
                     <div class="col-md-12">
-                            <input type="password" id="password" name="password" placeholder="Password" class="form-control">
+                        <label style="color:white; margin-top: 10px">created_at</label>
+                            <input style='margin-top:0' type="text" id="created_s" name="password" placeholder="Created_at" class="form-control" disabled>
                         </div>
                     </div>
                     <div class="row">
                     <div class="col-md-12">
-                            <p id="uploaded_image" style="display:none"></p>
+                    <label style="color:white; margin-top: 10px">updated_at</label>
+                    <input style='margin-top:0' type="text" id="updated_s" name="password" placeholder="Updated_at" class="form-control" disabled>
                         </div>
                     </div>
-                    <div class="form-btn text-center">
-                            <button class="btn btn-success" onclick='upload()' type="button">Add user</button>
-                            <p id="form-message"></p>
+                    <div class="row">
+                    <div class="col-md-6">
+                    <label style="color:white; margin-top: 10px">status</label>
+                            <input style='margin-top:0' type="text" id="status_s" name="lastname" placeholder="Status" class="form-control" disabled>
                         </div>
+                        <div class="col-md-6">
+                        <label style="color:white; margin-top: 10px">type</label>
+                            <input style='margin-top:0' type="text" id="type_s" name="lastname" placeholder="Type" class="form-control" disabled>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </div>
+
+        <div id="fully" style="position:fixed;top:0;left:0;width:100%;height:100%;background:red;    background: rgba(120,120,120,0.5);z-index: 9999;display:none;    overflow: auto;">
+        <div onclick="exit()" style="text-align:right;color:white;font-weight:bold;cursor:pointer">X</div>
+            <div class="row" style="margin-top:20px">
+                <div class="offset-md-1 col-md-4">
+                    <div class="row" style="margin-bottom:25px">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 style="color:black">Liste of exercices:</h5>
+                                <input type="text" class="form-control" onkeyup="filter(this)"/>
+                            <?php $sql = "SELECT `id`, `name`, `calories`, `equipments`, `duree`, `benefits`, `status`, `created_at`, `updated_at`, `description`, `image` FROM `exercice` order by created_at desc";
+            
+            $result = mysqli_query($con, $sql);
+            while($row = mysqli_fetch_assoc($result)) {
+                echo "<p class='namess'><b>".$row['name']."</b><b style='display: block;float: right;color:green;cursor:pointer' onclick=\"addLink('".$row['id']."')\">+</b></p>";
+             } ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+  <div class="offset-md-2 col-md-4">
+                    <div class="row" style="margin-bottom:25px">
+                    <div class="card">
+            <div class="card-body" id="idida">
+                
+            </div>
+</div>
+                    
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <div id="fullp" style="position:fixed;top:0;left:0;width:100%;height:100%;background:red;    background: rgba(120,120,120,0.5);z-index: 9999;display:none;    overflow: auto;">
+        <div onclick="exit()" style="text-align:right;color:white;font-weight:bold;cursor:pointer">X</div>
+            <div class="row" style="margin-top:20px">
+                <div class="offset-md-1 col-md-4">
+                    <div class="row" style="margin-bottom:25px">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 style="color:black">Liste of diets:</h5>
+                                <input type="text" class="form-control" onkeyup="filter(this)"/>
+                            <?php $sql = "SELECT `id`, `name`, `description`, `recipe`, `calories`, `protein`, `fat`, `ingredients`, `image`, `status`, `created_at`, `updated_at` FROM `diet` WHERE 1";
+            
+            $result = mysqli_query($con, $sql);
+            while($row = mysqli_fetch_assoc($result)) {
+                echo "<p class='namess'><b>".$row['name']."</b><b style='display: block;float: right;color:green;cursor:pointer' onclick=\"addLinkDiet('".$row['id']."')\">+</b></p>";
+             } ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="offset-md-2 col-md-4">
+                                    <div class="row" style="margin-bottom:25px">
+                                    <div class="card">
+                            <div class="card-body" id="idida2">
+                                
+                            </div>
+                </div>
+                    
+                </div>
+            </div>
+        </div>
         </div>
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -338,6 +428,47 @@
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
     <script>
+        let id_i = null;
+        let id_u = null;
+
+             function accp(e) {
+                if(e.checked) {
+                    const A = document.getElementsByClassName('names');
+                    for (let i = 0; i < A.length; i++) {
+                        if(A[i].parentElement.children[4].children[0].textContent != 'Accepted') {
+                            A[i].parentElement.style.display = 'none'
+                        }
+                        else {
+                            A[i].parentElement.style.display = 'table-row'
+                        }
+                    }
+                }
+                else {
+                    const A = document.getElementsByClassName('names');
+                    for (let i = 0; i < A.length; i++) {
+                            A[i].parentElement.style.display = 'table-row'
+                        
+                    }
+                }
+                
+                console.log(e.checked)
+             }
+
+        function search(e)
+        {
+            const A = document.getElementsByClassName('names');
+            for (let i = 0; i < A.length; i++) {
+                if(A[i].textContent.toLocaleUpperCase().includes(e.value.toLocaleUpperCase()))
+                {
+                    A[i].parentElement.style.display = 'table-row'
+                }
+                else {
+                    A[i].parentElement.style.display = 'none'
+                }
+            }
+            console.log(e.value)
+        }
+
         function user()
         {
             document.getElementById('users').innerHTML="";
@@ -345,22 +476,154 @@
             obj = JSON.parse(response);
             for (let i = 0; i < obj.length; i++) {
                 var rol="User";
-                if(obj[i].roles.includes('ROLE_ADMIN'))
+                console.log(obj[i])
+                let stats = 'pending'
+                let color = 'orange'
+                if(obj[i].status == 1)
                 {
-                    rol = 'Admin';
+                    stats = 'Pending'
+                    color = 'orange'
                 }
-                document.getElementById('users').innerHTML+='<tr><th scope="row">'+obj[i].id+'</th> <td>'+obj[i].name+'</td><td>'+obj[i].last+'</td><td>'+obj[i].email+'</td><td>'+rol+'</td></tr>'
+                else if(obj[i].status == 2) {
+                    stats = 'Accepted'
+                    color = 'green'
+                }
+                else {
+                    stats = 'Refused'
+                    color = 'red'
+                }
+                document.getElementById('users').innerHTML+='<tr><th scope="row">'+obj[i].id+'</th> <td class="names">'+obj[i].name+'</td><td>'+obj[i].last+'</td><td>'+obj[i].email+'</td><td><p style="color:'+color+'">'+stats+'</p><b style="cursor:pointer;color:green" onclick="accept(\''+obj[i].id+'\', this)">✓</b><b style="cursor:pointer;color:red" onclick="rejet(\''+obj[i].id+'\', this)">X</b></td><td><i class="fa fa-eye" style="color:white;cursor:pointer" onclick="add_user(\''+obj[i].name+'\',\''+obj[i].last+'\',\''+obj[i].email+'\',\''+obj[i].poids+'\',\''+obj[i].taille+'\',\''+obj[i].blessure+'\',\''+obj[i].objectif+'\',\''+obj[i].created_at+'\',\''+obj[i].updated_at+'\',\''+obj[i].status+'\',\''+obj[i].gender+'\',\''+obj[i].age+'\',\''+obj[i].type+'\')"></i><div><i class="fas fa-running" style="color:blue;cursor:pointer" onclick="add_exercice(\''+obj[i].id+'\',\''+obj[i].name+'\',\''+obj[i].last+'\',\''+obj[i].email+'\',\''+obj[i].poids+'\',\''+obj[i].taille+'\',\''+obj[i].blessure+'\',\''+obj[i].objectif+'\',\''+obj[i].created_at+'\',\''+obj[i].updated_at+'\',\''+obj[i].status+'\',\''+obj[i].gender+'\',\''+obj[i].age+'\',\''+obj[i].type+'\')"></i></div><div><i class="fas fa-hamburger" style="color:brown;cursor:pointer" onclick="unlocked(\''+obj[i].id+'\',\''+obj[i].name+'\',\''+obj[i].last+'\',\''+obj[i].email+'\',\''+obj[i].poids+'\',\''+obj[i].taille+'\',\''+obj[i].blessure+'\',\''+obj[i].objectif+'\',\''+obj[i].created_at+'\',\''+obj[i].updated_at+'\',\''+obj[i].status+'\',\''+obj[i].gender+'\',\''+obj[i].age+'\',\''+obj[i].type+'\')"></i></div></td></tr>'
             }
 });
         }
-        function add_user()
+
+        function unlocked(id) {
+            id_u = id
+            console.log(id)
+            document.getElementById('idida2').innerHTML = '<h5 style="color:black">Diets affected:</h5>';
+            $.post('controller', {service:'links',ide: id, type:'<?php echo $role; ?>'}).done(function(response){
+            console.log(response)
+                obj = JSON.parse(response);
+            for (let i = 0; i < obj.length; i++) {
+                document.getElementById('idida2').innerHTML += '<p>'+obj[i].name+'<b style="display: block;float: right;color:red;cursor:pointer" onclick=\"deleteLinkDiet(\''+obj[i].usi+'\')\">x</b></p>'
+            }
+});
+            document.getElementById('fullp').style.display = 'block'
+            console.log(document.getElementById('fullp'))
+        }
+
+        function accept(id, e) {
+            console.log(id)
+            $.post('controller', {service:'statususers',ide: id,to: 2, type:'<?php echo $role; ?>'}).done(function(response){
+            if(response == 'done')
+            {
+                e.parentElement.children[0].textContent = 'Accepted'
+                e.parentElement.children[0].style.color = 'green'
+            }
+            
+});
+        }
+
+        function rejet(id, e) {
+            console.log(e)
+            $.post('controller', {service:'statususers',ide: id,to: 0, type:'<?php echo $role; ?>'}).done(function(response){
+            if(response == 'done')
+            {
+                e.parentElement.children[0].textContent = 'Rejeted'
+                e.parentElement.children[0].style.color = 'red'
+            }
+            
+});
+        }
+
+        function add_user(name,lastname,email,poids,taille,blessure,objectif,created_at,updated_at,status,gender,age,type)
         {
-            console.log('hole')
+            document.getElementById('name_s').value=name;
+                    document.getElementById('email_s').value=email;
+                    document.getElementById('last_s').value=lastname;
+                    document.getElementById('taille_s').value=taille;
+                    document.getElementById('blessure_s').value=blessure;
+                    document.getElementById('objectif_s').value=objectif;
+                    document.getElementById('poids_s').value=poids;
+                    document.getElementById('status_s').value=status;
+                    document.getElementById('gender_s').value=gender;
+                    document.getElementById('age_s').value=age;
+                    document.getElementById('type_s').value=type;
+                    document.getElementById('created_s').value=created_at;
+                    document.getElementById('updated_s').value=updated_at;
             document.getElementById('full').style.display = "block";
         }
+
+        function addLink(id) {
+            $.post('controller', {service:'linkAdd',ide: id,idu: id_i, type:'<?php echo $role; ?>'}).done(function(response){
+            console.log(response)
+                if(response == 'done') {
+                add_exercice(id_i)
+            }
+});
+            console.log(id)
+        }
+
+        function addLinkDiet(id) {
+            $.post('controller', {service:'linkAddDiet',ide: id,idu: id_u, type:'<?php echo $role; ?>'}).done(function(response){
+            console.log(response)
+                if(response == 'done') {
+                    unlocked(id_u)
+            }
+});
+            console.log(id)
+        }
+
+        function deleteLink(id) {
+            $.post('controller', {service:'dislink',ide: id, type:'<?php echo $role; ?>'}).done(function(response){
+            if(response == 'done') {
+                add_exercice(id_i)
+            }
+});
+        }
+
+        function deleteLinkDiet(id) {
+            $.post('controller', {service:'dislinkdiet',ide: id, type:'<?php echo $role; ?>'}).done(function(response){
+            if(response == 'done') {
+                unlocked(id_u)
+            }
+});
+        }
+
+        function add_exercice(id)
+        {
+            id_i = id;
+            document.getElementById('idida').innerHTML = '<h5 style="color:black">Exercices affected:</h5>';
+            $.post('controller', {service:'link',ide: id, type:'<?php echo $role; ?>'}).done(function(response){
+            obj = JSON.parse(response);
+            for (let i = 0; i < obj.length; i++) {
+                document.getElementById('idida').innerHTML += '<p>'+obj[i].name+'<b style="display: block;float: right;color:red;cursor:pointer" onclick=\"deleteLink(\''+obj[i].usi+'\')\">x</b></p>'
+            }
+});
+            document.getElementById('fully').style.display = "block";
+        }
+
+        function filter(a)
+        {
+            const A = document.getElementsByClassName('namess')
+            for (let i = 0; i < A.length; i++) {
+                console.log(A[i].children[0].textContent.toLocaleUpperCase())
+                console.log(a.value)
+                console.log(A[i].children[0].textContent.toLocaleUpperCase().includes(a.value))
+                if(!(A[i].children[0].textContent.toLocaleUpperCase().includes(a.value.toLocaleUpperCase()))) {
+                    A[i].style.display = 'none'
+                }
+                else {
+                    A[i].style.display = 'block' 
+                }
+            }
+        }
+
         function exit()
         {
             document.getElementById('full').style.display = "none";
+            document.getElementById('fully').style.display = "none";
+            document.getElementById('fullp').style.display = "none";
         }
 
         function upload()

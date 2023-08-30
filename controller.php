@@ -4,9 +4,20 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 include 'connect.php';
+include 'connection.php';
 include 'user.php';
 include('Browser.php');
 $browser = new Browser();
+
+function format_uuidv4($data)
+{
+  assert(strlen($data) == 16);
+
+  $data[6] = chr(ord($data[6]) & 0x0f | 0x40); // set version to 0100
+  $data[8] = chr(ord($data[8]) & 0x3f | 0x80); // set bits 6-7 to 10
+    
+  return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
+}
 
 function GetClientMac(){
     if (isset($_SERVER['HTTP_CLIENT_IP']))
@@ -30,19 +41,19 @@ function GetClientMac(){
 
     return ['ip' => $ipaddress, 'mac' => $mac];
 }
-$locationArray = unserialize(file_get_contents('http://www.geoplugin.net/php.gp?ip=' . '160.179.52.193'));
+$locationArray = null;
 $ip = GetClientMac()['ip'];
-$city = $locationArray['geoplugin_city'];
-$region = $locationArray['geoplugin_region'];
-$country = $locationArray['geoplugin_countryName'];
-$continent = $locationArray['geoplugin_continentName'];
-$timezone = $locationArray['geoplugin_timezone'];
-$currency_code = $locationArray['geoplugin_currencyCode'];
-$currency_symbol = $locationArray['geoplugin_currencySymbol'];
-$country = $locationArray['geoplugin_countryName'];
-$platform = $browser->getPlatform();
-$browserr = $browser->getBrowser();
-$version = $browser->getVersion();
+$city = null;
+$region = null;
+$country = null;
+$continent = null;
+$timezone = null;
+$currency_code = null;
+$currency_symbol = null;
+$country = null;
+$platform = null;
+$browserr = null;
+$version = null;
 
 function create_action($messages,$ida)
 {
@@ -258,45 +269,285 @@ else if(isset($_REQUEST['service']) && isset($_REQUEST['type']))
             {
                 $resp="[";
             $email = $_SESSION['user']->get_email();
-            $sql = "SELECT users.id,users.name,users.lastname,users.email,GROUP_CONCAT(role.role_name SEPARATOR ' ') as roles
-            FROM users
-            INNER JOIN users_role ON users.id = users_role.user_id
-            INNER JOIN role ON role.role_id = users_role.id_role
-            group by users.id";
-            $result = mysqli_query($conn, $sql);
+            $sql = "SELECT `id`,`name`,`lastname`,`email`,`poids`, `taille`, `blessure`, `objectif`, `created_at`, `updated_at`, `status`, `gender`, `age`, `type` FROM `user`";
+            $result = mysqli_query($con, $sql);
             while($row = mysqli_fetch_assoc($result)) {
                 $id = $row["id"];
                 $name = $row["name"];
                 $lastname = $row["lastname"];
                 $email = $row["email"];
-                $roles = $row["roles"];
-                $resp.="{\"id\":\"$id\",\"name\":\"$name\",\"last\":\"$lastname\",\"email\":\"$email\",\"roles\":\"$roles\"},";
+                $poids = $row["poids"];
+                $taille = $row["taille"];
+                $blessure = $row["blessure"];
+                $objectif = $row["objectif"];
+                $created_at = $row["created_at"];
+                $updated_at = $row["updated_at"];
+                $status = $row["status"];
+                $gender = $row["gender"];
+                $age = $row["age"];
+                $type = $row["type"];
+                $resp.="{\"id\":\"$id\",\"name\":\"$name\",\"last\":\"$lastname\",\"email\":\"$email\",\"poids\":\"$poids\",\"taille\":\"$taille\",\"blessure\":\"$blessure\",\"objectif\":\"$objectif\",\"created_at\":\"$created_at\",\"updated_at\":\"$updated_at\",\"status\":\"$status\",\"gender\":\"$gender\",\"age\":\"$age\",\"type\":\"$type\"},";
             }
             $resp = rtrim($resp,',');
             $resp.=']';
             // create_action('view users as a admin');
             echo $resp;
             }
-            else if($_REQUEST['service'] == "gigs")
+            else if($_REQUEST['service'] == "linkAdd")
             {
                 $resp="[";
+                $ide = $_REQUEST['ide'];
+                $idu = $_REQUEST['idu'];
             // $email = $_SESSION['user']->get_email();
-            $sql = "SELECT `id`,`name`,`path`,`domaine`,`price`,`updated`,DATE_FORMAT(`created`,'%d %M %Y at %T') as created FROM `gigs` order by gigs.`created` desc";
+            $data = openssl_random_pseudo_bytes(16, $strong);
+        assert($data !== false && $strong);
+        $idd = format_uuidv4($data);
+            $sql = "INSERT INTO `user_exercice`(`id`,`user_id`, `exercice_id`) VALUES ('$idd','$idu','$ide')";
+            if ($res = $con->query($sql) === TRUE) {
+                echo 'done';
+                } else {
+                echo "Error: " . $sql . "<br>" . $conn->error;
+                }
             
-            $result = mysqli_query($conn, $sql);
+            }
+            else if($_REQUEST['service'] == "linkAddDiet")
+            {
+                $resp="[";
+                $ide = $_REQUEST['ide'];
+                $idu = $_REQUEST['idu'];
+            // $email = $_SESSION['user']->get_email();
+            $data = openssl_random_pseudo_bytes(16, $strong);
+        assert($data !== false && $strong);
+        $idd = format_uuidv4($data);
+            $sql = "INSERT INTO `user_diet`(`id`,`user_id`, `diet_id`) VALUES ('$idd','$idu','$ide')";
+            if ($res = $con->query($sql) === TRUE) {
+                echo 'done';
+                } else {
+                echo "Error: " . $sql . "<br>" . $conn->error;
+                }
+            
+            }
+            else if($_REQUEST['service'] == "adding")
+            {
+                $resp="[";
+                $ide = $_REQUEST['ide'];
+                $name = $_REQUEST['name'];
+                $duree = $_REQUEST['duree'];
+            // $email = $_SESSION['user']->get_email();
+            $data = openssl_random_pseudo_bytes(16, $strong);
+        assert($data !== false && $strong);
+        $idd = format_uuidv4($data);
+            $sql = "INSERT INTO `sessions`(`id`, `duree`, `name`,`exercice_id`) VALUES ('$idd','$duree','$name','$ide')";
+            if ($res = $con->query($sql) === TRUE) {
+                echo 'done';
+                } else {
+                echo "Error: " . $sql . "<br>" . $conn->error;
+                }
+            
+            }
+            else if($_REQUEST['service'] == "dislink")
+            {
+                $resp="[";
+                $ide = $_REQUEST['ide'];
+            $sql = "DELETE FROM `user_exercice` where id = '$ide'";
+            if ($res = $con->query($sql) === TRUE) {
+                echo 'done';
+                } else {
+                echo "Error: " . $sql . "<br>" . $conn->error;
+                }
+            
+            }
+            else if($_REQUEST['service'] == "dislinkdiet")
+            {
+                $resp="[";
+                $ide = $_REQUEST['ide'];
+            $sql = "DELETE FROM `user_diet` where id = '$ide'";
+            if ($res = $con->query($sql) === TRUE) {
+                echo 'done';
+                } else {
+                echo "Error: " . $sql . "<br>" . $conn->error;
+                }
+            
+            }
+            else if($_REQUEST['service'] == "statususers")
+            {
+                $resp="[";
+                $ide = $_REQUEST['ide'];
+                $to = $_REQUEST['to'];
+            $sql = "UPDATE user set status = $to where id = '$ide'";
+            if ($res = $con->query($sql) === TRUE) {
+                echo 'done';
+                } else {
+                echo "Error: " . $sql . "<br>" . $conn->error;
+                }
+            
+            }
+            else if($_REQUEST['service'] == "deleteExercice")
+            {
+                $resp="[";
+                $ide = $_REQUEST['ide'];
+            $sql = "DELETE FROM `exercice` where id = '$ide'";
+            if ($res = $con->query($sql) === TRUE) {
+                echo 'done';
+                } else {
+                echo "Error: " . $sql . "<br>" . $conn->error;
+                }
+            
+            }
+            else if($_REQUEST['service'] == "link")
+            {
+                $resp="[";
+                $ide = $_REQUEST['ide'];
+            // $email = $_SESSION['user']->get_email();
+            $sql = "SELECT us.*, e.*, u.id as usId FROM `user_exercice` u, exercice e, user us WHERE u.exercice_id = e.id and u.user_id = us.id and u.user_id = '$ide' order by u.created_at desc";
+            
+            $result = mysqli_query($con, $sql);
             while($row = mysqli_fetch_assoc($result)) {
                 $id = $row["id"];
+                $usi = $row["usId"];
                 $name = $row["name"];
-                $path = $row["path"];
-                $domain = $row["domaine"];
-                $created = $row["created"];
-                $price = $row["price"];
-                $resp.="{\"id\":\"$id\",\"price\":\"$price\",\"name\":\"$name\",\"path\":\"$path\",\"domain\":\"$domain\",\"created\":\"$created\"},";
+                $path = $row["image"];
+                $calories = $row["calories"];
+                $equipments = $row["equipments"];
+                $duree = $row["duree"];
+                $resp.="{\"usi\":\"$usi\",\"id\":\"$id\",\"duree\":\"$duree\",\"name\":\"$name\",\"path\":\"$path\",\"calories\":\"$calories\",\"equipments\":\"$equipments\"},";
             }
             $resp = rtrim($resp,',');
             $resp.=']';
             // create_action('view gigs as a admin');
             echo $resp;
+            }
+            else if($_REQUEST['service'] == "links")
+            {
+                $resp="[";
+                $ide = $_REQUEST['ide'];
+            // $email = $_SESSION['user']->get_email();
+            $sql = "SELECT us.*, e.*, u.id as usId FROM `user_diet` u, diet e, user us WHERE u.diet_id = e.id and u.user_id = us.id and u.user_id = '$ide' order by u.created_at desc";
+            
+            $result = mysqli_query($con, $sql);
+            while($row = mysqli_fetch_assoc($result)) {
+                $id = $row["id"];
+                $usi = $row["usId"];
+                $name = $row["name"];
+                $path = $row["image"];
+                $calories = $row["calories"];
+                $resp.="{\"usi\":\"$usi\",\"id\":\"$id\",\"name\":\"$name\",\"path\":\"$path\",\"calories\":\"$calories\"},";
+            }
+            $resp = rtrim($resp,',');
+            $resp.=']';
+            // create_action('view gigs as a admin');
+            echo $resp;
+            }
+            else if($_REQUEST['service'] == "view_exercices")
+            {
+                $resp="[";
+                $ide = $_REQUEST['ide'];
+            // $email = $_SESSION['user']->get_email();
+            $sql = "SELECT e.name, e.image, e.calories, e.equipments, e.duree,e.benefits,e.description, sessions.name as namee, sessions.duree as dure FROM `exercice` e LEFT JOIN sessions
+            ON e.id = sessions.exercice_id WHERE e.id='$ide'";
+            // echo $sql;
+            $result = mysqli_query($con, $sql);
+            while($row = mysqli_fetch_assoc($result)) {
+                $name = $row["name"];
+                $names = $row["namee"];
+                $path = $row["image"];
+                $calories = $row["calories"];
+                $equipments = $row["equipments"];
+                $description = $row["description"];
+                $duree = $row["duree"];
+                $benefits = $row["benefits"];
+                $durees = $row["dure"];
+                $resp.="{\"duree\":\"$duree\",\"name\":\"$name\",\"names\":\"$names\",\"path\":\"$path\",\"calories\":\"$calories\",\"equipments\":\"$equipments\",\"durees\":\"$durees\",\"benefits\":\"$benefits\",\"description\":\"$description\"},";
+            }
+            $resp = rtrim($resp,',');
+            $resp.=']';
+            // create_action('view gigs as a admin');
+            echo $resp;
+            }
+            else if($_REQUEST['service'] == "gigs")
+            {
+                $resp="[";
+            // $email = $_SESSION['user']->get_email();
+            $sql = "SELECT `id`, `name`, `calories`, `equipments`, `duree`, `benefits`, `status`, `created_at`, `updated_at`, `description`, `image` FROM `exercice` order by created_at desc";
+            
+            $result = mysqli_query($con, $sql);
+            while($row = mysqli_fetch_assoc($result)) {
+                $id = $row["id"];
+                $name = $row["name"];
+                $path = $row["image"];
+                $calories = $row["calories"];
+                $equipments = $row["equipments"];
+                $duree = $row["duree"];
+                $resp.="{\"id\":\"$id\",\"duree\":\"$duree\",\"name\":\"$name\",\"path\":\"$path\",\"calories\":\"$calories\",\"equipments\":\"$equipments\"},";
+            }
+            $resp = rtrim($resp,',');
+            $resp.=']';
+            // create_action('view gigs as a admin');
+            echo $resp;
+            }
+            else if($_REQUEST['service'] == "diet")
+            {
+                $resp="[";
+            // $email = $_SESSION['user']->get_email();
+            $sql = "SELECT `id`, `name`, `description`, `recipe`, `calories`, `protein`, `fat`, `ingredients`, `image`, `status`, `created_at`, `updated_at` FROM `diet` WHERE 1";
+            
+            $result = mysqli_query($con, $sql);
+            while($row = mysqli_fetch_assoc($result)) {
+                $id = $row["id"];
+                $name = $row["name"];
+                $path = $row["image"];
+                $calories = $row["calories"];
+                $recipe = $row["recipe"];
+                $protein = $row["protein"];
+                $fat = $row["fat"];
+                $ingredients = $row["ingredients"];
+                $resp.="{\"id\":\"$id\",\"fat\":\"$fat\",\"ingredients\":\"$ingredients\",\"protein\":\"$protein\",\"name\":\"$name\",\"path\":\"$path\",\"calories\":\"$calories\",\"recipe\":\"$recipe\"},";
+            }
+            $resp = rtrim($resp,',');
+            $resp.=']';
+            // create_action('view gigs as a admin');
+            echo $resp;
+            }
+            else if($_REQUEST['service'] == "category")
+            {
+                $resp="[";
+            // $email = $_SESSION['user']->get_email();
+            $sql = "SELECT `id`,`domaine`,DATE_FORMAT(`created`,'%d %M %Y at %T') as created FROM `category` order by category.`created` desc";
+            
+            $result = mysqli_query($conn, $sql);
+            while($row = mysqli_fetch_assoc($result)) {
+                $id = $row["id"];
+                $domain = $row["domaine"];
+                $created = $row["created"];
+                $resp.="{\"id\":\"$id\",\"domain\":\"$domain\",\"created\":\"$created\"},";
+            }
+            $resp = rtrim($resp,',');
+            $resp.=']';
+            // create_action('view gigs as a admin');
+            echo $resp;
+            }
+            else if($_REQUEST['service'] == "addc")
+            {
+                $dom = $_REQUEST['domain'];
+            $sql = "INSERT INTO `category`(`domaine`) VALUES ('$dom')";
+            
+            if ($res = $conn->query($sql) === TRUE) {
+                echo 'done';
+                } else {
+                echo "Error: " . $sql . "<br>" . $conn->error;
+                }
+            }
+            else if($_REQUEST['service'] == "deletecat")
+            {
+                $idg = $_REQUEST['idg'];
+                $sql = "DELETE from category where id=$idg";
+
+                if ($res = $conn->query($sql) === TRUE) {
+                    echo 'done';
+                    } else {
+                    echo "Error: " . $sql . "<br>" . $conn->error;
+                    }
+                    create_action('delete a gig as a admin',null);
             }
             else if($_REQUEST['service'] == "deletegigs")
             {

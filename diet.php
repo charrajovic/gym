@@ -1,6 +1,7 @@
 <?php
             include 'user.php';
             session_start();
+            include 'connect.php';
             if(isset($_SESSION["user"]))
             {
                 $role='User';
@@ -18,7 +19,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Gigs management</title>
+    <title>Diets management</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -115,25 +116,10 @@
                     </div>
                     <?php } ?>
                     <?php if($role=='Admin'){ ?>
-                    <a href="gigs" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Gigs</a>
-                    <?php } ?>
-                    <?php if($role=='User'){ ?>
-                    <a href="contact" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Contact</a>
-                    <?php } ?>
-                    <!-- <?php if($role=='User'){ ?>
-                    <a href="reviews" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Reviews</a>
-                    <?php } ?> -->
-                    <?php if($role=='Admin'){ ?>
-                    <a href="mails" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Mails manage</a>
+                    <a href="exercices" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Exercices</a>
                     <?php } ?>
                     <?php if($role=='Admin'){ ?>
-                    <a href="activity" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Last activities</a>
-                    <?php } ?>
-                    <?php if($role=='User'){ ?>
-                    <a href="found" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Add found</a>
-                    <?php } ?>
-                    <?php if($role=='User'){ ?>
-                    <a href="store" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Store</a>
+                    <a href="diet" class="nav-item nav-link active"><i class="fa fa-th me-2"></i>Diets</a>
                     <?php } ?>
                     <!-- <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Pages</a>
@@ -253,7 +239,7 @@
                 <div class="offset-md-2 col-md-8" style="margin-top:50px;margin-bottom:50px;    box-shadow: 0 0 10px #eee;padding:5px;overflow:auto">
                 <div class="row" style="margin-bottom:30px">
                     <div class="offset-md-1 col-md-10">
-                        <h2 style='text-align:center;' onclick="user()">gigs management:</h2>
+                        <h2 style='text-align:center;' onclick="user()">Diets management:</h2>
                         
                     </div> 
                     <div class="col-md-1" style="margin:auto">
@@ -281,9 +267,9 @@
                 <tr>
                     <th>Thumbnail</th>
                     <th>Name</th>
-                    <th>Domain</th>
-                    <th>Price</th>
-                    <th>Created at</th>
+                    <th>Calories</th>
+                    <th>Ingredients</th>
+                    <th>Recipe</th>
                     <th></th>
                 </tr>  
                 </table>
@@ -317,7 +303,7 @@
                 <div class="offset-md-2 col-md-8">
                     <div class="row" style="margin-bottom:25px">
                         <div class="offset-1 col-10">
-                        <h2 style="text-align:center;border:2px solid">Add gigs:</h2>
+                        <h2 style="text-align:center;border:2px solid">Add diet:</h2>
                         </div>
                         <div class="col-1" style="margin:auto">
                         <p onclick="exit()" style="color:white;font-weight:bold;cursor:pointer;;text-align:center">X</p>
@@ -330,19 +316,14 @@
                             <input type="text" name="name" id="name" placeholder="Name" class="form-control">
                         </div>
                         <div class="col-md-6">
-                            <select name="domain" id="domain" class="form-control">
-                                <option value="Web Development">Web Development</option>
-                                <option value="Graphic Design">Graphic Design</option>
-                                <option value="Data Science">Data Science</option>
-                                <option value="Data Analysis">Data Analysis</option>
-                                <option value="Other">Other</option>
-                            </select>
+                        <input type="number" id="calories" name="calories" placeholder="calories" class="form-control">
                         </div>
-                    </div>
-                    <div class="row">
-                    <div class="col-md-12">
-                            <input type="number" id="price" name="price" placeholder="Price" class="form-control">
+                        <div class="row">
+                            <div class="col-md-12">
+                        <input type="number" id="protein" name="protein" placeholder="protein" class="form-control">
                         </div>
+                        </div>
+                        
                     </div>
                     <div class="row">
                     <div class="col-md-12">
@@ -356,11 +337,26 @@
                     </div>
                     <div class="row">
                     <div class="col-md-12">
-                            <textarea id="description" name="description" placeholder="Description" class="form-control"></textarea>
+                            <input type="number" id="fat" name="fat" placeholder="fat" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                    <div class="col-md-12">
+                            <input type="text" id="recipe" name="recipe" placeholder="recipe" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                    <div class="col-md-12">
+                            <textarea id="ingredients" name="ingredients" placeholder="ingredients" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                    <div class="col-md-12">
+                            <textarea id="description" name="description" placeholder="description" class="form-control"></textarea>
                         </div>
                     </div>
                     <div class="form-btn text-center">
-                            <button class="btn btn-success" onclick='upload()' type="button">Add gigs</button>
+                            <button class="btn btn-success" onclick='upload()' type="button">Add diet</button>
                             <p id="form-message"></p>
                         </div>
                 </div>
@@ -385,11 +381,12 @@
                         </div>
                         <div class="col-md-6">
                             <select name="domain" id="domain2" class="form-control">
-                                <option value="Web Development">Web Development</option>
-                                <option value="Graphic Design">Graphic Design</option>
-                                <option value="Data Science">Data Science</option>
-                                <option value="Data Analysis">Data Analysis</option>
-                                <option value="Other">Other</option>
+                                <?php $sql = "SELECT `id`,`domaine`,DATE_FORMAT(`created`,'%d %M %Y at %T') as created FROM `category` order by category.`created` desc";
+            
+                                    $result = mysqli_query($conn, $sql);
+                                    while($row = mysqli_fetch_assoc($result)) { ?>
+                                        <option value="<?php echo $row['domaine']; ?>"><?php echo $row['domaine']; ?></option>
+                                    <?php } ?>
                             </select>
                         </div>
                     </div>
@@ -426,6 +423,96 @@
                 </div>
             </div>
         </div>
+
+        <div id="fullm" style="position:fixed;top:0;left:0;width:100%;height:100%;background:red;    background: rgba(120,120,120,0.5);z-index: 9999;display:none;overflow:auto">
+            <div class="row" style="margin-top:20px">
+                <div class="offset-md-2 col-md-8">
+                    <div class="row" style="margin-bottom:25px">
+                        <div class="offset-1 col-10">
+                        <h2 style="text-align:center;border:2px solid">Add session to exercice:</h2>
+                        </div>
+                        <div class="col-1" style="margin:auto">
+                        <p onclick="exit()" style="color:white;font-weight:bold;cursor:pointer;text-align:center">X</p>
+                        </div>
+                    </div>
+                
+                
+                    <div class="row">
+                        <div class="col-md-6">
+                            <input type="text" name="name" id="name3" placeholder="Name" class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <input type='number' name="duree" id='duree3'  placeholder="Duree" class="form-control"/>
+                        </div>
+                    </div>
+                    
+                    <div class="form-btn text-center">
+                            <button class="btn btn-success" onclick='adding()' type="button" style="margin-top: 10px;">Add</button>
+                            <p id="form-message"></p>
+                        </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="fulls" style="position:fixed;top:0;left:0;width:100%;height:100%;background:red;    background: rgba(120,120,120,0.5);z-index: 9999;display:none;overflow:auto">
+        <div class="row" style="margin-top:20px">
+                <div class="offset-md-2 col-md-8">
+                    <div class="row" style="margin-bottom:25px">
+                        <div class="offset-1 col-10">
+                        <h2 style="text-align:center;border:2px solid">Show diet:</h2>
+                        </div>
+                        <div class="col-1" style="margin:auto">
+                        <p onclick="exit()" style="color:white;font-weight:bold;cursor:pointer;;text-align:center">X</p>
+                        </div>
+                    </div>
+                
+                
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Name:</label>
+                            <input type="text" name="name" id="namee" placeholder="Name" class="form-control" style="margin-top:0" readonly>
+                        </div>
+                        <div class="col-md-6">
+                        <label>Calories:</label>
+                        <input type="number" id="caloriese" name="caloriese" placeholder="calories" class="form-control" style="margin-top:0" readonly>
+                        </div>
+                    </div>
+                    <div class="row">
+                    <div class="col-md-12">
+                            <img  id="filee" name="imgee" class="form-control" style="margin-top:0" readonly>
+                        </div>
+                    </div>
+                    <div class="row">
+                    <div class="col-md-12">
+                    <label>Duree:</label>
+                            <input type="number" id="dureee" name="duree" placeholder="duree" class="form-control" style="margin-top:0" readonly>
+                        </div>
+                    </div>
+                    <div class="row">
+                    <div class="col-md-12">
+                    <label>Benefits:</label>
+                            <input type="text" id="benefitse" name="benefits" placeholder="benefits" class="form-control" style="margin-top:0" readonly>
+                        </div>
+                    </div>
+                    <div class="row">
+                    <div class="col-md-12">
+                    <label>Equipments:</label>
+                            <textarea id="equipmentse" name="equipments" placeholder="equipments" class="form-control" style="margin-top:0" readonly></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                    <div class="col-md-12">
+                    <label>Description:</label>
+                            <textarea id="descriptione" name="description" placeholder="description" class="form-control" style="margin-top:0" readonly></textarea>
+                        </div>
+                    </div>
+                    <div id="zidi">
+                            
+                </div>
+                
+            </div>
+        </div>
+
         <div id="allf" style="position:fixed;top:0;left:0;width:100%;height:100%;background:red;    background: rgba(120,120,120,0.5);z-index: 9999;display:none">
         <p onclick="exit()" style="color:white;font-weight:bold;cursor:pointer;text-align:center;position: absolute;text-align: right;">X</p>
                     
@@ -479,14 +566,14 @@
 
         function user()
         {
-            document.getElementById('users').innerHTML="<tr><th>Thumbnail</th><th>Name</th> <th>Domain</th><th>Price</th><th>Created at</th><th></th></tr> ";
-            $.post('controller', {service:'gigs', type:'<?php echo $role; ?>'}).done(function(response){
+            document.getElementById('users').innerHTML="<tr><th>Thumbnail</th><th>Name</th> <th>Calories</th><th>Ingredients</th><th>Recipe</th><th></th></tr> ";
+            $.post('controller', {service:'diet', type:'<?php echo $role; ?>'}).done(function(response){
                 console.log(response)
             obj = JSON.parse(response);
             for (let i = 0; i < obj.length; i++) {
                 var rol="User";
                 
-                document.getElementById('users').innerHTML+='<tr style="height:70px"><th scope="row" style="background-image:url(\''+obj[i].path+'\');background-size: 100% 100%;" onclick="allfull(this)"><span style="display:none">'+obj[i].path+'</span></th> <td class="tbname">'+obj[i].name+'</td><td class="tbdomaine">'+obj[i].domain+'</td><td class="tbprice">'+obj[i].price+'</td><td class="tbcreated">'+obj[i].created+'</td><td><i class="fa fa-edit" style="color:brown;cursor:pointer" onclick="edit_us('+obj[i].id+')" aria-hidden="true"></i><i class="fa fa-trash" style="color:red;cursor:pointer" onclick="delete_us('+obj[i].id+')" aria-hidden="true"></i></td></tr>'
+                document.getElementById('users').innerHTML+='<tr style="height:70px"><th scope="row" style="background-image:url(\''+obj[i].path+'\');background-size: 100% 100%;" onclick="allfull(this)"><span style="display:none">'+obj[i].path+'</span></th> <td class="tbname">'+obj[i].name+'</td><td class="tbdomaine">'+obj[i].calories+'</td><td class="tbprice">'+obj[i].ingredients+'</td><td class="tbcreated">'+obj[i].recipe+'</td><td><i class="fa fa-eye" style="color:brown;cursor:pointer" onclick="view_us(\''+obj[i].id+'\')" aria-hidden="true"></i><i class="fa fa-plus" style="color:green;cursor:pointer" onclick="edit_us(\''+obj[i].id+'\')" aria-hidden="true"></i><i class="fa fa-trash" style="color:red;cursor:pointer" onclick="delete_us(\''+obj[i].id+'\')" aria-hidden="true"></i></td></tr>'
             }
         //     var A = document.getElementsByClassName('tbdomaine');
         //     for (let i = 0; i < A.length; i++) {
@@ -522,19 +609,35 @@
         function edit_us(id)
         {
             ida = id;
-            $.post('controller', {service:'getgig',ide:id, type:'<?php echo $role; ?>'}).done(function(response){
-                document.getElementById('full2').style.display = "block";
-                console.log(response)
-                obj = JSON.parse(response);
-                for (let i = 0; i < obj.length; i++) {
-                    document.getElementById('name2').value = obj[i].name;
-                    document.getElementById('path2').src = obj[i].path;
-                    document.getElementById('domain2').value = obj[i].domaine;
-                    document.getElementById('price2').value = obj[i].price;
-                    document.getElementById('description2').value = obj[i].description;
-                }
-});
+//             $.post('controller', {service:'getgig',ide:id, type:'<?php echo $role; ?>'}).done(function(response){
+//                 document.getElementById('full2').style.display = "block";
+//                 console.log(response)
+//                 obj = JSON.parse(response);
+//                 for (let i = 0; i < obj.length; i++) {
+//                     document.getElementById('name2').value = obj[i].name;
+//                     document.getElementById('path2').src = obj[i].path;
+//                     document.getElementById('domain2').value = obj[i].domaine;
+//                     document.getElementById('price2').value = obj[i].price;
+//                     document.getElementById('description2').value = obj[i].description;
+//                 }
+// });
+    document.getElementById('fullm').style.display = 'block'
         }
+
+        function adding() {
+            const name = document.getElementById('name3').value;
+            const duree = document.getElementById('duree3').value;
+            $.post('controller', {service:'adding',ide: ida,name: name, duree: duree, type:'<?php echo $role; ?>'}).done(function(response){
+                console.log(response)
+                if(response == 'done') {
+                    exit();
+                    document.getElementById('name3').value = '';
+                    document.getElementById('duree3').value = '';
+                    user();
+                    
+                }
+        })
+    }
 
         function edit()
         {
@@ -579,12 +682,47 @@
             });
         }
 
+        function view_us(id) {
+            document.getElementById('fulls').style.display = 'block';
+            $.post('controller', {service:'view_exercices',ide: id, type:'<?php echo $role; ?>'}).done(function(response){
+                console.log(response)
+            obj = JSON.parse(response);
+            if(obj.length) {
+                try{
+                    document.getElementById('zidi').innerHTML = ''
+                } catch(e) {
+                    console.log(e)
+                }
+                document.getElementById('zidi').innerHTML = ''
+                document.getElementById('namee').value = obj[0].name
+                document.getElementById('dureee').value = obj[0].duree
+                document.getElementById('descriptione').value = obj[0].description
+                document.getElementById('benefitse').value = obj[0].benefits
+                document.getElementById('caloriese').value = obj[0].calories
+                document.getElementById('descriptione').value = obj[0].description
+                document.getElementById('equipmentse').value = obj[0].equipments
+                document.getElementById('filee').src = obj[0].path
+                document.getElementById('zidi').innerHTML += '<label>Sessions:</label><table id="yeap" class="table" style="background:white; color:black"><tr><th scope="col">Name</th><th scope="col">Duree</th></tr></table>'
+            }
+            for (let i = 0; i < obj.length; i++) {
+                console.log(obj[i].names)
+                try {
+                    document.getElementById('yeap').innerHTML += '<tr><td>'+obj[i].names+'</td><td>'+obj[i].durees+'</td></tr>'
+                }
+                catch(e) {
+                    console.log(e)
+                }
+            }
+            console.log(id)
+        })
+    }
+
         function delete_us(id)
         {
             console.log(id)
             var result = confirm("Want to delete?");
             if (result) {
-                $.post('controller', {service:'deletegigs',idg:id, type:'<?php echo $role; ?>'}).done(function(response){
+                $.post('controller', {service:'deleteExercice',ide:id, type:'<?php echo $role; ?>'}).done(function(response){
                 console.log(response)
                 if(response=='done')
                 {
@@ -601,19 +739,24 @@
         function exit()
         {
             document.getElementById('full').style.display = "none";
+            document.getElementById('fullm').style.display = "none";
             document.getElementById('full2').style.display = "none";
             document.getElementById('allf').style.display = "none";
+            document.getElementById('fulls').style.display = "none";
         }
         function upload()
         {
             var form_data = new FormData();
             form_data.append("file", document.getElementById('file').files[0]);
             form_data.append("name", document.getElementById('name').value);
-            form_data.append("price", document.getElementById('price').value);
-            form_data.append("domain", document.getElementById('domain').value);
+            form_data.append("calories", document.getElementById('calories').value);
+            form_data.append("fat", document.getElementById('fat').value);
             form_data.append("description", document.getElementById('description').value);
+            form_data.append("protein", document.getElementById('protein').value);
+            form_data.append("recipe", document.getElementById('recipe').value);
+            form_data.append("ingredients", document.getElementById('ingredients').value);
             $.ajax({
-                url:"upload",
+                url:"upload2",
                 method:"POST",
                 data: form_data,
                 contentType: false,
@@ -625,11 +768,11 @@
                 },   
                 success:function(response)
                 {
-                    document.getElementById('name').value='';
-                    document.getElementById('file').value='';
-                    document.getElementById('price').value='';
-                    document.getElementById('description').value='';
-                    document.getElementById('domain').value='Web Development';
+                    // document.getElementById('name').value='';
+                    // document.getElementById('file').value='';
+                    // document.getElementById('price').value='';
+                    // document.getElementById('description').value='';
+                    // document.getElementById('domain').value='Web Development';
                 console.log(response);
                 exit();
                 user();

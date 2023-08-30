@@ -26,17 +26,18 @@ if(isset($_FILES["file"]))
         move_uploaded_file($_FILES["file"]["tmp_name"], $location);
         
         $name = $_REQUEST['name'];
-        $duree = $_REQUEST['duree'];
-        $benefits = $_REQUEST['benefits'];
+        $fat = $_REQUEST['fat'];
+        $protein = $_REQUEST['protein'];
+        $recipe = $_REQUEST['recipe'];
         $description = $_REQUEST['description'];
-        $equipments = $_REQUEST['equipments'];
+        $ingredients = $_REQUEST['ingredients'];
         $calories = $_REQUEST['calories'];
         $data = openssl_random_pseudo_bytes(16, $strong);
         assert($data !== false && $strong);
         $idd = format_uuidv4($data);
         if(!isset($_REQUEST['ided']))
         {
-            $spl="INSERT INTO `exercice`(`id`,`name`, `calories`, `equipments`, `duree`, `benefits`,`description`, `image`) VALUES ('$idd','$name','$calories','$equipments','$duree','$benefits','$description','$location')";
+            $spl="INSERT INTO `diet`(`id`, `name`, `description`, `recipe`, `calories`, `protein`, `fat`, `ingredients`, `image`) VALUES ('$idd','$name','$description','$recipe','$calories','$protein','$fat','$ingredients','$location')";
             echo $spl;
             $res=mysqli_query($con,$spl);
             if($res==1)

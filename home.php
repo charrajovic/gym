@@ -89,28 +89,10 @@
                     </div>
                     <?php } ?>
                     <?php if($role=='Admin'){ ?>
-                    <a href="gigs" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Gigs</a>
-                    <?php } ?>
-                    <?php if($role=='User'){ ?>
-                    <a href="contact" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Contact</a>
-                    <?php } ?>
-                    <!-- <?php if($role=='User'){ ?>
-                    <a href="reviews" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Reviews</a>
-                    <?php } ?> -->
-                    <?php if($role=='Admin'){ ?>
-                    <a href="mails" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Mails manage</a>
+                    <a href="exercices" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Exercices</a>
                     <?php } ?>
                     <?php if($role=='Admin'){ ?>
-                    <a href="activity" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Last activities</a>
-                    <?php } ?>
-                    <?php if($role=='User'){ ?>
-                    <a href="found" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Add found</a>
-                    <?php } ?>
-                    <?php if($role=='User'){ ?>
-                    <a href="store" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Store</a>
-                    <?php } ?>
-                    <?php if($role=='User'){ ?>
-                    <a href="payments" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Payments</a>
+                    <a href="diet" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Diets</a>
                     <?php } ?>
                     <!-- <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Pages</a>
@@ -340,7 +322,7 @@
                         <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
                             <i class="fa fa-chart-bar fa-3x text-primary"></i>
                             <div class="ms-3">
-                                <p class="mb-2">Total Gigs</p>
+                                <p class="mb-2">Total Exercices</p>
                                 <h6 class="mb-0" id="gigs">$1234</h6>
                             </div>
                         </div>
