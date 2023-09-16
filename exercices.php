@@ -448,6 +448,40 @@
             </div>
         </div>
 
+        <div id="fullmd" style="position:fixed;top:0;left:0;width:100%;height:100%;background:red;    background: rgba(120,120,120,0.5);z-index: 9999;display:none;overflow:auto">
+            <div class="row" style="margin-top:20px">
+                <div class="offset-md-2 col-md-8">
+                    <div class="row" style="margin-bottom:25px">
+                        <div class="offset-1 col-10">
+                        <h2 style="text-align:center;border:2px solid">Add session to exercice:</h2>
+                        </div>
+                        <div class="col-1" style="margin:auto">
+                        <p onclick="exit()" style="color:white;font-weight:bold;cursor:pointer;text-align:center">X</p>
+                        </div>
+                    </div>
+                
+                
+                    <div class="row">
+                    <div class="row">
+                    <div class="col-md-12">
+                            <input type="file" id="filer" name="imger" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                    <div class="col-md-12">
+                            <p id="uploaded_image" style="display:none"></p>
+                        </div>
+                    </div>
+                    </div>
+                    
+                    <div class="form-btn text-center">
+                            <button class="btn btn-success" onclick='pass()' type="button" style="margin-top: 10px;">Add</button>
+                            <p id="form-message"></p>
+                        </div>
+                </div>
+            </div>
+        </div>
+
         <div id="fulls" style="position:fixed;top:0;left:0;width:100%;height:100%;background:red;    background: rgba(120,120,120,0.5);z-index: 9999;display:none;overflow:auto">
         <div class="row" style="margin-top:20px">
                 <div class="offset-md-2 col-md-8">
@@ -528,6 +562,7 @@
     <script src="js/main.js"></script>
     <script>
         var ida;
+        var idd;
 
         // function pagi(a)
         // {
@@ -567,7 +602,7 @@
             for (let i = 0; i < obj.length; i++) {
                 var rol="User";
                 
-                document.getElementById('users').innerHTML+='<tr style="height:70px"><th scope="row" style="background-image:url(\''+obj[i].path+'\');background-size: 100% 100%;" onclick="allfull(this)"><span style="display:none">'+obj[i].path+'</span></th> <td class="tbname">'+obj[i].name+'</td><td class="tbdomaine">'+obj[i].calories+'</td><td class="tbprice">'+obj[i].equipments+'</td><td class="tbcreated">'+obj[i].duree+'</td><td><i class="fa fa-eye" style="color:brown;cursor:pointer" onclick="view_us(\''+obj[i].id+'\')" aria-hidden="true"></i><i class="fa fa-plus" style="color:green;cursor:pointer" onclick="edit_us(\''+obj[i].id+'\')" aria-hidden="true"></i><i class="fa fa-trash" style="color:red;cursor:pointer" onclick="delete_us(\''+obj[i].id+'\')" aria-hidden="true"></i></td></tr>'
+                document.getElementById('users').innerHTML+='<tr style="height:70px"><th scope="row" style="background-image:url(\''+obj[i].path+'\');background-size: 100% 100%;" onclick="allfull(this)"><span style="display:none">'+obj[i].path+'</span></th> <td class="tbname">'+obj[i].name+'</td><td class="tbdomaine">'+obj[i].calories+'</td><td class="tbprice">'+obj[i].equipments+'</td><td class="tbcreated">'+obj[i].duree+'</td><td><i class="fa fa-link" style="color:brown;cursor:pointer" onclick="link(\''+obj[i].id+'\')" aria-hidden="true"><i class="fa fa-eye" style="color:brown;cursor:pointer" onclick="view_us(\''+obj[i].id+'\')" aria-hidden="true"></i><i class="fa fa-plus" style="color:green;cursor:pointer" onclick="edit_us(\''+obj[i].id+'\')" aria-hidden="true"></i><i class="fa fa-trash" style="color:red;cursor:pointer" onclick="delete_us(\''+obj[i].id+'\')" aria-hidden="true"></i></td></tr>'
             }
         //     var A = document.getElementsByClassName('tbdomaine');
         //     for (let i = 0; i < A.length; i++) {
@@ -598,6 +633,12 @@
         
 });
         
+        }
+
+        function link(id) {
+            idd = id
+    document.getElementById('fullmd').style.display = 'block'
+
         }
 
         function edit_us(id)
@@ -631,6 +672,35 @@
                     
                 }
         })
+    }
+
+    function pass() {
+        var form_data = new FormData();
+            form_data.append("file", document.getElementById('filer').files[0]);
+            form_data.append("ide", idd);
+            $.ajax({
+                url:"uploade",
+                method:"POST",
+                data: form_data,
+                contentType: false,
+                cache: false,
+                processData: false,
+                beforeSend:function(){
+                    document.getElementById('uploaded_image').style.display = 'block';
+                $('#uploaded_image').html("<label class='text-success'>Image Uploading...</label>");
+                },   
+                success:function(response)
+                {
+                    // document.getElementById('name').value='';
+                    // document.getElementById('file').value='';
+                    // document.getElementById('price').value='';
+                    // document.getElementById('description').value='';
+                    // document.getElementById('domain').value='Web Development';
+                console.log(response);
+                exit();
+                user();
+                }
+            });
     }
 
         function edit()
@@ -734,6 +804,7 @@
         {
             document.getElementById('full').style.display = "none";
             document.getElementById('fullm').style.display = "none";
+            document.getElementById('fullmd').style.display = "none";
             document.getElementById('full2').style.display = "none";
             document.getElementById('allf').style.display = "none";
             document.getElementById('fulls').style.display = "none";
