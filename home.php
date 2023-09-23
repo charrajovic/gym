@@ -129,63 +129,14 @@
                             <i class="fa fa-envelope me-lg-2"></i>
                             <span class="d-none d-lg-inline-flex">Message</span>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
-                            <a href="#" class="dropdown-item">
-                                <div class="d-flex align-items-center">
-                                    <img class="rounded-circle" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
-                                    <div class="ms-2">
-                                        <h6 class="fw-normal mb-0">Jhon send you a message</h6>
-                                        <small>15 minutes ago</small>
-                                    </div>
-                                </div>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <div class="d-flex align-items-center">
-                                    <img class="rounded-circle" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
-                                    <div class="ms-2">
-                                        <h6 class="fw-normal mb-0">Jhon send you a message</h6>
-                                        <small>15 minutes ago</small>
-                                    </div>
-                                </div>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <div class="d-flex align-items-center">
-                                    <img class="rounded-circle" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
-                                    <div class="ms-2">
-                                        <h6 class="fw-normal mb-0">Jhon send you a message</h6>
-                                        <small>15 minutes ago</small>
-                                    </div>
-                                </div>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item text-center">See all message</a>
-                        </div>
+                        
                     </div>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                             <i class="fa fa-bell me-lg-2"></i>
                             <span class="d-none d-lg-inline-flex">Notificatin</span>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">Profile updated</h6>
-                                <small>15 minutes ago</small>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">New user added</h6>
-                                <small>15 minutes ago</small>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">Password changed</h6>
-                                <small>15 minutes ago</small>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item text-center">See all notifications</a>
-                        </div>
+                        
                     </div>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
@@ -231,63 +182,14 @@
                             <span class="d-none d-lg-inline-flex" style="color: cadetblue;" id="price"><?php echo $row['prices']." $";
                             } ?></span>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
-                            <a href="#" class="dropdown-item">
-                                <div class="d-flex align-items-center">
-                                    <img class="rounded-circle" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
-                                    <div class="ms-2">
-                                        <h6 class="fw-normal mb-0">Jhon send you a message</h6>
-                                        <small>15 minutes ago</small>
-                                    </div>
-                                </div>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <div class="d-flex align-items-center">
-                                    <img class="rounded-circle" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
-                                    <div class="ms-2">
-                                        <h6 class="fw-normal mb-0">Jhon send you a message</h6>
-                                        <small>15 minutes ago</small>
-                                    </div>
-                                </div>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <div class="d-flex align-items-center">
-                                    <img class="rounded-circle" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
-                                    <div class="ms-2">
-                                        <h6 class="fw-normal mb-0">Jhon send you a message</h6>
-                                        <small>15 minutes ago</small>
-                                    </div>
-                                </div>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item text-center">See all message</a>
-                        </div>
+                        
                     </div>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                             <i class="fa fa-bell me-lg-2"></i>
                             <span class="d-none d-lg-inline-flex">Notificatin</span>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">Profile updated</h6>
-                                <small>15 minutes ago</small>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">New user added</h6>
-                                <small>15 minutes ago</small>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">Password changed</h6>
-                                <small>15 minutes ago</small>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item text-center">See all notifications</a>
-                        </div>
+                        
                     </div>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
@@ -305,116 +207,7 @@
             <?php } ?>
             <!-- Navbar End -->
 
-            <?php if($role=='Admin'){ ?>
-            <!-- Sale & Revenue Start -->
-            <div class="container-fluid pt-4 px-4">
-                <div class="row g-4">
-                    <div class="col-sm-6 col-xl-3">
-                        <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
-                            <i class="fa fa-chart-line fa-3x text-primary"></i>
-                            <div class="ms-3">
-                                <p class="mb-2">Today Users</p>
-                                <h6 class="mb-0" id="users">$1234</h6>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 col-xl-3">
-                        <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
-                            <i class="fa fa-chart-bar fa-3x text-primary"></i>
-                            <div class="ms-3">
-                                <p class="mb-2">Total Exercices</p>
-                                <h6 class="mb-0" id="gigs">$1234</h6>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 col-xl-3">
-                        <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
-                            <i class="fa fa-chart-area fa-3x text-primary"></i>
-                            <div class="ms-3">
-                                <p class="mb-2">Today Reviews</p>
-                                <h6 class="mb-0">$1234</h6>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 col-xl-3">
-                        <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
-                            <i class="fa fa-chart-pie fa-3x text-primary"></i>
-                            <div class="ms-3">
-                                <p class="mb-2">Users online</p>
-                                <h6 class="mb-0">$1234</h6>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <?php }  else{ ?>
-                <div class="container-fluid pt-4 px-4">
-                <div class="row g-4">
-                <div class="col-sm-12 col-xl-12">
-                        <div class="bg-secondary rounded align-items-center p-4" style="text-align:center">
-                            <div class="ms-3">
-                                <h2 class="mb-2">Welcome to <span style="color: #fcd703;font-weight: 900;">DIGITAL IT SERVICES</span></h2>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-                <?php } ?>
-            <!-- Sale & Revenue End -->
-            <!-- <canvas id="users-chart" style='width:100px !important;height:80px !important;'></canvas> -->
-
-            <!-- Sales Chart Start -->
-            <?php if($role=='Admin'){ ?>
-            <div class="container-fluid pt-4 px-4">
-                <div class="row g-4">
-                    <div class="col-sm-12 col-xl-6">
-                        <div class="bg-secondary text-center rounded p-4">
-                            <div class="d-flex align-items-center justify-content-between mb-4">
-                                <h6 class="mb-0">Users management</h6>
-                                <?php if($role=='Admin'){ ?>
-                                <a href="users">Show All</a>
-                            <?php } ?>
-                            </div>
-                            <canvas id="users-chart"></canvas>
-                        </div>
-                    </div>
-                    <div class="col-sm-12 col-xl-6">
-                        <div class="bg-secondary text-center rounded p-4">
-                            <div class="d-flex align-items-center justify-content-between mb-4">
-                                <h6 class="mb-0">Mails received</h6>
-                                <a href="mails">Show All</a>
-                            </div>
-                            <canvas id="users_created"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <?php }else{ ?>
-                <div class="container-fluid pt-4 px-4">
-                <div class="row g-4">
-                    <div class="col-sm-12 col-xl-6">
-                        <div class="bg-secondary text-center rounded p-4">
-                            <div class="d-flex align-items-center justify-content-between mb-4">
-                                <h6 class="mb-0">Account manage</h6>
-                                <?php if($role=='Admin'){ ?>
-                                <a>Show All</a>
-                            <?php } ?>
-                            </div>
-                            <canvas id="account-chart"></canvas>
-                        </div>
-                    </div>
-                    <div class="col-sm-12 col-xl-6">
-                        <div class="bg-secondary text-center rounded p-4">
-                            <div class="d-flex align-items-center justify-content-between mb-4">
-                                <h6 class="mb-0">Mails sended</h6>
-                                <a>Show All</a>
-                            </div>
-                            <canvas id="mails_sended"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <?php } ?>
+            
             <!-- Sales Chart End -->
 
 
@@ -650,183 +443,7 @@
     <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
     <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
     <script src="js/main.js"></script>
-    <?php if($role=='Admin'){ ?>
-                    <?php 
-
-                    include 'connect.php';
-                    $sql = "SELECT count(*) as numbers,role.role_name FROM `users_role` INNER JOIN role ON role.role_id = users_role.`id_role` group by role_id";
-                    $result = mysqli_query($conn, $sql);
-                    $sql2 = "SELECT count(*) as numbers,DATE_FORMAT(`created`,'%d %M %Y') as created FROM `mails` GROUP BY day(`created`)";
-                    $result2 = mysqli_query($conn, $sql2);
-                    echo mysqli_num_rows($result); ?>
-    <?php 
-    $arr = array();
-    $arr2 = array();
-    $arr1 = array();
-    $arr12 = array();
-    $role;
-    while($row = mysqli_fetch_assoc($result)) {
-        $role = $row["role_name"];
-        if($role=="ROLE_ADMIN"){
-            $role='Admin';
-        }
-        else
-        {
-            $role='User';
-        }
-        array_push($arr,$row["numbers"]);
-        array_push($arr2,$role);
-    }
-    $arr[array_search(max($arr),$arr)] = max($arr)-min($arr);
-
-
-    while($row = mysqli_fetch_assoc($result2)) {
-        
-        array_push($arr1,$row["numbers"]);
-        array_push($arr12,$row["created"]);
-    }
-    print_r($arr); ?>
-
-    <!-- Template Javascript -->
     
-    <script>
-        var ctx2 = $("#users-chart").get(0).getContext("2d");
-        var myChart2 = new Chart(ctx2, { 
-            type: 'pie',
-        data: {
-        labels: [<?php echo '"'.implode('","', $arr2).'"'; ?>],
-        datasets: [{
-            label: "Accounts type",
-            backgroundColor: ["#2D87BB", "#E6F69D"],
-            data: [<?php echo '"'.implode('","', $arr).'"'; ?>]
-        }]
-        },
-        options: {
-        title: {
-            display: true,
-            text: 'chart of numbers of each type of account'
-        }
-        },
-        options: {
-            responsive: true
-        }
-        });
-        var ctx2 = $("#users_created").get(0).getContext("2d");
-        var myChart2 = new Chart(ctx2, { 
-            type: 'bar',
-        data: {
-        labels: [<?php echo '"'.implode('","', $arr12).'"'; ?>],
-        datasets: [{
-            label: "mails received",
-            backgroundColor: ["#EB1616"],
-            data: [<?php echo '"'.implode('","', $arr1).'"'; ?>]
-        }]
-        },
-        options: {
-        title: {
-            display: true,
-            text: 'mails received in each date'
-        }
-        },
-        options: {
-            responsive: true
-        }
-        });
-
-        <?php 
-                $sql3 = "SELECT  (
-                    SELECT COUNT(*)
-                    FROM   users
-                    ) AS users,
-                    (
-                    SELECT COUNT(*)
-                    FROM   gigs
-                    ) AS gigs
-            FROM    role";
-                $result3 = mysqli_query($conn, $sql3);
-                while($row = mysqli_fetch_assoc($result3)) {?>
-        
-                    document.getElementById('users').textContent = '<?php echo $row['users']; ?>'
-                    document.getElementById('gigs').textContent = '<?php echo $row['gigs']; ?>'
-
-                <?php } ?>
-
-    </script>
-    <?php }else{ 
-        $idu = $_SESSION["user"]->get_id();
-        $sql = "SELECT city,count(*) as numbers FROM `actions` WHERE user_id=$idu and action like 'login%' group by city";
-        $result = mysqli_query($conn, $sql);
-        $sql2 = "SELECT count(*) as numbers,DATE_FORMAT(`created`,'%d %M %Y') as created FROM `mails` WHERE user=$idu GROUP BY day(`created`)";
-        $result2 = mysqli_query($conn, $sql2);
-        //echo $sql;
-        $arr = array();
-        $arr2 = array();
-        $arry = array();
-        $arry2 = array();
-        while($row = mysqli_fetch_assoc($result)) {
-        
-            array_push($arr,$row["numbers"]);
-            array_push($arr2,$row["city"]);
-        }
-        while($row = mysqli_fetch_assoc($result2)) {
-        
-            array_push($arry,$row["created"]);
-            array_push($arry2,$row["numbers"]);
-        }
-        ?>
-            <script>
-                var ctx2 = $("#account-chart").get(0).getContext("2d");
-                var array = [];
-                var ln = [<?php echo '"'.implode('","', $arr).'"'; ?>].length;
-                for (let i = 0; i < ln; i++) {
-                    array[i] = '#' + Math.random().toString(16).substr(-6);
-                }
-                console.log([<?php echo '"'.implode('","', $arr).'"'; ?>].length)
-        var myChart2 = new Chart(ctx2, { 
-            type: 'pie',
-        data: {
-        labels: [<?php echo '"'.implode('","', $arr2).'"'; ?>],
-        datasets: [{
-            label: "Accounts type",
-            backgroundColor: array,
-            data: [<?php echo '"'.implode('","', $arr).'"'; ?>]
-        }]
-        },
-        options: {
-        title: {
-            display: true,
-            text: 'chart of numbers of each type of account'
-        }
-        },
-        options: {
-            responsive: true
-        }
-        });
-
-        var ctx2 = $("#mails_sended").get(0).getContext("2d");
-        var myChart2 = new Chart(ctx2, { 
-            type: 'bar',
-        data: {
-        labels: [<?php echo '"'.implode('","', $arry).'"'; ?>],
-        datasets: [{
-            label: "mails sended",
-            backgroundColor: ["#EB1616"],
-            data: [<?php echo '"'.implode('","', $arry2).'"'; ?>]
-        }]
-        },
-        options: {
-        title: {
-            display: true,
-            text: 'mails received in each date'
-        }
-        },
-        options: {
-            responsive: true
-        }
-        });
-            </script>
-        <?php
-         } ?>
 </body>
 
 </html>

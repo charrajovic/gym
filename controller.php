@@ -394,6 +394,18 @@ else if(isset($_REQUEST['service']) && isset($_REQUEST['type']))
                 }
             
             }
+            else if($_REQUEST['service'] == "deleteDiet")
+            {
+                $resp="[";
+                $ide = $_REQUEST['ide'];
+            $sql = "DELETE FROM `diet` where id = '$ide'";
+            if ($res = $con->query($sql) === TRUE) {
+                echo 'done';
+                } else {
+                echo "Error: " . $sql . "<br>" . $conn->error;
+                }
+            
+            }
             else if($_REQUEST['service'] == "link")
             {
                 $resp="[";
@@ -443,7 +455,7 @@ else if(isset($_REQUEST['service']) && isset($_REQUEST['type']))
                 $resp="[";
                 $ide = $_REQUEST['ide'];
             // $email = $_SESSION['user']->get_email();
-            $sql = "SELECT e.name, e.image, e.calories, e.equipments, e.duree,e.benefits,e.description, sessions.name as namee, sessions.duree as dure FROM `exercice` e LEFT JOIN sessions
+            $sql = "SELECT e.name, e.image, e.calories, e.equipments, e.duree, e.video,e.benefits,e.description, sessions.name as namee, sessions.duree as dure FROM `exercice` e LEFT JOIN sessions
             ON e.id = sessions.exercice_id WHERE e.id='$ide'";
             // echo $sql;
             $result = mysqli_query($con, $sql);
@@ -457,7 +469,34 @@ else if(isset($_REQUEST['service']) && isset($_REQUEST['type']))
                 $duree = $row["duree"];
                 $benefits = $row["benefits"];
                 $durees = $row["dure"];
-                $resp.="{\"duree\":\"$duree\",\"name\":\"$name\",\"names\":\"$names\",\"path\":\"$path\",\"calories\":\"$calories\",\"equipments\":\"$equipments\",\"durees\":\"$durees\",\"benefits\":\"$benefits\",\"description\":\"$description\"},";
+                $video = $row["video"];
+                $resp.="{\"duree\":\"$duree\",\"name\":\"$name\",\"names\":\"$names\",\"path\":\"$path\",\"calories\":\"$calories\",\"equipments\":\"$equipments\",\"durees\":\"$durees\",\"benefits\":\"$benefits\",\"description\":\"$description\",\"video\":\"$video\"},";
+            }
+            $resp = rtrim($resp,',');
+            $resp.=']';
+            // create_action('view gigs as a admin');
+            echo $resp;
+            }
+            else if($_REQUEST['service'] == "view_diets")
+            {
+                $resp="[";
+                $ide = $_REQUEST['ide'];
+            // $email = $_SESSION['user']->get_email();
+            $sql = "SELECT `id`, `name`, `description`, `recipe`, `calories`, `protein`, `fat`, `ingredients`, `image`, `status`, `created_at`, `updated_at` FROM `diet` WHERE id= '$ide'";
+            // echo $sql;
+            $result = mysqli_query($con, $sql);
+            while($row = mysqli_fetch_assoc($result)) {
+                $name = $row["name"];
+                $recipe = $row["recipe"];
+                $path = $row["image"];
+                $calories = $row["calories"];
+                $protein = $row["protein"];
+                $description = $row["description"];
+                $fat = $row["fat"];
+                $ingredients = $row["ingredients"];
+                $created_at = $row["created_at"];
+                $updated_at = $row["updated_at"];
+                $resp.="{\"fat\":\"$fat\",\"name\":\"$name\",\"recipe\":\"$recipe\",\"path\":\"$path\",\"calories\":\"$calories\",\"protein\":\"$protein\",\"created_at\":\"$created_at\",\"ingredients\":\"$ingredients\",\"description\":\"$description\",\"updated_at\":\"$updated_at\"},";
             }
             $resp = rtrim($resp,',');
             $resp.=']';

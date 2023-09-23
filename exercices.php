@@ -68,6 +68,9 @@
 ::-webkit-scrollbar-thumb {
     background: black;
 }
+label {
+    color: white
+}
     </style>
 </head>
 
@@ -157,63 +160,14 @@
                             <i class="fa fa-envelope me-lg-2"></i>
                             <span class="d-none d-lg-inline-flex">Message</span>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
-                            <a href="#" class="dropdown-item">
-                                <div class="d-flex align-items-center">
-                                    <img class="rounded-circle" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
-                                    <div class="ms-2">
-                                        <h6 class="fw-normal mb-0">Jhon send you a message</h6>
-                                        <small>15 minutes ago</small>
-                                    </div>
-                                </div>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <div class="d-flex align-items-center">
-                                    <img class="rounded-circle" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
-                                    <div class="ms-2">
-                                        <h6 class="fw-normal mb-0">Jhon send you a message</h6>
-                                        <small>15 minutes ago</small>
-                                    </div>
-                                </div>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <div class="d-flex align-items-center">
-                                    <img class="rounded-circle" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
-                                    <div class="ms-2">
-                                        <h6 class="fw-normal mb-0">Jhon send you a message</h6>
-                                        <small>15 minutes ago</small>
-                                    </div>
-                                </div>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item text-center">See all message</a>
-                        </div>
+                        
                     </div>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                             <i class="fa fa-bell me-lg-2"></i>
                             <span class="d-none d-lg-inline-flex">Notificatin</span>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">Profile updated</h6>
-                                <small>15 minutes ago</small>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">New user added</h6>
-                                <small>15 minutes ago</small>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">Password changed</h6>
-                                <small>15 minutes ago</small>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item text-center">See all notifications</a>
-                        </div>
+                        
                     </div>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
@@ -253,11 +207,6 @@
                     <div class="col-md-2">
                         <select name="domain" id="domain" class="form-control">
                             <option value="all">All</option>
-                            <option value="Web Development">Web Development</option>
-                            <option value="Graphic Design">Graphic Design</option>
-                            <option value="Data Science">Data Science</option>
-                            <option value="Data Analysis">Data Analysis</option>
-                            <option value="Other">Other</option>
                         </select>
                     </div>
                 </div>
@@ -453,7 +402,7 @@
                 <div class="offset-md-2 col-md-8">
                     <div class="row" style="margin-bottom:25px">
                         <div class="offset-1 col-10">
-                        <h2 style="text-align:center;border:2px solid">Add session to exercice:</h2>
+                        <h2 style="text-align:center;border:2px solid">Link video to exercice:</h2>
                         </div>
                         <div class="col-1" style="margin:auto">
                         <p onclick="exit()" style="color:white;font-weight:bold;cursor:pointer;text-align:center">X</p>
@@ -508,6 +457,14 @@
                     <div class="row">
                     <div class="col-md-12">
                             <img  id="filee" name="imgee" class="form-control" style="margin-top:0" readonly>
+                        </div>
+                    </div>
+                    <div class="row">
+                    <div class="col-md-12">
+                    <label>Video:</label>
+                    <video id="myVideo" class="form-control" controls>
+  Your browser does not support the video tag.
+</video>
                         </div>
                     </div>
                     <div class="row">
@@ -595,14 +552,14 @@
 
         function user()
         {
-            document.getElementById('users').innerHTML="<tr><th>Thumbnail</th><th>Name</th> <th>Domain</th><th>Price</th><th>Created at</th><th></th></tr> ";
+            document.getElementById('users').innerHTML="<tr><th>Thumbnail</th><th>Name</th> <th>Calories</th><th>Equipements</th><th>Duree</th><th></th></tr> ";
             $.post('controller', {service:'gigs', type:'<?php echo $role; ?>'}).done(function(response){
                 console.log(response)
             obj = JSON.parse(response);
             for (let i = 0; i < obj.length; i++) {
                 var rol="User";
                 
-                document.getElementById('users').innerHTML+='<tr style="height:70px"><th scope="row" style="background-image:url(\''+obj[i].path+'\');background-size: 100% 100%;" onclick="allfull(this)"><span style="display:none">'+obj[i].path+'</span></th> <td class="tbname">'+obj[i].name+'</td><td class="tbdomaine">'+obj[i].calories+'</td><td class="tbprice">'+obj[i].equipments+'</td><td class="tbcreated">'+obj[i].duree+'</td><td><i class="fa fa-link" style="color:brown;cursor:pointer" onclick="link(\''+obj[i].id+'\')" aria-hidden="true"><i class="fa fa-eye" style="color:brown;cursor:pointer" onclick="view_us(\''+obj[i].id+'\')" aria-hidden="true"></i><i class="fa fa-plus" style="color:green;cursor:pointer" onclick="edit_us(\''+obj[i].id+'\')" aria-hidden="true"></i><i class="fa fa-trash" style="color:red;cursor:pointer" onclick="delete_us(\''+obj[i].id+'\')" aria-hidden="true"></i></td></tr>'
+                document.getElementById('users').innerHTML+='<tr style="height:70px"><th scope="row" style="background-image:url(\''+obj[i].path+'\');background-size: 100% 100%;" onclick="allfull(this)"><span style="display:none">'+obj[i].path+'</span></th> <td class="tbname">'+obj[i].name+'</td><td class="tbdomaine">'+obj[i].calories+'</td><td class="tbprice">'+obj[i].equipments+'</td><td class="tbcreated">'+obj[i].duree+'</td><td><i class="fa fa-link" style="color:brown;cursor:pointer" onclick="link(\''+obj[i].id+'\')" aria-hidden="true"></i><i class="fa fa-eye" style="color:brown;cursor:pointer" onclick="view_us(\''+obj[i].id+'\')" aria-hidden="true"></i><i class="fa fa-plus" style="color:green;cursor:pointer" onclick="edit_us(\''+obj[i].id+'\')" aria-hidden="true"></i><i class="fa fa-trash" style="color:red;cursor:pointer" onclick="delete_us(\''+obj[i].id+'\')" aria-hidden="true"></i></td></tr>'
             }
         //     var A = document.getElementsByClassName('tbdomaine');
         //     for (let i = 0; i < A.length; i++) {
@@ -638,6 +595,7 @@
         function link(id) {
             idd = id
     document.getElementById('fullmd').style.display = 'block'
+
 
         }
 
@@ -766,6 +724,26 @@
                 document.getElementById('descriptione').value = obj[0].description
                 document.getElementById('equipmentse').value = obj[0].equipments
                 document.getElementById('filee').src = obj[0].path
+                var video = document.getElementById("myVideo");
+                var source = document.createElement("source");
+                source.src = obj[0].video; // Set the video source URL
+                source.type = "video/mp4"; // Set the MIME type of the video
+                console.log(obj[0].video)
+                // Remove any existing source elements (if any)
+                while (video.firstChild) {
+                    video.removeChild(video.firstChild);
+                }
+                if(source.src) {
+                    video.appendChild(source);
+                }
+                // Append the new source element to the video element
+                if(!obj[0].video) {
+                    document.getElementById("myVideo").style.display = 'none';
+                }
+                else {
+                    document.getElementById("myVideo").style.display = 'block';
+                }
+
                 document.getElementById('zidi').innerHTML += '<label>Sessions:</label><table id="yeap" class="table" style="background:white; color:black"><tr><th scope="col">Name</th><th scope="col">Duree</th></tr></table>'
             }
             for (let i = 0; i < obj.length; i++) {
@@ -790,6 +768,7 @@
                 console.log(response)
                 if(response=='done')
                 {
+                    exit()
                     user();
                 }
                         });

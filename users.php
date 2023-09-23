@@ -151,63 +151,14 @@
                             <i class="fa fa-envelope me-lg-2"></i>
                             <span class="d-none d-lg-inline-flex">Message</span>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
-                            <a href="#" class="dropdown-item">
-                                <div class="d-flex align-items-center">
-                                    <img class="rounded-circle" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
-                                    <div class="ms-2">
-                                        <h6 class="fw-normal mb-0">Jhon send you a message</h6>
-                                        <small>15 minutes ago</small>
-                                    </div>
-                                </div>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <div class="d-flex align-items-center">
-                                    <img class="rounded-circle" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
-                                    <div class="ms-2">
-                                        <h6 class="fw-normal mb-0">Jhon send you a message</h6>
-                                        <small>15 minutes ago</small>
-                                    </div>
-                                </div>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <div class="d-flex align-items-center">
-                                    <img class="rounded-circle" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
-                                    <div class="ms-2">
-                                        <h6 class="fw-normal mb-0">Jhon send you a message</h6>
-                                        <small>15 minutes ago</small>
-                                    </div>
-                                </div>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item text-center">See all message</a>
-                        </div>
+                        
                     </div>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                             <i class="fa fa-bell me-lg-2"></i>
                             <span class="d-none d-lg-inline-flex">Notificatin</span>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">Profile updated</h6>
-                                <small>15 minutes ago</small>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">New user added</h6>
-                                <small>15 minutes ago</small>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">Password changed</h6>
-                                <small>15 minutes ago</small>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item text-center">See all notifications</a>
-                        </div>
+                        
                     </div>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
@@ -364,7 +315,7 @@
             
             $result = mysqli_query($con, $sql);
             while($row = mysqli_fetch_assoc($result)) {
-                echo "<p class='namess'><b>".$row['name']."</b><b style='display: block;float: right;color:green;cursor:pointer' onclick=\"addLink('".$row['id']."')\">+</b></p>";
+                echo "<p class='namess'><b class='nmse'>".$row['name']."</b><b style='display: block;float: right;color:green;cursor:pointer' onclick=\"addLink('".$row['id']."')\">+</b></p>";
              } ?>
                             </div>
                         </div>
@@ -451,7 +402,6 @@
                     }
                 }
                 
-                console.log(e.checked)
              }
 
         function search(e)
@@ -466,17 +416,26 @@
                     A[i].parentElement.style.display = 'none'
                 }
             }
-            console.log(e.value)
         }
 
         function user()
         {
+            var A = document.getElementsByClassName('nmse')
+            var B = document.getElementsByClassName('nmss')
+            
+            for (let i = 0; i < A.length; i++) {
+                for (let j = 0; j < B.length; j++) {
+                    if(A[i].textContent == B[j].textContent) {
+                        A[i].parentElement.children[1].style.color = 'gray'
+                    }
+                }
+                
+            }
             document.getElementById('users').innerHTML="";
             $.post('controller', {service:'users', type:'<?php echo $role; ?>'}).done(function(response){
             obj = JSON.parse(response);
             for (let i = 0; i < obj.length; i++) {
                 var rol="User";
-                console.log(obj[i])
                 let stats = 'pending'
                 let color = 'orange'
                 if(obj[i].status == 1)
@@ -499,21 +458,29 @@
 
         function unlocked(id) {
             id_u = id
-            console.log(id)
             document.getElementById('idida2').innerHTML = '<h5 style="color:black">Diets affected:</h5>';
             $.post('controller', {service:'links',ide: id, type:'<?php echo $role; ?>'}).done(function(response){
-            console.log(response)
+            
                 obj = JSON.parse(response);
             for (let i = 0; i < obj.length; i++) {
-                document.getElementById('idida2').innerHTML += '<p>'+obj[i].name+'<b style="display: block;float: right;color:red;cursor:pointer" onclick=\"deleteLinkDiet(\''+obj[i].usi+'\')\">x</b></p>'
+                document.getElementById('idida2').innerHTML += '<p><span class="nmss">'+obj[i].name+'</span><b style="display: block;float: right;color:red;cursor:pointer" onclick=\"deleteLinkDiet(\''+obj[i].usi+'\')\">x</b></p>'
             }
 });
+var A = document.getElementsByClassName('nmse')
+            var B = document.getElementsByClassName('nmss')
+            
+            for (let i = 0; i < A.length; i++) {
+                for (let j = 0; j < B.length; j++) {
+                    if(A[i].textContent == B[j].textContent) {
+                        A[i].parentElement.children[1].style.color = 'gray'
+                    }
+                }
+                
+            }
             document.getElementById('fullp').style.display = 'block'
-            console.log(document.getElementById('fullp'))
         }
 
         function accept(id, e) {
-            console.log(id)
             $.post('controller', {service:'statususers',ide: id,to: 2, type:'<?php echo $role; ?>'}).done(function(response){
             if(response == 'done')
             {
@@ -525,7 +492,6 @@
         }
 
         function rejet(id, e) {
-            console.log(e)
             $.post('controller', {service:'statususers',ide: id,to: 0, type:'<?php echo $role; ?>'}).done(function(response){
             if(response == 'done')
             {
@@ -556,22 +522,20 @@
 
         function addLink(id) {
             $.post('controller', {service:'linkAdd',ide: id,idu: id_i, type:'<?php echo $role; ?>'}).done(function(response){
-            console.log(response)
+           
                 if(response == 'done') {
                 add_exercice(id_i)
             }
 });
-            console.log(id)
         }
 
         function addLinkDiet(id) {
             $.post('controller', {service:'linkAddDiet',ide: id,idu: id_u, type:'<?php echo $role; ?>'}).done(function(response){
-            console.log(response)
+           
                 if(response == 'done') {
                     unlocked(id_u)
             }
 });
-            console.log(id)
         }
 
         function deleteLink(id) {
@@ -597,19 +561,33 @@
             $.post('controller', {service:'link',ide: id, type:'<?php echo $role; ?>'}).done(function(response){
             obj = JSON.parse(response);
             for (let i = 0; i < obj.length; i++) {
-                document.getElementById('idida').innerHTML += '<p>'+obj[i].name+'<b style="display: block;float: right;color:red;cursor:pointer" onclick=\"deleteLink(\''+obj[i].usi+'\')\">x</b></p>'
+                document.getElementById('idida').innerHTML += '<p><span class="hihi">'+obj[i].name+'</span><b style="display: block;float: right;color:red;cursor:pointer" onclick=\"deleteLink(\''+obj[i].usi+'\')\">x</b></p>'
+            }
+            document.getElementById('fully').style.display = "block";
+            var A = document.getElementsByClassName('nmse')
+            var B = document.getElementsByClassName('hihi')
+            
+            for (let i = 0; i < A.length; i++) {
+                for (let j = 0; j < B.length; j++) {
+                    console.log(B[j].textContent + ' ' + A[i].textContent)
+                    if(A[i].textContent == B[j].textContent) {
+                        A[i].parentElement.children[1].style.color = 'gray'
+                        break;
+                    }
+                    else {
+                        A[i].parentElement.children[1].style.color = 'green'
+                    }
+                }
+                
             }
 });
-            document.getElementById('fully').style.display = "block";
+            
         }
 
         function filter(a)
         {
             const A = document.getElementsByClassName('namess')
             for (let i = 0; i < A.length; i++) {
-                console.log(A[i].children[0].textContent.toLocaleUpperCase())
-                console.log(a.value)
-                console.log(A[i].children[0].textContent.toLocaleUpperCase().includes(a.value))
                 if(!(A[i].children[0].textContent.toLocaleUpperCase().includes(a.value.toLocaleUpperCase()))) {
                     A[i].style.display = 'none'
                 }
@@ -653,7 +631,6 @@
                     document.getElementById('lastname').value='';
                     document.getElementById('password').value='';
                     document.getElementById('type').value='User';
-                console.log(response);
                 exit();
                 user();
                 }

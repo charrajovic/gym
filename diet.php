@@ -2,6 +2,7 @@
             include 'user.php';
             session_start();
             include 'connect.php';
+            include 'connection.php';
             if(isset($_SESSION["user"]))
             {
                 $role='User';
@@ -49,6 +50,9 @@
         input{
             background:white !important;
             margin-bottom:15px
+        }
+        label {
+            color: white
         }
     </style>
     <style>
@@ -157,63 +161,14 @@
                             <i class="fa fa-envelope me-lg-2"></i>
                             <span class="d-none d-lg-inline-flex">Message</span>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
-                            <a href="#" class="dropdown-item">
-                                <div class="d-flex align-items-center">
-                                    <img class="rounded-circle" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
-                                    <div class="ms-2">
-                                        <h6 class="fw-normal mb-0">Jhon send you a message</h6>
-                                        <small>15 minutes ago</small>
-                                    </div>
-                                </div>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <div class="d-flex align-items-center">
-                                    <img class="rounded-circle" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
-                                    <div class="ms-2">
-                                        <h6 class="fw-normal mb-0">Jhon send you a message</h6>
-                                        <small>15 minutes ago</small>
-                                    </div>
-                                </div>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <div class="d-flex align-items-center">
-                                    <img class="rounded-circle" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
-                                    <div class="ms-2">
-                                        <h6 class="fw-normal mb-0">Jhon send you a message</h6>
-                                        <small>15 minutes ago</small>
-                                    </div>
-                                </div>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item text-center">See all message</a>
-                        </div>
+                        
                     </div>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                             <i class="fa fa-bell me-lg-2"></i>
                             <span class="d-none d-lg-inline-flex">Notificatin</span>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">Profile updated</h6>
-                                <small>15 minutes ago</small>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">New user added</h6>
-                                <small>15 minutes ago</small>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">Password changed</h6>
-                                <small>15 minutes ago</small>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item text-center">See all notifications</a>
-                        </div>
+                        
                     </div>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
@@ -251,13 +206,13 @@
                         <input type="text" placeholder="Search" id="search" class="form-control">
                     </div>
                     <div class="col-md-2">
-                        <select name="domain" id="domain" class="form-control">
+                        <select name="domain" id="domain" class="form-control" onchange="xchange(this)">
                             <option value="all">All</option>
-                            <option value="Web Development">Web Development</option>
-                            <option value="Graphic Design">Graphic Design</option>
-                            <option value="Data Science">Data Science</option>
-                            <option value="Data Analysis">Data Analysis</option>
-                            <option value="Other">Other</option>
+                            <?php $sql = "SELECT * FROM `diet` group by recipe";
+            // echo $sql;
+            $result = mysqli_query($con, $sql);
+            while($row = mysqli_fetch_assoc($result)) { echo '<option value="'.$row["recipe"].'">'.$row["recipe"].'</option>'; } ?>
+                            
                         </select>
                     </div>
                 </div>
@@ -269,7 +224,7 @@
                     <th>Name</th>
                     <th>Calories</th>
                     <th>Ingredients</th>
-                    <th>Recipe</th>
+                    <th>Category</th>
                     <th></th>
                 </tr>  
                 </table>
@@ -473,9 +428,10 @@
                             <input type="text" name="name" id="namee" placeholder="Name" class="form-control" style="margin-top:0" readonly>
                         </div>
                         <div class="col-md-6">
-                        <label>Calories:</label>
-                        <input type="number" id="caloriese" name="caloriese" placeholder="calories" class="form-control" style="margin-top:0" readonly>
+                        <label>Category:</label>
+                            <input type="text" id="category" name="benefits" placeholder="benefits" class="form-control" style="margin-top:0" readonly>
                         </div>
+                        
                     </div>
                     <div class="row">
                     <div class="col-md-12">
@@ -484,19 +440,26 @@
                     </div>
                     <div class="row">
                     <div class="col-md-12">
-                    <label>Duree:</label>
+                    <label>Calories:</label>
+                        <input type="number" id="caloriese" name="caloriese" placeholder="calories" class="form-control" style="margin-top:0" readonly>
+                        </div>
+                    </div>
+                    <div class="row">
+                    <div class="col-md-12">
+                    <label>Fat:</label>
                             <input type="number" id="dureee" name="duree" placeholder="duree" class="form-control" style="margin-top:0" readonly>
                         </div>
                     </div>
                     <div class="row">
                     <div class="col-md-12">
-                    <label>Benefits:</label>
+                    <label>Protein:</label>
                             <input type="text" id="benefitse" name="benefits" placeholder="benefits" class="form-control" style="margin-top:0" readonly>
                         </div>
                     </div>
+                    
                     <div class="row">
                     <div class="col-md-12">
-                    <label>Equipments:</label>
+                    <label>Ingredients:</label>
                             <textarea id="equipmentse" name="equipments" placeholder="equipments" class="form-control" style="margin-top:0" readonly></textarea>
                         </div>
                     </div>
@@ -566,14 +529,14 @@
 
         function user()
         {
-            document.getElementById('users').innerHTML="<tr><th>Thumbnail</th><th>Name</th> <th>Calories</th><th>Ingredients</th><th>Recipe</th><th></th></tr> ";
+            document.getElementById('users').innerHTML="<tr><th>Thumbnail</th><th>Name</th> <th>Calories</th><th>Ingredients</th><th>Category</th><th></th></tr> ";
             $.post('controller', {service:'diet', type:'<?php echo $role; ?>'}).done(function(response){
                 console.log(response)
             obj = JSON.parse(response);
             for (let i = 0; i < obj.length; i++) {
                 var rol="User";
                 
-                document.getElementById('users').innerHTML+='<tr style="height:70px"><th scope="row" style="background-image:url(\''+obj[i].path+'\');background-size: 100% 100%;" onclick="allfull(this)"><span style="display:none">'+obj[i].path+'</span></th> <td class="tbname">'+obj[i].name+'</td><td class="tbdomaine">'+obj[i].calories+'</td><td class="tbprice">'+obj[i].ingredients+'</td><td class="tbcreated">'+obj[i].recipe+'</td><td><i class="fa fa-eye" style="color:brown;cursor:pointer" onclick="view_us(\''+obj[i].id+'\')" aria-hidden="true"></i><i class="fa fa-plus" style="color:green;cursor:pointer" onclick="edit_us(\''+obj[i].id+'\')" aria-hidden="true"></i><i class="fa fa-trash" style="color:red;cursor:pointer" onclick="delete_us(\''+obj[i].id+'\')" aria-hidden="true"></i></td></tr>'
+                document.getElementById('users').innerHTML+='<tr style="height:70px"><th scope="row" style="background-image:url(\''+obj[i].path+'\');background-size: 100% 100%;"><span style="display:none">'+obj[i].path+'</span></th> <td class="tbname">'+obj[i].name+'</td><td class="tbdomaine">'+obj[i].calories+'</td><td class="tbprice">'+obj[i].ingredients+'</td><td class="tbcreated">'+obj[i].recipe+'</td><td><i class="fa fa-eye" style="color:white;cursor:pointer" onclick="view_us(\''+obj[i].id+'\')" aria-hidden="true"></i><i class="fa fa-trash" style="color:red;cursor:pointer" onclick="delete_us(\''+obj[i].id+'\')" aria-hidden="true"></i></td></tr>'
             }
         //     var A = document.getElementsByClassName('tbdomaine');
         //     for (let i = 0; i < A.length; i++) {
@@ -682,9 +645,24 @@
             });
         }
 
+        function xchange(e) {
+            const val = e.value
+            var A = document.getElementsByClassName('tbcreated');
+            for (let i = 0; i < A.length; i++) {
+                console.log(A[i].textContent.toLowerCase().includes(val.toLowerCase()))
+                if(A[i].textContent.toLowerCase().includes(val.toLowerCase()) || val.toLowerCase() == 'all')
+                {
+                    A[i].parentElement.parentElement.style.display = 'revert'
+                }
+                else {
+                    A[i].parentElement.parentElement.style.display = 'none'
+                }
+            }
+        }
+
         function view_us(id) {
             document.getElementById('fulls').style.display = 'block';
-            $.post('controller', {service:'view_exercices',ide: id, type:'<?php echo $role; ?>'}).done(function(response){
+            $.post('controller', {service:'view_diets',ide: id, type:'<?php echo $role; ?>'}).done(function(response){
                 console.log(response)
             obj = JSON.parse(response);
             if(obj.length) {
@@ -695,14 +673,14 @@
                 }
                 document.getElementById('zidi').innerHTML = ''
                 document.getElementById('namee').value = obj[0].name
-                document.getElementById('dureee').value = obj[0].duree
-                document.getElementById('descriptione').value = obj[0].description
-                document.getElementById('benefitse').value = obj[0].benefits
+                document.getElementById('dureee').value = obj[0].protein
+                document.getElementById('benefitse').value = obj[0].fat
                 document.getElementById('caloriese').value = obj[0].calories
                 document.getElementById('descriptione').value = obj[0].description
-                document.getElementById('equipmentse').value = obj[0].equipments
+                document.getElementById('equipmentse').value = obj[0].ingredients
+                document.getElementById('category').value = obj[0].recipe
                 document.getElementById('filee').src = obj[0].path
-                document.getElementById('zidi').innerHTML += '<label>Sessions:</label><table id="yeap" class="table" style="background:white; color:black"><tr><th scope="col">Name</th><th scope="col">Duree</th></tr></table>'
+                // document.getElementById('zidi').innerHTML += '<label>Sessions:</label><table id="yeap" class="table" style="background:white; color:black"><tr><th scope="col">Name</th><th scope="col">Duree</th></tr></table>'
             }
             for (let i = 0; i < obj.length; i++) {
                 console.log(obj[i].names)
@@ -722,7 +700,7 @@
             console.log(id)
             var result = confirm("Want to delete?");
             if (result) {
-                $.post('controller', {service:'deleteExercice',ide:id, type:'<?php echo $role; ?>'}).done(function(response){
+                $.post('controller', {service:'deleteDiet',ide:id, type:'<?php echo $role; ?>'}).done(function(response){
                 console.log(response)
                 if(response=='done')
                 {
